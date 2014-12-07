@@ -1,0 +1,29 @@
+<p>This is the albums view.</p>
+
+<table id="idAlbums" class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Artist</th>
+      <th>Album Title</th>
+      <th>Year</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody  >
+    <tr ng-repeat-start="album in albums" ng-click="selectAlbum(album.id)" ng-class="{'alert-info': isSelected(album.id)}" id="idAlbums:{{$index}}">
+      <td>{{album.artist}}</td>
+      <td>{{album.title}}</td>
+      <td>{{album.releaseYear}}</td>
+      <td>
+        <a href ng-click='expandDetail(album.id)'>Expand</a>
+        <a href="#/songList/{{album.id}}">Songs</a>
+        <a href="#/album/{{album.id}}">Edit</a>
+      </td>
+    </tr>
+    <tr ng-repeat-end ng-show="album.id === expandedAlbumId" id="idAlbumsComment:{{$index}}">
+      <td colspan="4">{{album.comment}}</td>
+    </tr>
+  
+  </tbody>
+</table>
+

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    
+    <tm_employee id="-1001" last_modification_id="0" status="A" first_name="John" last_name="Smith" title="Mr." contact_id="-1010" email_preferences="P" company_id="-1001"/>
+
+</dataset>

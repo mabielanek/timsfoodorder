@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    
+    <!-- COMPANY -->
+    <tm_vacation id="-1001" last_modification_id="0" owner_type="C" start_day="2000-06-01" end_day="2000-06-05" company_id="-1001" />
+    <tm_vacation id="-1002" last_modification_id="0" owner_type="C" start_day="2000-08-01" end_day="2000-08-02" company_id="-1001" />
+    
+</dataset>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <!-- company -->
+    <tm_contact id="-1001" last_modification_id="0" status="A"/>
+    
+    <!-- employee -->
+    <tm_contact id="-1010" last_modification_id="0" status="A"/>
+</dataset>

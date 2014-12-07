@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    
+    <tm_address id="-1001" last_modification_id="0" status="A" address1="Some Road" address2="24th Obernister" city="London" zip_code="340092" state="Capitol" country="England" comment_text="Address in London for tests" display_index="0"/>
+
+</dataset>

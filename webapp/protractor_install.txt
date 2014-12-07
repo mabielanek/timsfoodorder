@@ -1,0 +1,12 @@
+node node_modules\protractor\bin\webdriver-manager update
+node node_modules\protractor\bin\webdriver-manager start
+
+// in second console 
+node node_modules\protractor\bin\protractor protractor.conf.js
+
+// or run 
+grunt test-protractor 
+// note that sellenium server have to work, and grunt serve can't be running...
+
+// to run karma unit tests observing file changes
+node_modules\.bin\karma.cmd start

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    
+    <!-- COMPANY -->
+    <tm_working_hour id="-1001" last_modification_id="0" owner_type="C" week_day="MONDAY" start_time="2000-06-01 06:00:00.000000000" end_time="2000-06-01 13:00:00.000000000" company_id="-1001" />
+    <tm_working_hour id="-1002" last_modification_id="0" owner_type="C" week_day="MONDAY" start_time="2000-06-01 14:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1001"/>
+    <tm_working_hour id="-1003" last_modification_id="0" owner_type="C" week_day="TUESDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1001"/>
+    <tm_working_hour id="-1004" last_modification_id="0" owner_type="C" week_day="WEDNESDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1001"/>
+    <tm_working_hour id="-1005" last_modification_id="0" owner_type="C" week_day="THURSDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1001"/>
+    <tm_working_hour id="-1006" last_modification_id="0" owner_type="C" week_day="FRIDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1001"/>
+    
+    <tm_working_hour id="-1101" last_modification_id="0" owner_type="C" week_day="MONDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1002"/>
+    <tm_working_hour id="-1102" last_modification_id="0" owner_type="C" week_day="FRIDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" company_id="-1002"/>
+    
+    <!-- SERVICE LOCATION -->
+    
+</dataset>

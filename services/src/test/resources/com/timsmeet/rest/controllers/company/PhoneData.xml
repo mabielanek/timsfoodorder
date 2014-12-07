@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<!-- company -->    
+    <tm_phone id="-1001" last_modification_id="0" status="A" contact_id="-1001" phone="508334321" phone_ext="1234" number_type="M" comment_text="Mobile phone to manager" display_index="1"/>
+    <tm_phone id="-1002" last_modification_id="0" status="A" contact_id="-1001" phone="345223421" number_type="L" comment_text="Company std phone" display_index="0"/>
+    <tm_phone id="-1003" last_modification_id="0" status="A" contact_id="-1002" phone="993844092" number_type="L" comment_text="Main Phone Number" display_index="0"/>
+    
+</dataset>

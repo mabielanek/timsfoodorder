@@ -1,0 +1,65 @@
+<p>This is the album view.</p>
+
+<form name="albumForm">
+  <div class="form-group">
+    <label for="albumTitle">Album Title</label>
+    <input type="text" class="form-control" id="albumTitle" placeholder="Enter Album Title" ng-model="album.title" />
+  </div>
+  <div class="form-group">
+    <label for="albumArtist">Artist</label>
+    <input type="text" class="form-control" id="albumArtist" placeholder="Enter Artist" ng-model="album.artist" />
+  </div>
+  <div class="form-group">
+    <label for="albumYear">Year</label>
+    <input type="text" class="form-control" id="albumYear" placeholder="Enter release year" ng-model="album.releaseYear" />
+  </div>
+  <div class="form-group">
+    <label for="albumDesc">Description</label>
+    <textarea class="form-control" rows="5" id="albumDesc" placeholder="Enter description" ng-model="album.comment"></textarea>
+  </div>
+  
+  <div class="form-group">
+    <label for="albumDesc">Songs</label>
+    
+	<table class="table table-bordered">
+	  <thead>
+	    <tr>
+	      <th class="col-sm-1">Track ID</th>
+	      <th class="col-sm-6">Title</th>
+	      <th class="col-sm-5">Time</th>
+	    </tr>
+	  </thead>
+	  <tbody ng-repeat="song in album.songs">
+	    <tr>
+	      <td>
+	        {{$index + 1}}
+	      </td>
+	      <td>
+	        <input type="text" class="form-control" id="songTitle" placeholder="Enter Title" ng-model="song.title" />
+	      </td>
+	      <td>
+	        <div class="form-inline">
+	        <div class="row form-group col-sm-6">
+	         <span integer-counter value="song.time.minutes" min="0" max="59"></span>
+	        </div>
+	        <div class="form-group col-sm-1">:</div>
+	        <div class="form-group col-sm-6">
+	         <span integer-counter value="song.time.seconds" min="0" max="59"></span>
+	        </div>
+	        </div>
+	      </td>
+	    </tr>
+	  
+	  </tbody>
+	</table>
+    
+    
+  </div>
+  
+  <div class="pull-right">
+	  <button ng-click="showAlbumList()" class="btn btn-default">Album List</button>
+	  <button ng-click="resetEdit()" class="btn btn-default" ng-disabled="!canSave()">Revert changes</button>
+    <button ng-click="saveAlbum()" class="btn btn-primary" ng-disabled="!canSave()">Save</button>
+  </div>
+
+</form>

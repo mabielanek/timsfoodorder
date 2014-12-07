@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    
+    <tm_contact id="1" last_modification_id="0" status="A"/>
+    <tm_contact id="2" last_modification_id="0" status="A"/>
+    
+    <tm_phone id="1" last_modification_id="0" status="A" contact_id="1" phone="508334321" phone_ext="1234" number_type="M" comment_text="Mobile phone to manager" display_index="0"/>
+    <tm_phone id="2" last_modification_id="0" status="A" contact_id="2" phone="993844092" number_type="F" comment_text="Main Phone Number" display_index="0"/>
+  
+    <tm_address id="1" last_modification_id="0" status="A" address1="Some Road" address2="24th Obernister" city="London" zip_code="340092" state="Capitol" country="England" comment_text="Address in London for tests" display_index="0"/>
+    <tm_address id="2" last_modification_id="0" status="A" address1="Other Road" address2="12th Londita" city="Malia" zip_code="233DS3" state="Marina" country="Greece" comment_text="Address with sample text" display_index="0"/>
+
+    <tm_company id="1" last_modification_id="0" status="A" name="Acme Corp" address_id="1" contact_id="1"/>
+    <tm_company id="2" last_modification_id="0" status="A" name="Binton Corp" address_id="2" contact_id="2"/>
+    
+</dataset>

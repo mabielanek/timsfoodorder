@@ -1,0 +1,23 @@
+<p>This is the songList view.</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Track ID</th>
+      <th>Title</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody ng-repeat="song in songList">
+    <tr>
+      <td>{{song.trackNumber}}</td>
+      <td>{{song.title}}</td>
+      <td>{{song.time | trackTime}}</td>
+    </tr>
+  
+  </tbody>
+</table>
+
+<div class="pull-right">
+  <button ng-click="showAlbumList()" class="btn btn-default">Album List</button>
+</div>
