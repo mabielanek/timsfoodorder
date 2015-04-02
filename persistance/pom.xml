@@ -6,21 +6,20 @@
   <parent>
     <groupId>com.timsmeet</groupId>
     <artifactId>food-ordering</artifactId>
-    <version>1.0</version>
+    <version>0.1.0</version>
   </parent>
 
   <artifactId>food-ordering-persistance</artifactId>
   <packaging>jar</packaging>
-  <version>${food.ordering.version}</version>
 
-  <name>Timsmeet food ordering object model.</name>
+  <name>Tims food ordering object model.</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <timsjpaddl.version>0.1.0</timsjpaddl.version>
+    </properties>
+    
   <dependencies>
-    <dependency>
-      <groupId>com.timsmeet</groupId>
-      <artifactId>hibernate4ddl</artifactId>
-      <version>${food.ordering.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
@@ -81,6 +80,16 @@
     </dependency>
   </dependencies>
 
+    <profiles>
+        <profile>
+            <id>ddl-generator</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.timsmeet</groupId>
+                    <artifactId>hibernate4ddl</artifactId>
+                    <version>${timsjpaddl.version}</version>
+                </dependency>
+            </dependencies> 
   <build>
     <plugins>
       <plugin>
@@ -156,4 +165,7 @@
       </plugin>
     </plugins>
   </build>
+          </profile>
+    </profiles>
+ 
 </project>

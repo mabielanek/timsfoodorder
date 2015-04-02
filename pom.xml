@@ -3,20 +3,18 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.timsmeet</groupId>
-  <artifactId>food-ordering</artifactId>
-  <packaging>pom</packaging>
-  <version>1.0</version>
+    <artifactId>food-ordering</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1.0</version>
   <name>Parent timsmeet project.</name>
  
   <modules>
-    <module>hibernate4ddl</module>
     <module>persistance</module>
     <module>services</module>
   </modules>
 
   <properties>
-    <food.ordering.version>0.0.1</food.ordering.version>
-    <hibernate.version>4.3.7.Final</hibernate.version>
+    <hibernate.version>4.3.8.Final</hibernate.version>
     <guava.version>18.0</guava.version>
     <spring.version>4.1.2.RELEASE</spring.version>
     <spring.data.version>1.7.1.RELEASE</spring.data.version>
