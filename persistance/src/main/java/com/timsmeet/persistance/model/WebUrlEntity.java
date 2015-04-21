@@ -2,9 +2,12 @@ package com.timsmeet.persistance.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -43,6 +46,10 @@ public class WebUrlEntity {
   
   @Column(name = "web_url_address", nullable = false, length = 255)
   private String webUrlAddress;
+  
+  @ManyToOne
+  @JoinColumn(name = "contact_id", foreignKey=@ForeignKey(name="web_url_contact_fk"))
+  private ContactEntity contact;
 
   /**
    * Gets the status.
@@ -115,6 +122,13 @@ public class WebUrlEntity {
   public void setWebUrlAddress(String webUrlAddress) {
     this.webUrlAddress = webUrlAddress;
   }
+  public ContactEntity getContact() {
+	return contact;
+  }
+
+  void setContact(ContactEntity contact) {
+	this.contact = contact;
+  }  
   
   /**
    * Gets the Web Url record identifier.
