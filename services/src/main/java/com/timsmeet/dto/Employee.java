@@ -16,9 +16,7 @@ public class Employee {
 	private Contact contact;
 	private EmailPreferences emailPreferences;
 	private List<WorkingHour> workingHours;
-	private List<ServiceType> serviceTypes;
 	private List<Vacation> vacations;
-	private List<Field> fields;
 
 	public Long getId() {
 		return id;
@@ -92,28 +90,12 @@ public class Employee {
 		this.workingHours = workingHours;
 	}
 
-	public List<ServiceType> getServiceTypes() {
-		return serviceTypes;
-	}
-
-	public void setServiceTypes(List<ServiceType> serviceTypes) {
-		this.serviceTypes = serviceTypes;
-	}
-
 	public List<Vacation> getVacations() {
 		return vacations;
 	}
 
 	public void setVacations(List<Vacation> vacations) {
 		this.vacations = vacations;
-	}
-
-	public List<Field> getFields() {
-		return fields;
-	}
-
-	public void setFields(List<Field> fields) {
-		this.fields = fields;
 	}
 
 	public static final class Builder {
@@ -172,21 +154,12 @@ public class Employee {
 			return this;
 		}
 
-		public Builder serviceTypes(List<ServiceType> serviceTypes) {
-			employee.setServiceTypes(serviceTypes);
-			return this;
-		}
+
 
 		public Builder vacations(List<Vacation> vacations) {
 			employee.setVacations(vacations);
 			return this;
 		}
-
-		public Builder fields(List<Field> fields) {
-			employee.setFields(fields);
-			return this;
-		}
-		
 	}
 
 }

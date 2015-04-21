@@ -1,8 +1,10 @@
 package com.timsmeet.dto;
 
+import com.timsmeet.dto.entity.BaseEntity;
+import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Address {
+public class Address extends BaseEntity {
 
 	private Long id;
 	private Long lastModificationId;
@@ -107,7 +109,8 @@ public class Address {
 	public static final class Builder {
 		private final Address address = new Address();
 
-		public Builder(ActivityStatus status) {
+		public Builder(EntityState entityState, ActivityStatus status) {
+			address.getEntityAspect().setEntityState(entityState);
 			address.setStatus(status);
 		}
 

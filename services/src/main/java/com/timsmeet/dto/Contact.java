@@ -3,9 +3,11 @@ package com.timsmeet.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.timsmeet.dto.entity.BaseEntity;
+import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Contact {
+public class Contact extends BaseEntity {
 	private Long id;
 	private Long lastModificationId;
 	private ActivityStatus status;
@@ -64,7 +66,8 @@ public class Contact {
 	public static final class Builder {
 		private final Contact contact = new Contact();
 
-		public Builder(ActivityStatus status) {
+		public Builder(EntityState entityState, ActivityStatus status) {
+			contact.getEntityAspect().setEntityState(entityState);
 			contact.setStatus(status);
 		}
 

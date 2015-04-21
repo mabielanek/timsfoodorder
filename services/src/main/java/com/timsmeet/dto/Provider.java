@@ -1,175 +1,159 @@
 package com.timsmeet.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.timsmeet.dto.entity.BaseEntity;
+import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Company {
+public class Provider extends BaseEntity {
 
 	private Long id;
 	private Long lastModificationId;
 	private ActivityStatus status;
 	private String name;
+	private String comment;
 	private Address address;
 	private Contact contact;
-	private List<WorkingHour> workingHours;
-	private List<Vacation> vacations;
-	private List<Field> fields;
-	private List<ServiceType> serviceTypes;
-	private List<ServiceLocation> serviceLocations;
-
+	private List<WorkingHour> workingHours = new ArrayList<WorkingHour>();
+	private List<Vacation> vacations = new ArrayList<Vacation>();
+	private List<AdditionalCost> additionalCosts = new ArrayList<AdditionalCost>();
+	private List<Dish> dishes = new ArrayList<Dish>();
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public Long getLastModificationId() {
 		return lastModificationId;
 	}
-
 	public void setLastModificationId(Long lastModificationId) {
 		this.lastModificationId = lastModificationId;
 	}
-
 	public ActivityStatus getStatus() {
 		return status;
 	}
-
 	public void setStatus(ActivityStatus status) {
 		this.status = status;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 	public Address getAddress() {
 		return address;
 	}
-
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-
 	public Contact getContact() {
 		return contact;
 	}
-
 	public void setContact(Contact contact) {
 		this.contact = contact;
 	}
-
 	public List<WorkingHour> getWorkingHours() {
 		return workingHours;
 	}
-
 	public void setWorkingHours(List<WorkingHour> workingHours) {
 		this.workingHours = workingHours;
 	}
-
 	public List<Vacation> getVacations() {
 		return vacations;
 	}
-
 	public void setVacations(List<Vacation> vacations) {
 		this.vacations = vacations;
 	}
-
-	public List<Field> getFields() {
-		return fields;
+	public List<AdditionalCost> getAdditionalCosts() {
+		return additionalCosts;
 	}
-
-	public void setFields(List<Field> fields) {
-		this.fields = fields;
+	public void setAdditionalCosts(List<AdditionalCost> additionalCosts) {
+		this.additionalCosts = additionalCosts;
 	}
-
-	public List<ServiceType> getServiceTypes() {
-		return serviceTypes;
+	public List<Dish> getDishes() {
+		return dishes;
 	}
-
-	public void setServiceTypes(List<ServiceType> serviceTypes) {
-		this.serviceTypes = serviceTypes;
+	public void setDishes(List<Dish> dishes) {
+		this.dishes = dishes;
 	}
-
-	public List<ServiceLocation> getServiceLocations() {
-		return serviceLocations;
-	}
-
-	public void setServiceLocations(List<ServiceLocation> serviceLocations) {
-		this.serviceLocations = serviceLocations;
-	}
+	
+	
 
 	public final static class Builder {
-		private final Company company = new Company();
+		private final Provider provider = new Provider();
 
-		public Builder(String companyName, ActivityStatus status) {
-			company.setName(companyName);
-			company.setStatus(status);
+		public Builder(EntityState entityState, String providerName, ActivityStatus status) {
+			provider.getEntityAspect().setEntityState(entityState);
+			provider.setName(providerName);
+			provider.setStatus(status);
 		}
 
-		public Company build() {
-			return company;
+		public Provider build() {
+			return provider;
 		}
 
 		public Builder id(Long id) {
-			company.setId(id);
+			provider.setId(id);
 			return this;
 		}
 
 		public Builder lastModificationId(Long lastModificationId) {
-			company.setLastModificationId(lastModificationId);
+			provider.setLastModificationId(lastModificationId);
 			return this;
 		}
 
 		public Builder status(ActivityStatus status) {
-			company.setStatus(status);
+			provider.setStatus(status);
 			return this;
 		}
 
 		public Builder name(String name) {
-			company.setName(name);
+			provider.setName(name);
+			return this;
+		}
+		
+		public Builder comment(String comment) {
+			provider.setComment(comment);
 			return this;
 		}
 
 		public Builder address(Address address) {
-			company.setAddress(address);
+			provider.setAddress(address);
 			return this;
 		}
 
 		public Builder contact(Contact contact) {
-			company.setContact(contact);
+			provider.setContact(contact);
 			return this;
 		}
 
 		public Builder workingHours(List<WorkingHour> workingHours) {
-			company.setWorkingHours(workingHours);
+			provider.setWorkingHours(workingHours);
+			return this;
+		}
+
+		public Builder additionalCosts(List<AdditionalCost> additionalCosts) {
+			provider.setAdditionalCosts(additionalCosts);
 			return this;
 		}
 
 		public Builder vacations(List<Vacation> vacations) {
-			company.setVacations(vacations);
+			provider.setVacations(vacations);
 			return this;
-		}
-
-		public Builder fields(List<Field> fields) {
-			company.setFields(fields);
-			return this;
-		}
-
-		public Builder serviceTypes(List<ServiceType> serviceTypes) {
-			company.setServiceTypes(serviceTypes);
-			return this;
-		}
-
-		public Builder serviceLocations(List<ServiceLocation> serviceLocations) {
-			company.setServiceLocations(serviceLocations);
+		}		
+		
+		public Builder dishes(List<Dish> dishes) {
+			provider.setDishes(dishes);
 			return this;
 		}
 	}
