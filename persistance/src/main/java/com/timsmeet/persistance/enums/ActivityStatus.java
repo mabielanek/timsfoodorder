@@ -4,25 +4,25 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum ActivityStatus implements StringValuedEnum {
 
-  ACTIVE(FieldValue.ActivityStatus.Active),
-  INACTIVE(FieldValue.ActivityStatus.Inactive),
-  DELETED(FieldValue.ActivityStatus.Deleted);
+    ACTIVE(FieldValue.ActivityStatus.Active),
+    INACTIVE(FieldValue.ActivityStatus.Inactive),
+    DELETED(FieldValue.ActivityStatus.Deleted);
 
-  private final String statusCode;
-  
-  private final static EnumForCodeHelper<ActivityStatus> forCodeHelper = new EnumForCodeHelper<ActivityStatus>(ActivityStatus.values());
+    private final String statusCode;
 
-  private ActivityStatus(String statusCode) {
-    this.statusCode = statusCode;
-  }
+    private final static EnumForCodeHelper<ActivityStatus> forCodeHelper = new EnumForCodeHelper<ActivityStatus>(ActivityStatus.values());
 
-  @Override
-  public String getCode() {
-    return statusCode;
-  }
+    private ActivityStatus(String statusCode) {
+        this.statusCode = statusCode;
+    }
 
-  public static ActivityStatus forCode(String code) {
-    return forCodeHelper.forCode(code);
-  }
+    @Override
+    public String getCode() {
+        return statusCode;
+    }
+
+    public static ActivityStatus forCode(String code) {
+        return forCodeHelper.forCode(code);
+    }
 
 }

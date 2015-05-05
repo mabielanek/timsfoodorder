@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -14,35 +13,35 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "fo_genere")
 public class GenereEntity {
 
-	@Id
-	@GeneratedValue(generator = "genereGenerator")
-	@GenericGenerator(name = "genereGenerator", strategy="org.hibernate.id.enhanced.SequenceStyleGenerator", 
-	parameters = {
-	  @Parameter(name = "sequence_name", value="seq_fo_genere_id")
-	})
-	private long id;
-	
-	@Version
-	@Column(name = "last_modification_id")
-	private long lastModificationId;
-	
-	@Column(name = "name", length = 255)
-	private String name;
+    @Id
+    @GeneratedValue(generator = "genereGenerator")
+    @GenericGenerator(name = "genereGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "seq_fo_genere_id")
+            })
+    private long id;
 
-	public String getName() {
-		return name;
-	}
+    @Version
+    @Column(name = "last_modification_id")
+    private long lastModificationId;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(name = "name", length = 255)
+    private String name;
 
-	public long getId() {
-		return id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public long getLastModificationId() {
-		return lastModificationId;
-	}
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getLastModificationId() {
+        return lastModificationId;
+    }
+
 }

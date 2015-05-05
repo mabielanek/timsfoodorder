@@ -1,25 +1,25 @@
 package com.timsmeet.persistance.enums;
 
 public enum YesNo implements StringValuedEnum {
-  
-  YES("Y"),
-  NO("N");
 
-  private final String yesNoCode;
+    YES("Y"),
+    NO("N");
 
-  private final static EnumForCodeHelper<YesNo> forCodeHelper = new EnumForCodeHelper<YesNo>(YesNo.values());
+    private final String yesNoCode;
 
-  private YesNo(String yesNoCode) {
-    this.yesNoCode = yesNoCode;
-  }
+    private final static EnumForCodeHelper<YesNo> forCodeHelper = new EnumForCodeHelper<YesNo>(YesNo.values());
 
-  @Override
-  public String getCode() {
-    return yesNoCode;
-  }
+    private YesNo(String yesNoCode) {
+        this.yesNoCode = yesNoCode;
+    }
 
-  public static YesNo forCode(String code) {
-    return forCodeHelper.forCode(code);
-  }
+    @Override
+    public String getCode() {
+        return yesNoCode;
+    }
+
+    public static YesNo forCode(String code) {
+        return forCodeHelper.forCode(code);
+    }
 
 }

@@ -45,7 +45,7 @@ import com.timsmeet.persistance.model.PhoneEntity;
 import com.timsmeet.persistance.model.WebUrlEntity;
 import com.timsmeet.persistance.repositories.CompanyRepository;
 import com.timsmeet.rest.RestTestUtil;
-import com.timsmeet.services.CompanyService;
+import com.timsmeet.services.ProviderService;
 import com.timsmeet.services.builder.DateBuilder;
 
 
@@ -55,7 +55,7 @@ import com.timsmeet.services.builder.DateBuilder;
 public class CompanyControllerTest extends BaseControllerTest {
 
 	@Autowired
-	private CompanyService companyService;
+	private ProviderService companyService;
 	
 	@Autowired
 	private CompanyRepository companyRepository;

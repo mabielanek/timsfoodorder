@@ -1,13 +1,10 @@
 package com.timsmeet.services.mapper;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.timsmeet.dto.Contact;
 import com.timsmeet.dto.Email;
@@ -17,6 +14,7 @@ import com.timsmeet.persistance.model.ContactEntity;
 import com.timsmeet.persistance.model.EmailEntity;
 import com.timsmeet.persistance.model.PhoneEntity;
 import com.timsmeet.persistance.model.WebUrlEntity;
+import com.timsmeet.services.find.FindEntityWithIdAccessor;
 
 @Service
 public class ContactMapper implements Mapper<Contact, ContactEntity> {
@@ -30,6 +28,15 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 	@Autowired
 	private WebUrlMapper webUrlMapper;
 	
+	@Autowired
+	private FindEntityWithIdAccessor<EmailEntity> emailFind;
+	
+	@Autowired
+	private FindEntityWithIdAccessor<PhoneEntity> phoneFind;
+	
+	@Autowired
+	private FindEntityWithIdAccessor<WebUrlEntity> webUrlFind;
+	
 	@Override
 	public void map(Contact source, ContactEntity target) {
 		if(source.getLastModificationId() != null) {
@@ -40,7 +47,7 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 		if(source.getEmails() != null) {
 			for(Email email : source.getEmails()) {
 				if(DtoStateHelper.isDeleted(email)) {
-					EmailEntity deletedEmail = findEmailById(target, email.getId());
+					EmailEntity deletedEmail = emailFind.findById(target.getEmails(), email.getId());
 					if(deletedEmail != null) {
 						target.removeEmail(deletedEmail);
 					}
@@ -54,7 +61,7 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 		if(source.getPhones() != null) {
 			for(Phone phone : source.getPhones()) {
 				if(DtoStateHelper.isDeleted(phone)) {
-					PhoneEntity deletedPhone = findPhoneById(target, phone.getId());
+					PhoneEntity deletedPhone = phoneFind.findById(target.getPhones(), phone.getId());
 					if(deletedPhone != null) {
 						target.removePhone(deletedPhone);
 					}
@@ -68,7 +75,7 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 		if(source.getWebUrls() != null) {
 			for(WebUrl webUrl : source.getWebUrls()) {
 				if(DtoStateHelper.isDeleted(webUrl)) {
-					WebUrlEntity deletedWebUrl = findWebUrlById(target, webUrl.getId());
+					WebUrlEntity deletedWebUrl = webUrlFind.findById(target.getWebUrls(), webUrl.getId());
 					if(deletedWebUrl != null) {
 						target.removeWebUrl(deletedWebUrl);
 					}
@@ -78,9 +85,6 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 				}
 			}
 		}
-		
-		
-		//todo add other mappings
 	}
 
 	private EmailEntity existingOrNewEmailEntity(ContactEntity contactEntity, Email email) {
@@ -89,43 +93,16 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 			contactEntity.addEmail(emailEntity);
 			return emailEntity;
 		}
-		return findEmailById(contactEntity, email.getId());
+		return emailFind.findById(contactEntity.getEmails(), email.getId());
 	}
 
-	private EmailEntity findEmailById(ContactEntity contactEntity, final long emailId) {
-		Collection<EmailEntity> matchingEmails = Collections2.filter(contactEntity.getEmails(), new Predicate<EmailEntity>() {
-			@Override
-			public boolean apply(EmailEntity input) {
-				return input.getId() == emailId;
-			}
-		});
-		if(matchingEmails.size() == 0) {
-			throw new IllegalArgumentException("Existing email entity with key: " + emailId + " not found for contact.");
-		}
-		return matchingEmails.iterator().next();
-	}
-
-	
 	private PhoneEntity existingOrNewPhoneEntity(ContactEntity contactEntity, Phone phone) {
 		if(DtoStateHelper.isNew(phone)) {
 			PhoneEntity phoneEntity = new PhoneEntity();
 			contactEntity.addPhone(phoneEntity);
 			return phoneEntity;
 		}
-		return findPhoneById(contactEntity, phone.getId());
-	}
-
-	private PhoneEntity findPhoneById(ContactEntity contactEntity, final long phoneId) {
-		Collection<PhoneEntity> matchingPhones = Collections2.filter(contactEntity.getPhones(), new Predicate<PhoneEntity>() {
-			@Override
-			public boolean apply(PhoneEntity input) {
-				return input.getId() == phoneId;
-			}
-		});
-		if(matchingPhones.size() == 0) {
-			throw new IllegalArgumentException("Existing phone entity with key: " + phoneId + " not found for contact.");
-		}
-		return matchingPhones.iterator().next();
+		return phoneFind.findById(contactEntity.getPhones(), phone.getId());
 	}
 
 	private WebUrlEntity existingOrNewWebUrlEntity(ContactEntity contactEntity, WebUrl webUrl) {
@@ -134,20 +111,7 @@ public class ContactMapper implements Mapper<Contact, ContactEntity> {
 			contactEntity.addWebUrl(webUrlEntity);
 			return webUrlEntity;
 		}
-		return findWebUrlById(contactEntity, webUrl.getId());
-	}
-
-	private WebUrlEntity findWebUrlById(ContactEntity contactEntity, final long webUrlId) {
-		Collection<WebUrlEntity> matchingWebUrls = Collections2.filter(contactEntity.getWebUrls(), new Predicate<WebUrlEntity>() {
-			@Override
-			public boolean apply(WebUrlEntity input) {
-				return input.getId() == webUrlId;
-			}
-		});
-		if(matchingWebUrls.size() == 0) {
-			throw new IllegalArgumentException("Existing webUrl entity with key: " + webUrlId + " not found for contact.");
-		}
-		return matchingWebUrls.iterator().next();
+		return webUrlFind.findById(contactEntity.getWebUrls(), webUrl.getId());
 	}
 
 	@Override

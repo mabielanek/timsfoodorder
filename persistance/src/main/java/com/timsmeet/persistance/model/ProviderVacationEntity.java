@@ -13,34 +13,34 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue("P")
 public class ProviderVacationEntity extends VacationEntity {
 
-	@ManyToOne
-	@JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "vacation_provider_fk"))
-	private ProviderEntity provider;
+    @ManyToOne
+    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "vacation_provider_fk"))
+    private ProviderEntity provider;
 
-	/**
-	 * Gets the company.
-	 *
-	 * @return the company
-	 */
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    /**
+     * Gets the company.
+     *
+     * @return the company
+     */
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	/**
-	 * Sets the company.
-	 *
-	 * @param company
-	 *            the new company
-	 */
-	void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    /**
+     * Sets the company.
+     *
+     * @param company
+     *            the new company
+     */
+    void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
 
-	public final static class Builder extends VacationEntity.Builder<ProviderVacationEntity> {
-		public Builder() {
-			super(new ProviderVacationEntity());
-		}
+    public final static class Builder extends VacationEntity.Builder<ProviderVacationEntity> {
+        public Builder() {
+            super(new ProviderVacationEntity());
+        }
 
-	}
+    }
 
 }

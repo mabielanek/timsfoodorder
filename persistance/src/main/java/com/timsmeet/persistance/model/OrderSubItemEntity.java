@@ -10,71 +10,70 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 @Entity
-@Table(name = "fo_order_item", 
-	indexes = { 
-		@Index(columnList = "person_id", name = "idx_order_item_person_fk"),
-		@Index(columnList = "food_order_id", name = "idx_order_item_food_ord_fk"),
-		@Index(columnList = "dish_id", name = "idx_order_item_dish_fk") })
+@Table(name = "fo_order_sub_item",
+        indexes = {
+                @Index(columnList = "order_item_id", name = "idx_ord_sub_item_ord_item_fk"),
+                @Index(columnList = "dish_comp_id", name = "idx_ord_subitem_dish_comp_fk"),
+                @Index(columnList = "dish_elem_id", name = "idx_ord_subitem_dish_elem_fk") })
 public class OrderSubItemEntity {
 
-	@Id
-	@GeneratedValue(generator = "orderSubItemGenerator")
-	@GenericGenerator(name = "orderSubItemGenerator", 
-		strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", 
-		parameters = {@Parameter(name = "sequence_name", value = "seq_fo_sub_ord_item_id")})
-	private long id;
+    @Id
+    @GeneratedValue(generator = "orderSubItemGenerator")
+    @GenericGenerator(name = "orderSubItemGenerator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = { @Parameter(name = "sequence_name", value = "seq_fo_sub_ord_item_id") })
+    private long id;
 
-	@Version
-	@Column(name = "last_modification_id")
-	private long lastModificationId;
-	
-	@ManyToOne
-	@JoinColumn(name = "order_item_id", foreignKey = @ForeignKey(name = "ord_sub_item_ord_item_fk"))
-	private OrderItemEntity orderItem;
-	
-	@ManyToOne
-	@JoinColumn(name = "dish_comp_id", foreignKey = @ForeignKey(name = "ord_sub_item_dish_comp_fk"))
-	private DishComponentEntity dishComponent;
+    @Version
+    @Column(name = "last_modification_id")
+    private long lastModificationId;
 
-	@ManyToOne
-	@JoinColumn(name = "dish_elem_id", foreignKey = @ForeignKey(name = "ord_sub_item_dish_elem_fk"))
-	private DishElementEntity dishElement;
+    @ManyToOne
+    @JoinColumn(name = "order_item_id", foreignKey = @ForeignKey(name = "ord_sub_item_ord_item_fk"))
+    private OrderItemEntity orderItem;
 
-	public OrderItemEntity getOrderItem() {
-		return orderItem;
-	}
+    @ManyToOne
+    @JoinColumn(name = "dish_comp_id", foreignKey = @ForeignKey(name = "ord_sub_item_dish_comp_fk"))
+    private DishComponentEntity dishComponent;
 
-	public void setOrderItem(OrderItemEntity orderItem) {
-		this.orderItem = orderItem;
-	}
+    @ManyToOne
+    @JoinColumn(name = "dish_elem_id", foreignKey = @ForeignKey(name = "ord_sub_item_dish_elem_fk"))
+    private DishElementEntity dishElement;
 
-	public DishComponentEntity getDishComponent() {
-		return dishComponent;
-	}
+    public OrderItemEntity getOrderItem() {
+        return orderItem;
+    }
 
-	public void setDishComponent(DishComponentEntity dishComponent) {
-		this.dishComponent = dishComponent;
-	}
+    public void setOrderItem(OrderItemEntity orderItem) {
+        this.orderItem = orderItem;
+    }
 
-	public DishElementEntity getDishElement() {
-		return dishElement;
-	}
+    public DishComponentEntity getDishComponent() {
+        return dishComponent;
+    }
 
-	public void setDishElement(DishElementEntity dishElement) {
-		this.dishElement = dishElement;
-	}
+    public void setDishComponent(DishComponentEntity dishComponent) {
+        this.dishComponent = dishComponent;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public DishElementEntity getDishElement() {
+        return dishElement;
+    }
 
-	public long getLastModificationId() {
-		return lastModificationId;
-	}
-	
+    public void setDishElement(DishElementEntity dishElement) {
+        this.dishElement = dishElement;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getLastModificationId() {
+        return lastModificationId;
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.timsmeet.persistance.model;
 
 import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -12,85 +11,85 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.AdditionalCostKind;
 
 @Entity
 @Table(name = "fo_add_cost",
-	indexes = @Index(columnList="provider_id", name="idx_add_cost_provider_fk")
-)
+        indexes = @Index(columnList = "provider_id", name = "idx_add_cost_provider_fk"))
 public class AdditionalCostEntity {
 
-	@Id
-	@GeneratedValue(generator = "addressGenerator")
-	@GenericGenerator(name = "addressGenerator", strategy="org.hibernate.id.enhanced.SequenceStyleGenerator", 
-	parameters = { 
-	  @Parameter(name = "sequence_name", value="seq_fo_add_cost_id")
-	})
-	private long id;
-	  
-	@Version
-	@Column(name = "last_modification_id")
-	private long lastModificationId;
-	  
-	@Column(name = "status", nullable = false, length = 1)
-	@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
-	private String status;
+    @Id
+    @GeneratedValue(generator = "addCostGenerator")
+    @GenericGenerator(name = "addCostGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "seq_fo_add_cost_id")
+            })
+    private long id;
 
-	@Column(name = "kind", nullable = false, length = 15)
-	@org.hibernate.annotations.Check(constraints = "kind IN('MINVAL','DELIVERY','PACK')")
-	private String kind;
+    @Version
+    @Column(name = "last_modification_id")
+    private long lastModificationId;
 
-	@Column(name = "cost")
-	private BigDecimal cost;
+    @Column(name = "status", nullable = false, length = 1)
+    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+    private String status;
 
-	@ManyToOne
-	@JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "add_cost_provider_fk"))
-	private ProviderEntity provider;
+    @Column(name = "kind", nullable = false, length = 15)
+    @org.hibernate.annotations.Check(constraints = "kind IN('MINVAL','DELIVERY','PACK')")
+    private String kind;
 
-	public ActivityStatus getStatus() {
-		return ActivityStatus.forCode(status);
-	}
+    @Column(name = "cost")
+    private BigDecimal cost;
 
-	public void setStatus(ActivityStatus status) {
-		this.status = status.getCode();
-	}
+    @ManyToOne
+    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "add_cost_provider_fk"))
+    private ProviderEntity provider;
 
-	public AdditionalCostKind getKind() {
-		return AdditionalCostKind.forCode(kind);
-	}
+    public ActivityStatus getStatus() {
+        return ActivityStatus.forCode(status);
+    }
 
-	public void setKind(AdditionalCostKind kind) {
-		this.kind = kind.getCode();
-	}
+    public void setStatus(ActivityStatus status) {
+        this.status = status.getCode();
+    }
 
-	public BigDecimal getCost() {
-		return cost;
-	}
+    public AdditionalCostKind getKind() {
+        return AdditionalCostKind.forCode(kind);
+    }
 
-	public void setCost(BigDecimal cost) {
-		this.cost = cost;
-	}
+    public void setKind(AdditionalCostKind kind) {
+        this.kind = kind.getCode();
+    }
 
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    public BigDecimal getCost() {
+        return cost;
+    }
 
-	public void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	public long getLastModificationId() {
-		return lastModificationId;
-	}
-	
-	
+    public void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getLastModificationId() {
+        return lastModificationId;
+    }
+
+    public void setLastModificationId(long lastModificationId) {
+        this.lastModificationId = lastModificationId;
+    }
+
 }

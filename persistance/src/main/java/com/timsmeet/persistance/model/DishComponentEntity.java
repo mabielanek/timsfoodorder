@@ -2,7 +2,6 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.enums.ActivityStatus;
@@ -26,122 +23,121 @@ import com.timsmeet.persistance.enums.YesNo;
 
 @Entity
 @Table(name = "fo_dish_comp",
-	indexes = @Index(columnList="dish_id", name="idx_dish_comp_dish_fk")
-)
+        indexes = @Index(columnList = "dish_id", name = "idx_dish_comp_dish_fk"))
 public class DishComponentEntity {
 
-	@Id
-	@GeneratedValue(generator = "dishComponentGenerator")
-	@GenericGenerator(name = "dishComponentGenerator", strategy="org.hibernate.id.enhanced.SequenceStyleGenerator", 
-	parameters = { 
-	  @Parameter(name = "sequence_name", value="seq_fo_dish_comp_id")
-	})
-	private long id;
-	  
-	@Version
-	@Column(name = "last_modification_id")
-	private long lastModificationId;
+    @Id
+    @GeneratedValue(generator = "dishComponentGenerator")
+    @GenericGenerator(name = "dishComponentGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "seq_fo_dish_comp_id")
+            })
+    private long id;
 
-	@Column(name = "status", nullable = false, length = 1)
-	@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
-	private String status;
+    @Version
+    @Column(name = "last_modification_id")
+    private long lastModificationId;
 
-	@ManyToOne
-	@JoinColumn(name = "dish_id", foreignKey = @ForeignKey(name = "dish_comp_dish_fk"))
-	private DishEntity dish;
+    @Column(name = "status", nullable = false, length = 1)
+    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+    private String status;
 
-	@Column(name = "description", length = 255)
-	private String description;
+    @ManyToOne
+    @JoinColumn(name = "dish_id", foreignKey = @ForeignKey(name = "dish_comp_dish_fk"))
+    private DishEntity dish;
 
-	@Column(name = "use_as_dish_price", nullable = false, length = 1)
-	@org.hibernate.annotations.Check(constraints = "use_as_dish_price IN('Y','N')")
-	private String useComponentPriceAsDishPrice = YesNo.NO.getCode();
+    @Column(name = "description", length = 255)
+    private String description;
 
-	@Column(name = "elements_required", nullable = false)
-	private Integer numberOfRequiredElements;
+    @Column(name = "use_as_dish_price", nullable = false, length = 1)
+    @org.hibernate.annotations.Check(constraints = "use_as_dish_price IN('Y','N')")
+    private String useComponentPriceAsDishPrice = YesNo.NO.getCode();
 
-	@Column(name = "max_elements", nullable = false)
-	private Integer maximumNumberOfElements;
+    @Column(name = "elements_required", nullable = false)
+    private Integer numberOfRequiredElements;
 
-	@OneToMany(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "dish_comp_id")
-	private List<DishElementEntity> dishElements = new ArrayList<DishElementEntity>();
+    @Column(name = "max_elements", nullable = false)
+    private Integer maximumNumberOfElements;
 
-	public ActivityStatus getStatus() {
-		return ActivityStatus.forCode(status);
-	}
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "dish_comp_id")
+    private List<DishElementEntity> dishElements = new ArrayList<DishElementEntity>();
 
-	public void setStatus(ActivityStatus status) {
-		this.status = status.getCode();
-	}
+    public ActivityStatus getStatus() {
+        return ActivityStatus.forCode(status);
+    }
 
-	public DishEntity getDish() {
-		return dish;
-	}
+    public void setStatus(ActivityStatus status) {
+        this.status = status.getCode();
+    }
 
-	public void setDish(DishEntity dish) {
-		this.dish = dish;
-	}
+    public DishEntity getDish() {
+        return dish;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setDish(DishEntity dish) {
+        this.dish = dish;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public YesNo getUseComponentPriceAsDishPrice() {
-		return YesNo.forCode(useComponentPriceAsDishPrice);
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setUseComponentPriceAsDishPrice(YesNo useComponentPriceAsDishPrice) {
-		this.useComponentPriceAsDishPrice = useComponentPriceAsDishPrice.getCode();
-	}
+    public YesNo getUseComponentPriceAsDishPrice() {
+        return YesNo.forCode(useComponentPriceAsDishPrice);
+    }
 
-	public Integer getNumberOfRequiredElements() {
-		return numberOfRequiredElements;
-	}
+    public void setUseComponentPriceAsDishPrice(YesNo useComponentPriceAsDishPrice) {
+        this.useComponentPriceAsDishPrice = useComponentPriceAsDishPrice.getCode();
+    }
 
-	public void setNumberOfRequiredElements(Integer numberOfRequiredElements) {
-		this.numberOfRequiredElements = numberOfRequiredElements;
-	}
+    public Integer getNumberOfRequiredElements() {
+        return numberOfRequiredElements;
+    }
 
-	public Integer getMaximumNumberOfElements() {
-		return maximumNumberOfElements;
-	}
+    public void setNumberOfRequiredElements(Integer numberOfRequiredElements) {
+        this.numberOfRequiredElements = numberOfRequiredElements;
+    }
 
-	public void setMaximumNumberOfElements(Integer maximumNumberOfElements) {
-		this.maximumNumberOfElements = maximumNumberOfElements;
-	}
+    public Integer getMaximumNumberOfElements() {
+        return maximumNumberOfElements;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public void setMaximumNumberOfElements(Integer maximumNumberOfElements) {
+        this.maximumNumberOfElements = maximumNumberOfElements;
+    }
 
-	public long getLastModificationId() {
-		return lastModificationId;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public List<DishElementEntity> getDishElements() {
-		return dishElements;
-	}
+    public long getLastModificationId() {
+        return lastModificationId;
+    }
 
-	public boolean addDishElement(DishElementEntity dishElement) {
-		if (this.dishElements == null) {
-			this.dishElements = Lists.newArrayList();
-		}
-		dishElement.setDishComponent(this);
-		return this.dishElements.add(dishElement);
-	}
+    public List<DishElementEntity> getDishElements() {
+        return dishElements;
+    }
 
-	public boolean removeDishElement(DishElementEntity dishElement) {
-		Preconditions.checkNotNull(dishElement);
-		dishElement.setDishComponent(null);
-		if (this.dishElements != null) {
-			return this.dishElements.remove(dishElement);
-		}
-		return false;
-	}	
-	
+    public boolean addDishElement(DishElementEntity dishElement) {
+        if (this.dishElements == null) {
+            this.dishElements = Lists.newArrayList();
+        }
+        dishElement.setDishComponent(this);
+        return this.dishElements.add(dishElement);
+    }
+
+    public boolean removeDishElement(DishElementEntity dishElement) {
+        Preconditions.checkNotNull(dishElement);
+        dishElement.setDishComponent(null);
+        if (this.dishElements != null) {
+            return this.dishElements.remove(dishElement);
+        }
+        return false;
+    }
+
 }

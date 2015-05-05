@@ -3,26 +3,26 @@ package com.timsmeet.persistance.enums;
 import com.timsmeet.persistance.constants.FieldValue;
 
 public enum FoodOrderStatus implements StringValuedEnum {
-	ACTIVE(FieldValue.FoodOrderStatus.Active),
-	CLOSED(FieldValue.FoodOrderStatus.Closed),
-	DELIVERED(FieldValue.FoodOrderStatus.Delivered),
-	CANCELLED(FieldValue.FoodOrderStatus.Cancelled);
-	  
-	private final String foodOrderStatusCode;
+    ACTIVE(FieldValue.FoodOrderStatus.Active),
+    CLOSED(FieldValue.FoodOrderStatus.Closed),
+    DELIVERED(FieldValue.FoodOrderStatus.Delivered),
+    CANCELLED(FieldValue.FoodOrderStatus.Cancelled);
 
-	private final static EnumForCodeHelper<FoodOrderStatus> forCodeHelper = new EnumForCodeHelper<FoodOrderStatus>(
-			FoodOrderStatus.values());
+    private final String foodOrderStatusCode;
 
-	private FoodOrderStatus(String foodOrderStatusCode) {
-		this.foodOrderStatusCode = foodOrderStatusCode;
-	}
+    private final static EnumForCodeHelper<FoodOrderStatus> forCodeHelper = new EnumForCodeHelper<FoodOrderStatus>(
+            FoodOrderStatus.values());
 
-	@Override
-	public String getCode() {
-		return foodOrderStatusCode;
-	}
+    private FoodOrderStatus(String foodOrderStatusCode) {
+        this.foodOrderStatusCode = foodOrderStatusCode;
+    }
 
-	public static FoodOrderStatus forCode(String code) {
-		return forCodeHelper.forCode(code);
-	}
+    @Override
+    public String getCode() {
+        return foodOrderStatusCode;
+    }
+
+    public static FoodOrderStatus forCode(String code) {
+        return forCodeHelper.forCode(code);
+    }
 }

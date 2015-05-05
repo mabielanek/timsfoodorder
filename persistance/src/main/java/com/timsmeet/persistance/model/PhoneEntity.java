@@ -10,242 +10,250 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.PhoneNumberType;
 
 @Entity
 @Table(name = "fo_phone",
-  indexes = @Index(columnList="contact_id", name="idx_contact_phone_fk")
-)
+        indexes = @Index(columnList = "contact_id", name = "idx_contact_phone_fk"))
 public class PhoneEntity {
 
-  @Id
-  @GeneratedValue(generator = "phoneGenerator")
-  @GenericGenerator(name = "phoneGenerator", strategy="org.hibernate.id.enhanced.SequenceStyleGenerator", 
-  parameters = { 
-    @Parameter(name = "sequence_name", value="seq_fo_phone_id")
-  })
-  private long id;
-  
-  @Version
-  @Column(name = "last_modification_id")
-  private long lastModificationId;
-  
-  @Column(name = "status", nullable = false, length = 1)
-  @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
-  private String status;
+    @Id
+    @GeneratedValue(generator = "phoneGenerator")
+    @GenericGenerator(name = "phoneGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "seq_fo_phone_id")
+            })
+    private long id;
 
-  @Column(name = "phone", length = 15)
-  private String phone;
-  
-  @Column(name = "phone_ext", length = 15)
-  private String phoneExt;
-  
-  @Column(name = "number_type", length = 1, nullable = false)
-  @org.hibernate.annotations.Check(constraints = "status IN('M','F','S')")
-  private String numberType;
+    @Version
+    @Column(name = "last_modification_id")
+    private long lastModificationId;
 
-  @Column(name = "comment_text", length = 1024)
-  private String comment;
-  
-  @Column(name = "display_index", nullable = false)
-  private int displayIndex;
-  
-  @ManyToOne
-  @JoinColumn(name = "contact_id", foreignKey=@ForeignKey(name="phone_contact_fk"))
-  private ContactEntity contact;  
+    @Column(name = "status", nullable = false, length = 1)
+    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+    private String status;
 
-  /**
-   * Gets the record status.
-   *
-   * @return the status
-   */
-  public ActivityStatus getStatus() {
-    return ActivityStatus.forCode(status);
-  }
+    @Column(name = "phone", length = 15)
+    private String phone;
 
-  /**
-   * Sets the record status.
-   *
-   * @param status the new status
-   */
-  public void setStatus(ActivityStatus status) {
-    this.status = status.getCode();
-  }
+    @Column(name = "phone_ext", length = 15)
+    private String phoneExt;
 
-  /**
-   * Gets the phone number.
-   *
-   * @return the phone number
-   */
-  public String getPhone() {
-    return phone;
-  }
+    @Column(name = "number_type", length = 1, nullable = false)
+    @org.hibernate.annotations.Check(constraints = "status IN('M','F','S')")
+    private String numberType;
 
-  /**
-   * Sets the phone number.
-   *
-   * @param phone the new phone number
-   */
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+    @Column(name = "comment_text", length = 1024)
+    private String comment;
 
-  /**
-   * Gets the phone number extension.
-   *
-   * @return the phone number extension
-   */
-  public String getPhoneExt() {
-    return phoneExt;
-  }
+    @Column(name = "display_index", nullable = false)
+    private int displayIndex;
 
-  /**
-   * Sets the phone number extension
-   *
-   * @param phoneExt the new phone number extension
-   */
-  public void setPhoneExt(String phoneExt) {
-    this.phoneExt = phoneExt;
-  }
+    @ManyToOne
+    @JoinColumn(name = "contact_id", foreignKey = @ForeignKey(name = "phone_contact_fk"))
+    private ContactEntity contact;
 
-  /**
-   * Gets the number type.
-   *
-   * @return the number type
-   */
-  public PhoneNumberType getNumberType() {
-    return PhoneNumberType.forCode(numberType);
-  }
+    /**
+     * Gets the record status.
+     *
+     * @return the status
+     */
+    public ActivityStatus getStatus() {
+        return ActivityStatus.forCode(status);
+    }
 
-  /**
-   * Sets the number type.
-   *
-   * @param numberType the new number type
-   */
-  public void setNumberType(PhoneNumberType numberType) {
-    this.numberType = numberType.getCode();
-  }
+    /**
+     * Sets the record status.
+     *
+     * @param status
+     *            the new status
+     */
+    public void setStatus(ActivityStatus status) {
+        this.status = status.getCode();
+    }
 
-  /**
-   * Gets the comment.
-   *
-   * @return the comment
-   */
-  public String getComment() {
-    return comment;
-  }
+    /**
+     * Gets the phone number.
+     *
+     * @return the phone number
+     */
+    public String getPhone() {
+        return phone;
+    }
 
-  /**
-   * Sets the comment.
-   *
-   * @param comment the new comment
-   */
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
+    /**
+     * Sets the phone number.
+     *
+     * @param phone
+     *            the new phone number
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  /**
-   * Gets the display index, when sorting is necessary for entity with multiple phones.
-   *
-   * @return the display index
-   */
-  public int getDisplayIndex() {
-    return displayIndex;
-  }
+    /**
+     * Gets the phone number extension.
+     *
+     * @return the phone number extension
+     */
+    public String getPhoneExt() {
+        return phoneExt;
+    }
 
-  /**
-   * Sets the display index, when sorting is necessary for entity with multiple phones.
-   *
-   * @param displayIndex the new display index
-   */
-  public void setDisplayIndex(int displayIndex) {
-    this.displayIndex = displayIndex;
-  }
-  
-  public ContactEntity getContact() {
-	return contact;
-  }
+    /**
+     * Sets the phone number extension
+     *
+     * @param phoneExt
+     *            the new phone number extension
+     */
+    public void setPhoneExt(String phoneExt) {
+        this.phoneExt = phoneExt;
+    }
 
-  void setContact(ContactEntity contact) {
-	this.contact = contact;
-  }  
+    /**
+     * Gets the number type.
+     *
+     * @return the number type
+     */
+    public PhoneNumberType getNumberType() {
+        return PhoneNumberType.forCode(numberType);
+    }
 
-  /**
-   * Gets the Phone record identifier.
-   *
-   * @return the record identifier
-   */
-  public long getId() {
-    return id;
-  }
+    /**
+     * Sets the number type.
+     *
+     * @param numberType
+     *            the new number type
+     */
+    public void setNumberType(PhoneNumberType numberType) {
+        this.numberType = numberType.getCode();
+    }
 
-  /**
-   * Gets the last modification identifier - for optimistic concurrency locking.
-   *
-   * @return the last modification id
-   */
-  public long getLastModificationId() {
-    return lastModificationId;
-  }
-  
-  /**
-   * Sets the last modification identifier - for optimistic concurrency locking.
-   *
-   * @param comment the last modification id
-   */
-  public void setLastModificationId(long lastModificationId) {
-	  this.lastModificationId = lastModificationId;
-  }
+    /**
+     * Gets the comment.
+     *
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
 
-	public final static class Builder {
-		private PhoneEntity entity = new PhoneEntity();
+    /**
+     * Sets the comment.
+     *
+     * @param comment
+     *            the new comment
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-		public PhoneEntity build() {
-			return entity;
-		}
+    /**
+     * Gets the display index, when sorting is necessary for entity with
+     * multiple phones.
+     *
+     * @return the display index
+     */
+    public int getDisplayIndex() {
+        return displayIndex;
+    }
 
-		public Builder(ActivityStatus status, PhoneNumberType numberType,
-				int displayIndex) {
-			entity.setStatus(status);
-			entity.setNumberType(numberType);
-			entity.setDisplayIndex(displayIndex);
-		}
+    /**
+     * Sets the display index, when sorting is necessary for entity with
+     * multiple phones.
+     *
+     * @param displayIndex
+     *            the new display index
+     */
+    public void setDisplayIndex(int displayIndex) {
+        this.displayIndex = displayIndex;
+    }
 
-		public Builder status(ActivityStatus status) {
-			entity.setStatus(status);
-			return this;
-		}
+    public ContactEntity getContact() {
+        return contact;
+    }
 
-		public Builder phone(String phone) {
-			entity.setPhone(phone);
-			return this;
-		}
+    void setContact(ContactEntity contact) {
+        this.contact = contact;
+    }
 
-		public Builder phoneExt(String phoneExt) {
-			entity.setPhoneExt(phoneExt);
-			return this;
-		}
+    /**
+     * Gets the Phone record identifier.
+     *
+     * @return the record identifier
+     */
+    public long getId() {
+        return id;
+    }
 
-		public Builder numberType(PhoneNumberType numberType) {
-			entity.setNumberType(numberType);
-			return this;
-		}
+    /**
+     * Gets the last modification identifier - for optimistic concurrency
+     * locking.
+     *
+     * @return the last modification id
+     */
+    public long getLastModificationId() {
+        return lastModificationId;
+    }
 
-		public Builder comment(String comment) {
-			entity.setComment(comment);
-			return this;
-		}
+    /**
+     * Sets the last modification identifier - for optimistic concurrency
+     * locking.
+     *
+     * @param comment
+     *            the last modification id
+     */
+    public void setLastModificationId(long lastModificationId) {
+        this.lastModificationId = lastModificationId;
+    }
 
-		public Builder displayIndex(int displayIndex) {
-			entity.setDisplayIndex(displayIndex);
-			return this;
-		}
+    public final static class Builder {
+        private PhoneEntity entity = new PhoneEntity();
 
-	}
+        public PhoneEntity build() {
+            return entity;
+        }
+
+        public Builder(ActivityStatus status, PhoneNumberType numberType,
+                int displayIndex) {
+            entity.setStatus(status);
+            entity.setNumberType(numberType);
+            entity.setDisplayIndex(displayIndex);
+        }
+
+        public Builder status(ActivityStatus status) {
+            entity.setStatus(status);
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            entity.setPhone(phone);
+            return this;
+        }
+
+        public Builder phoneExt(String phoneExt) {
+            entity.setPhoneExt(phoneExt);
+            return this;
+        }
+
+        public Builder numberType(PhoneNumberType numberType) {
+            entity.setNumberType(numberType);
+            return this;
+        }
+
+        public Builder comment(String comment) {
+            entity.setComment(comment);
+            return this;
+        }
+
+        public Builder displayIndex(int displayIndex) {
+            entity.setDisplayIndex(displayIndex);
+            return this;
+        }
+
+    }
 
 }

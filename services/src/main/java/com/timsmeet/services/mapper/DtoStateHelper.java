@@ -1,16 +1,17 @@
 package com.timsmeet.services.mapper;
 
+import com.timsmeet.dto.entity.BaseEntity;
+import com.timsmeet.dto.entity.EntityState;
+
 
 public class DtoStateHelper {
 
-	public static boolean isDeleted(Object dtoObject) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean isDeleted(BaseEntity dtoObject) {
+		return EntityState.DELETED.equals(dtoObject.getEntityAspect().getEntityState());
 	}
 
-	public static boolean isNew(Object dtoObject) {
-		// TODO Auto-generated method stub
-		return true;
+	public static boolean isNew(BaseEntity dtoObject) {
+		return EntityState.ADDED.equals(dtoObject.getEntityAspect().getEntityState());
 	}
 
 }

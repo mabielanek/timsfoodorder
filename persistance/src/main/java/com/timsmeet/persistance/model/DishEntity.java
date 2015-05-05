@@ -3,7 +3,6 @@ package com.timsmeet.persistance.model;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,157 +15,153 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
 @Table(name = "fo_dish",
-	indexes = @Index(columnList="provider_id", name="idx_dish_provider_fk")
-)
+        indexes = @Index(columnList = "provider_id", name = "idx_dish_provider_fk"))
 public class DishEntity {
 
-	@Id
-	@GeneratedValue(generator = "dishGenerator")
-	@GenericGenerator(name = "dishGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", 
-	parameters = { 
-			@Parameter(name = "sequence_name", value = "seq_fo_dish_id") 
-	})
-	private long id;
-  
-	@Version
-	@Column(name = "last_modification_id")
-	private long lastModificationId;
+    @Id
+    @GeneratedValue(generator = "dishGenerator")
+    @GenericGenerator(name = "dishGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "seq_fo_dish_id")
+            })
+    private long id;
 
-	@Column(name = "status", nullable = false, length = 1)
-	@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
-	private String status;
+    @Version
+    @Column(name = "last_modification_id")
+    private long lastModificationId;
 
-	@ManyToOne
-	@JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "dish_provider_fk"))
-	private ProviderEntity provider;
+    @Column(name = "status", nullable = false, length = 1)
+    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+    private String status;
 
-	@Column(name = "name", length = 255)
-	private String name;
+    @ManyToOne
+    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "dish_provider_fk"))
+    private ProviderEntity provider;
 
-	@Column(name = "description", length = 255)
-	private String description;
+    @Column(name = "name", length = 255)
+    private String name;
 
-	@Column(name = "start_day", nullable = false)
-	private Timestamp avaiabilityStartDay;
+    @Column(name = "description", length = 255)
+    private String description;
 
-	@Column(name = "end_day", nullable = false)
-	private Timestamp avaiabilityEndDay;
-	  
-	@OneToMany(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "dish_id")
-	private List<DishComponentEntity> dishComponents = new ArrayList<DishComponentEntity>();
-	
-	@OneToMany(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "dish_id")
-	private List<DishGenereEntity> dishGeneres = new ArrayList<DishGenereEntity>();
+    @Column(name = "start_day", nullable = false)
+    private Timestamp avaiabilityStartDay;
 
-	public ActivityStatus getStatus() {
-		return ActivityStatus.forCode(status);
-	}
+    @Column(name = "end_day", nullable = false)
+    private Timestamp avaiabilityEndDay;
 
-	public void setStatus(ActivityStatus status) {
-		this.status = status.getCode();
-	}
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "dish_id")
+    private List<DishComponentEntity> dishComponents = new ArrayList<DishComponentEntity>();
 
-	public ProviderEntity getProvider() {
-		return provider;
-	}
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JoinColumn(name = "dish_id")
+    private List<DishGenereEntity> dishGeneres = new ArrayList<DishGenereEntity>();
 
-	public void setProvider(ProviderEntity provider) {
-		this.provider = provider;
-	}
+    public ActivityStatus getStatus() {
+        return ActivityStatus.forCode(status);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setStatus(ActivityStatus status) {
+        this.status = status.getCode();
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public ProviderEntity getProvider() {
+        return provider;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setProvider(ProviderEntity provider) {
+        this.provider = provider;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Timestamp getAvaiabilityStartDay() {
-		return avaiabilityStartDay;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setAvaiabilityStartDay(Timestamp avaiabilityStartDay) {
-		this.avaiabilityStartDay = avaiabilityStartDay;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Timestamp getAvaiabilityEndDay() {
-		return avaiabilityEndDay;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setAvaiabilityEndDay(Timestamp avaiabilityEndDay) {
-		this.avaiabilityEndDay = avaiabilityEndDay;
-	}
+    public Timestamp getAvaiabilityStartDay() {
+        return avaiabilityStartDay;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public void setAvaiabilityStartDay(Timestamp avaiabilityStartDay) {
+        this.avaiabilityStartDay = avaiabilityStartDay;
+    }
 
-	public long getLastModificationId() {
-		return lastModificationId;
-	}
+    public Timestamp getAvaiabilityEndDay() {
+        return avaiabilityEndDay;
+    }
 
-	public List<DishComponentEntity> getDishComponents() {
-		return dishComponents;
-	}
+    public void setAvaiabilityEndDay(Timestamp avaiabilityEndDay) {
+        this.avaiabilityEndDay = avaiabilityEndDay;
+    }
 
-	public boolean addDishComponent(DishComponentEntity dishComponent) {
-		if (this.dishComponents == null) {
-			this.dishComponents = Lists.newArrayList();
-		}
-		dishComponent.setDish(this);
-		return this.dishComponents.add(dishComponent);
-	}
+    public long getId() {
+        return id;
+    }
 
-	public boolean removeDishComponent(DishComponentEntity dishComponent) {
-		Preconditions.checkNotNull(dishComponent);
-		dishComponent.setDish(null);
-		if (this.dishComponents != null) {
-			return this.dishComponents.remove(dishComponent);
-		}
-		return false;
-	}
-	
-	public List<DishGenereEntity> getDishGneres() {
-		return dishGeneres;
-	}
-	
-	public boolean addDishGenere(DishGenereEntity dishGenere) {
-		if (this.dishGeneres == null) {
-			this.dishGeneres = Lists.newArrayList();
-		}
-		dishGenere.setDish(this);
-		return this.dishGeneres.add(dishGenere);
-	}
+    public long getLastModificationId() {
+        return lastModificationId;
+    }
 
-	public boolean removeDishComponent(DishGenereEntity dishGenere) {
-		Preconditions.checkNotNull(dishGenere);
-		dishGenere.setDish(null);
-		if (this.dishGeneres != null) {
-			return this.dishGeneres.remove(dishGenere);
-		}
-		return false;
-	}
-	
-	
+    public List<DishComponentEntity> getDishComponents() {
+        return dishComponents;
+    }
+
+    public boolean addDishComponent(DishComponentEntity dishComponent) {
+        if (this.dishComponents == null) {
+            this.dishComponents = Lists.newArrayList();
+        }
+        dishComponent.setDish(this);
+        return this.dishComponents.add(dishComponent);
+    }
+
+    public boolean removeDishComponent(DishComponentEntity dishComponent) {
+        Preconditions.checkNotNull(dishComponent);
+        dishComponent.setDish(null);
+        if (this.dishComponents != null) {
+            return this.dishComponents.remove(dishComponent);
+        }
+        return false;
+    }
+
+    public List<DishGenereEntity> getDishGneres() {
+        return dishGeneres;
+    }
+
+    public boolean addDishGenere(DishGenereEntity dishGenere) {
+        if (this.dishGeneres == null) {
+            this.dishGeneres = Lists.newArrayList();
+        }
+        dishGenere.setDish(this);
+        return this.dishGeneres.add(dishGenere);
+    }
+
+    public boolean removeDishComponent(DishGenereEntity dishGenere) {
+        Preconditions.checkNotNull(dishGenere);
+        dishGenere.setDish(null);
+        if (this.dishGeneres != null) {
+            return this.dishGeneres.remove(dishGenere);
+        }
+        return false;
+    }
+
 }

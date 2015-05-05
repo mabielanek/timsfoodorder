@@ -23,7 +23,7 @@ public class CompanyServiceTest extends BaseServiceTest {
   private Long companyId = null;
   
   @Autowired 
-  private CompanyService companyService;
+  private ProviderService companyService;
   
   @Before
   @Transactional
