@@ -10,14 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.PhoneNumberType;
 
 @Entity
-@Table(name = "fo_phone",
-        indexes = @Index(columnList = "contact_id", name = "idx_contact_phone_fk"))
+@Table(name = DbTable.Phone.TABLE,
+        indexes = @Index(columnList = DbTable.Phone.CONTACT_ID, name = "idx_contact_phone_fk"))
 public class PhoneEntity {
 
     @Id
@@ -29,31 +32,31 @@ public class PhoneEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Phone.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.Phone.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @Column(name = "phone", length = 15)
+    @Column(name = DbTable.Phone.PHONE, length = 15)
     private String phone;
 
-    @Column(name = "phone_ext", length = 15)
+    @Column(name = DbTable.Phone.PHONE_EXT, length = 15)
     private String phoneExt;
 
-    @Column(name = "number_type", length = 1, nullable = false)
+    @Column(name = DbTable.Phone.NUMBER_TYPE, length = 1, nullable = false)
     @org.hibernate.annotations.Check(constraints = "status IN('M','F','S')")
     private String numberType;
 
-    @Column(name = "comment_text", length = 1024)
+    @Column(name = DbTable.Phone.COMMENT_TEXT, length = 1024)
     private String comment;
 
-    @Column(name = "display_index", nullable = false)
+    @Column(name = DbTable.Phone.DISPLAY_INDEX, nullable = false)
     private int displayIndex;
 
     @ManyToOne
-    @JoinColumn(name = "contact_id", foreignKey = @ForeignKey(name = "phone_contact_fk"))
+    @JoinColumn(name = DbTable.Phone.CONTACT_ID, foreignKey = @ForeignKey(name = "phone_contact_fk"))
     private ContactEntity contact;
 
     /**

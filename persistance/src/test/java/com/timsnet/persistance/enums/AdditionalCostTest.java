@@ -9,11 +9,11 @@ public class AdditionalCostTest {
 	@Test
 	  public void additionalCostTestForCode() {
 	    Assert.assertTrue("Should decode as Delivery", 
-	      AdditionalCostKind.forCode(com.timsmeet.persistance.constants.FieldValue.AdditionalCostKind.Delivery) == AdditionalCostKind.DELIVERY);
+	      AdditionalCostKind.forCode(com.timsmeet.persistance.constants.FieldValue.AdditionalCostKind.DELIVERY) == AdditionalCostKind.DELIVERY);
 	    Assert.assertTrue("Should decode as MinimalValue", 
-	    		AdditionalCostKind.forCode(com.timsmeet.persistance.constants.FieldValue.AdditionalCostKind.MinimalValue) == AdditionalCostKind.MINIMAL_VALUE);
+	    		AdditionalCostKind.forCode(com.timsmeet.persistance.constants.FieldValue.AdditionalCostKind.MINIMAL_VALUE) == AdditionalCostKind.MINIMAL_VALUE);
 	    Assert.assertTrue("Should decode as Packaging", 
-	    		AdditionalCostKind.forCode(com.timsmeet.persistance.constants.FieldValue.AdditionalCostKind.Packaging) == AdditionalCostKind.PACKAGING);
+	    		AdditionalCostKind.forCode(com.timsmeet.persistance.constants.FieldValue.AdditionalCostKind.PACKAGING) == AdditionalCostKind.PACKAGING);
 	    Assert.assertNull("Should decode as null", AdditionalCostKind.forCode("ALA"));
 	  }
 }

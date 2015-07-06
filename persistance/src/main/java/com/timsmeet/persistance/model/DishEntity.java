@@ -3,6 +3,7 @@ package com.timsmeet.persistance.model;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,15 +16,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
-@Table(name = "fo_dish",
-        indexes = @Index(columnList = "provider_id", name = "idx_dish_provider_fk"))
+@Table(name = DbTable.Dish.TABLE,
+        indexes = @Index(columnList = DbTable.Dish.PROVIDER_ID, name = "idx_dish_provider_fk"))
 public class DishEntity {
 
     @Id
@@ -35,35 +39,35 @@ public class DishEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Dish.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.Dish.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "dish_provider_fk"))
+    @JoinColumn(name = DbTable.Dish.PROVIDER_ID, foreignKey = @ForeignKey(name = "dish_provider_fk"))
     private ProviderEntity provider;
 
-    @Column(name = "name", length = 255)
+    @Column(name = DbTable.Dish.NAME, length = 255)
     private String name;
 
-    @Column(name = "description", length = 255)
+    @Column(name = DbTable.Dish.DESCRIPTION, length = 255)
     private String description;
 
-    @Column(name = "start_day", nullable = false)
+    @Column(name = DbTable.Dish.START_DAY, nullable = false)
     private Timestamp avaiabilityStartDay;
 
-    @Column(name = "end_day", nullable = false)
+    @Column(name = DbTable.Dish.END_DAY, nullable = false)
     private Timestamp avaiabilityEndDay;
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "dish_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.DishComponent.DISH_ID)
     private List<DishComponentEntity> dishComponents = new ArrayList<DishComponentEntity>();
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "dish_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.DishGenere.DISH_ID)
     private List<DishGenereEntity> dishGeneres = new ArrayList<DishGenereEntity>();
 
     public ActivityStatus getStatus() {

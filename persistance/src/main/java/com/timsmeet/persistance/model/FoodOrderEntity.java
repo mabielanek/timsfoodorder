@@ -3,6 +3,7 @@ package com.timsmeet.persistance.model;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,18 +16,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.FoodOrderStatus;
 
 @Entity
-@Table(name = "fo_food_order",
+@Table(name = DbTable.FoodOrder.TABLE,
         indexes = {
-                @Index(columnList = "person_id", name = "idx_food_order_person_fk"),
-                @Index(columnList = "provider_id", name = "idx_food_order_provider_fk"),
-                @Index(columnList = "order_time", name = "idx_order_time") })
+                @Index(columnList = DbTable.FoodOrder.PERSON_ID, name = "idx_food_order_person_fk"),
+                @Index(columnList = DbTable.FoodOrder.PROVIDER_ID, name = "idx_food_order_provider_fk"),
+                @Index(columnList = DbTable.FoodOrder.ORDER_TIME, name = "idx_order_time") })
 public class FoodOrderEntity {
 
     @Id
@@ -38,29 +42,29 @@ public class FoodOrderEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.FoodOrder.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
     @ManyToOne
-    @JoinColumn(name = "person_id", foreignKey = @ForeignKey(name = "food_order_person_fk"))
+    @JoinColumn(name = DbTable.FoodOrder.PERSON_ID, foreignKey = @ForeignKey(name = "food_order_person_fk"))
     private PersonEntity person;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "food_order_provider_fk"))
+    @JoinColumn(name = DbTable.FoodOrder.PROVIDER_ID, foreignKey = @ForeignKey(name = "food_order_provider_fk"))
     private ProviderEntity provider;
 
-    @Column(name = "order_status", nullable = false, length = 1)
+    @Column(name = DbTable.FoodOrder.ORDER_STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','C','D','L')")
     private String orderStatus;
 
-    @Column(name = "add_time", nullable = false)
+    @Column(name = DbTable.FoodOrder.ADD_TIME, nullable = false)
     private Timestamp orderAdded;
 
-    @Column(name = "order_time", nullable = false)
+    @Column(name = DbTable.FoodOrder.ORDER_TIME, nullable = false)
     private Timestamp orderTime;
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "food_order_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.OrderItem.FOOD_ORDER_ID)
     private List<OrderItemEntity> orderItems = new ArrayList<OrderItemEntity>();
 
     public PersonEntity getPerson() {

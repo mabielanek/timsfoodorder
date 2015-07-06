@@ -2,27 +2,30 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 /**
  * Stores information about contacts.
  */
 @Entity
-@Table(name = "fo_contact")
+@Table(name = DbTable.Contact.TABLE)
 public class ContactEntity {
 
     @Id
@@ -34,23 +37,23 @@ public class ContactEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Contact.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.Contact.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "contact_id", nullable = false, foreignKey = @ForeignKey(name = "contact_phone_fk"))
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.Phone.CONTACT_ID)
     private List<PhoneEntity> phones = new ArrayList<PhoneEntity>();
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "contact_id", nullable = false, foreignKey = @ForeignKey(name = "contact_web_url_fk"))
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.WebUrl.CONTACT_ID)
     private List<WebUrlEntity> webUrls = new ArrayList<WebUrlEntity>();
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "contact_id", nullable = false, foreignKey = @ForeignKey(name = "contact_email_fk"))
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.Email.CONTACT_ID)
     private List<EmailEntity> emails = new ArrayList<EmailEntity>();
 
     /**
@@ -122,6 +125,7 @@ public class ContactEntity {
         if (this.phones == null) {
             this.phones = Lists.newArrayList();
         }
+        phone.setContact(this);
         return this.phones.add(phone);
     }
 
@@ -134,6 +138,7 @@ public class ContactEntity {
      */
     public boolean removePhone(PhoneEntity phone) {
         Preconditions.checkNotNull(phone);
+        phone.setContact(null);
         if (this.phones != null) {
             return this.phones.remove(phone);
         }
@@ -160,6 +165,7 @@ public class ContactEntity {
         if (this.webUrls == null) {
             this.webUrls = Lists.newArrayList();
         }
+        webUrl.setContact(this);
         return this.webUrls.add(webUrl);
     }
 
@@ -172,6 +178,7 @@ public class ContactEntity {
      */
     public boolean removeWebUrl(WebUrlEntity webUrl) {
         Preconditions.checkNotNull(webUrl);
+        webUrl.setContact(null);
         if (this.webUrls != null) {
             return this.webUrls.remove(webUrl);
         }
@@ -198,6 +205,7 @@ public class ContactEntity {
         if (this.emails == null) {
             this.emails = Lists.newArrayList();
         }
+        email.setContact(this);
         return this.emails.add(email);
     }
 
@@ -210,6 +218,7 @@ public class ContactEntity {
      */
     public boolean removeEmail(EmailEntity email) {
         Preconditions.checkNotNull(email);
+        email.setContact(null);
         if (this.emails != null) {
             return this.emails.remove(email);
         }

@@ -2,9 +2,7 @@ package com.timsmeet.rest;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-
 import org.springframework.http.MediaType;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,7 +22,7 @@ public class RestTestUtil {
 	public static <T> T convertJsonBytesToObject(byte[] bytes,
 			Class<T> valueType) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		return (T) mapper.readValue(bytes, valueType);
+		return mapper.readValue(bytes, valueType);
 	}
 
 }

@@ -5,6 +5,7 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,21 +18,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 /**
  * Stores information about provider.
  */
 @Entity
-@Table(name = "fo_provider",
+@Table(name = DbTable.Provider.TABLE,
         indexes = {
-                @Index(columnList = "name", name = "idx_provider_name"),
-                @Index(columnList = "address_id", name = "idx_provider_address_fk"),
-                @Index(columnList = "contact_id", name = "idx_provider_contact_fk") })
+                @Index(columnList = DbTable.Provider.NAME, name = "idx_provider_name"),
+                @Index(columnList = DbTable.Provider.ADDRESS_ID, name = "idx_provider_address_fk"),
+                @Index(columnList = DbTable.Provider.CONTACT_ID, name = "idx_provider_contact_fk") })
 public class ProviderEntity {
 
     @Id
@@ -45,41 +49,41 @@ public class ProviderEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Provider.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.Provider.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @Column(name = "name", nullable = false, length = 255)
+    @Column(name = DbTable.Provider.NAME, nullable = false, length = 255)
     private String name;
 
-    @Column(name = "comment", nullable = false, length = 255)
+    @Column(name = DbTable.Provider.COMMENT, nullable = false, length = 255)
     private String comment;
 
     @OneToOne(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "provider_address_fk"))
+    @JoinColumn(name = DbTable.Provider.ADDRESS_ID, foreignKey = @ForeignKey(name = "provider_address_fk"))
     private AddressEntity address;
 
     @OneToOne(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "contact_id", foreignKey = @ForeignKey(name = "provider_contact_fk"))
+    @JoinColumn(name = DbTable.Provider.CONTACT_ID, foreignKey = @ForeignKey(name = "provider_contact_fk"))
     private ContactEntity contact;
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "provider_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.WorkingHour.PROVIDER_ID)
     private List<ProviderWorkingHourEntity> workingHours = new ArrayList<ProviderWorkingHourEntity>();
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "provider_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.Vacation.PROVIDER_ID)
     private List<ProviderVacationEntity> vacations = new ArrayList<ProviderVacationEntity>();
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "provider_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.AdditionalCost.PROVIDER_ID)
     private List<AdditionalCostEntity> additionalCosts = new ArrayList<AdditionalCostEntity>();
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "provider_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.Dish.PROVIDER_ID)
     private List<DishEntity> dishes = new ArrayList<DishEntity>();
 
     /**

@@ -2,6 +2,7 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,17 +15,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.timsmeet.persistance.constants.DbTable;
 
 @Entity
-@Table(name = "fo_order_item",
+@Table(name = DbTable.OrderItem.TABLE,
         indexes = {
-                @Index(columnList = "person_id", name = "idx_order_item_person_fk"),
-                @Index(columnList = "food_order_id", name = "idx_order_item_food_ord_fk"),
-                @Index(columnList = "dish_id", name = "idx_order_item_dish_fk") })
+                @Index(columnList = DbTable.OrderItem.PERSON_ID, name = "idx_order_item_person_fk"),
+                @Index(columnList = DbTable.OrderItem.FOOD_ORDER_ID, name = "idx_order_item_food_ord_fk"),
+                @Index(columnList = DbTable.OrderItem.DISH_ID, name = "idx_order_item_dish_fk") })
 public class OrderItemEntity {
 
     @Id
@@ -35,26 +39,26 @@ public class OrderItemEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.OrderItem.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
     @ManyToOne
-    @JoinColumn(name = "person_id", foreignKey = @ForeignKey(name = "order_item_person_fk"))
+    @JoinColumn(name = DbTable.OrderItem.PERSON_ID, foreignKey = @ForeignKey(name = "order_item_person_fk"))
     private PersonEntity person;
 
     @ManyToOne
-    @JoinColumn(name = "food_order_id", foreignKey = @ForeignKey(name = "order_item_food_ord_fk"))
+    @JoinColumn(name = DbTable.OrderItem.FOOD_ORDER_ID, foreignKey = @ForeignKey(name = "order_item_food_ord_fk"))
     private FoodOrderEntity foodOrder;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id", foreignKey = @ForeignKey(name = "order_item_dish_fk"))
+    @JoinColumn(name = DbTable.OrderItem.DISH_ID, foreignKey = @ForeignKey(name = "order_item_dish_fk"))
     private DishEntity dish;
 
-    @Column(name = "count", nullable = false)
+    @Column(name = DbTable.OrderItem.COUNT, nullable = false)
     private int count;
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "order_item_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.OrderSubItem.ORDER_ITEM_ID)
     private List<OrderSubItemEntity> orderSubItems = new ArrayList<OrderSubItemEntity>();
 
     public PersonEntity getPerson() {

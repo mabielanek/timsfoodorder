@@ -4,9 +4,9 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum ActivityStatus implements StringValuedEnum {
 
-    ACTIVE(FieldValue.ActivityStatus.Active),
-    INACTIVE(FieldValue.ActivityStatus.Inactive),
-    DELETED(FieldValue.ActivityStatus.Deleted);
+    ACTIVE(FieldValue.ActivityStatus.ACTIVE),
+    INACTIVE(FieldValue.ActivityStatus.INACTIVE),
+    DELETED(FieldValue.ActivityStatus.DELETED);
 
     private final String statusCode;
 

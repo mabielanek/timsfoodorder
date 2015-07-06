@@ -10,15 +10,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 @Entity
-@Table(name = "fo_order_sub_item",
+@Table(name = DbTable.OrderSubItem.TABLE,
         indexes = {
-                @Index(columnList = "order_item_id", name = "idx_ord_sub_item_ord_item_fk"),
-                @Index(columnList = "dish_comp_id", name = "idx_ord_subitem_dish_comp_fk"),
-                @Index(columnList = "dish_elem_id", name = "idx_ord_subitem_dish_elem_fk") })
+                @Index(columnList = DbTable.OrderSubItem.ORDER_ITEM_ID, name = "idx_ord_sub_item_ord_item_fk"),
+                @Index(columnList = DbTable.OrderSubItem.DISH_COMP_ID, name = "idx_ord_subitem_dish_comp_fk"),
+                @Index(columnList = DbTable.OrderSubItem.DISH_ELEM_ID, name = "idx_ord_subitem_dish_elem_fk") })
 public class OrderSubItemEntity {
 
     @Id
@@ -29,19 +32,19 @@ public class OrderSubItemEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.OrderSubItem.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
     @ManyToOne
-    @JoinColumn(name = "order_item_id", foreignKey = @ForeignKey(name = "ord_sub_item_ord_item_fk"))
+    @JoinColumn(name = DbTable.OrderSubItem.ORDER_ITEM_ID, foreignKey = @ForeignKey(name = "ord_sub_item_ord_item_fk"))
     private OrderItemEntity orderItem;
 
     @ManyToOne
-    @JoinColumn(name = "dish_comp_id", foreignKey = @ForeignKey(name = "ord_sub_item_dish_comp_fk"))
+    @JoinColumn(name = DbTable.OrderSubItem.DISH_COMP_ID, foreignKey = @ForeignKey(name = "ord_sub_item_dish_comp_fk"))
     private DishComponentEntity dishComponent;
 
     @ManyToOne
-    @JoinColumn(name = "dish_elem_id", foreignKey = @ForeignKey(name = "ord_sub_item_dish_elem_fk"))
+    @JoinColumn(name = DbTable.OrderSubItem.DISH_ELEM_ID, foreignKey = @ForeignKey(name = "ord_sub_item_dish_elem_fk"))
     private DishElementEntity dishElement;
 
     public OrderItemEntity getOrderItem() {

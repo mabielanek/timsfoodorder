@@ -10,11 +10,11 @@ public class TimeUnitTest {
   @Test
   public void timeUnitForCodeTest() {
     Assert.assertTrue("Should parse as Day.",
-      TimeUnit.forCode(com.timsmeet.persistance.constants.FieldValue.TimeUnit.Day) == TimeUnit.DAY);
+      TimeUnit.forCode(com.timsmeet.persistance.constants.FieldValue.TimeUnit.DAY) == TimeUnit.DAY);
     Assert.assertTrue("Should parse as Hour.",
-      TimeUnit.forCode(com.timsmeet.persistance.constants.FieldValue.TimeUnit.Hour) == TimeUnit.HOUR);
+      TimeUnit.forCode(com.timsmeet.persistance.constants.FieldValue.TimeUnit.HOUR) == TimeUnit.HOUR);
     Assert.assertTrue("Should parse as Minute.",
-      TimeUnit.forCode(com.timsmeet.persistance.constants.FieldValue.TimeUnit.Minute) == TimeUnit.MINUTE);
+      TimeUnit.forCode(com.timsmeet.persistance.constants.FieldValue.TimeUnit.MINUTE) == TimeUnit.MINUTE);
     Assert.assertNull("Should parse to null.", TimeUnit.forCode("XX"));
 
   }

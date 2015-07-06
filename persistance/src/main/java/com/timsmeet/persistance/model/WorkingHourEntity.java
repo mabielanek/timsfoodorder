@@ -1,6 +1,7 @@
 package com.timsmeet.persistance.model;
 
 import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -12,13 +13,16 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.WeekDay;
 
 @Entity
-@Table(name = "fo_working_hour",
-        indexes = { @Index(columnList = "provider_id", name = "idx_wrk_hour_provider_fk") })
+@Table(name = DbTable.WorkingHour.TABLE,
+        indexes = { @Index(columnList = DbTable.WorkingHour.PROVIDER_ID, name = "idx_wrk_hour_provider_fk") })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING, length = 1)
 public class WorkingHourEntity {
@@ -27,17 +31,17 @@ public class WorkingHourEntity {
     @GeneratedValue(generator = "workingHourGenerator")
     @GenericGenerator(name = "workingHourGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
-                    @Parameter(name = "sequence_name", value = "seq_fo_working_hours_id")
+                    @Parameter(name = "sequence_name", value = "seq_fo_working_hour_id")
             })
     private long id;
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.WorkingHour.LAST_MODIFICATION_ID)
     private long lastModificationId;
-    @Column(name = "week_day", nullable = false, length = 15)
+    @Column(name = DbTable.WorkingHour.WEEK_DAY, nullable = false, length = 15)
     private String weekDay;
-    @Column(name = "start_time", nullable = false)
+    @Column(name = DbTable.WorkingHour.START_TIME, nullable = false)
     private Timestamp startTime;
-    @Column(name = "end_time", nullable = false)
+    @Column(name = DbTable.WorkingHour.END_TIME, nullable = false)
     private Timestamp endTime;
 
     /**

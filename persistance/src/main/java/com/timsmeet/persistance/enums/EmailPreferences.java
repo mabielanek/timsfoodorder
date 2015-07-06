@@ -4,8 +4,8 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum EmailPreferences implements StringValuedEnum {
 
-    PLAIN_TEXT(FieldValue.EmailPreferences.PlainText),
-    RICH_TEXT(FieldValue.EmailPreferences.RichText);
+    PLAIN_TEXT(FieldValue.EmailPreferences.PLAIN_TEXT),
+    RICH_TEXT(FieldValue.EmailPreferences.RICH_TEXT);
 
     private final String emailPreferencesCode;
 

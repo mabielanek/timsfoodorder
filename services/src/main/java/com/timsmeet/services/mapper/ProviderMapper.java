@@ -1,22 +1,28 @@
 package com.timsmeet.services.mapper;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Lists;
 import com.timsmeet.dto.AdditionalCost;
 import com.timsmeet.dto.Address;
 import com.timsmeet.dto.Contact;
+import com.timsmeet.dto.Dish;
 import com.timsmeet.dto.Provider;
 import com.timsmeet.dto.Vacation;
 import com.timsmeet.dto.WorkingHour;
 import com.timsmeet.persistance.model.AdditionalCostEntity;
 import com.timsmeet.persistance.model.AddressEntity;
 import com.timsmeet.persistance.model.ContactEntity;
+import com.timsmeet.persistance.model.DishEntity;
 import com.timsmeet.persistance.model.ProviderEntity;
 import com.timsmeet.persistance.model.ProviderVacationEntity;
 import com.timsmeet.persistance.model.ProviderWorkingHourEntity;
 import com.timsmeet.services.find.FindEntityWithIdAccessor;
 
+@Service
 public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
 
     @Autowired
@@ -33,6 +39,9 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
 
     @Autowired
     private AdditionalCostMapper additionalCostMapper;
+    
+    @Autowired
+    private DishMapper dishMapper;
 
     @Autowired
     private FindEntityWithIdAccessor<ProviderVacationEntity> providerVacationFind;
@@ -42,6 +51,9 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
 
     @Autowired
     private FindEntityWithIdAccessor<AdditionalCostEntity> additionalCostFind;
+    
+    @Autowired
+    private FindEntityWithIdAccessor<DishEntity> dishFind;
 
     @Override
     public void map(Provider source, ProviderEntity target) {
@@ -50,6 +62,7 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
             target.setLastModificationId(source.getLastModificationId());
         }
         target.setName(source.getName());
+        target.setComment(source.getComment());
         target.setStatus(source.getStatus());
 
         if (source.getAddress() != null) {
@@ -107,6 +120,20 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
                 }
             }
         }
+        
+        if(source.getDishes() != null) {
+        	for(Dish dish : source.getDishes()) {
+        		if(DtoStateHelper.isDeleted(dish)) {
+        			DishEntity deletedDish = dishFind.findById(target.getDishes(), dish.getId());
+        			if(deletedDish != null) {
+        				target.removeDish(deletedDish);
+        			}
+        		} else {
+        			DishEntity dishEntity = existingOrNewDishEntity(target, dish);
+        			dishMapper.map(dish, dishEntity);
+        		}
+        	}
+        }
     }
 
     private ProviderVacationEntity existingOrNewVacationEntity(ProviderEntity providerEntity, Vacation vacation) {
@@ -135,6 +162,15 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
         }
         return additionalCostFind.findById(providerEntity.getAdditionalCosts(), additionalCost.getId());
     }
+    
+    private DishEntity existingOrNewDishEntity(ProviderEntity providerEntity, Dish dish) {
+    	if(DtoStateHelper.isNew(dish)) {
+    		DishEntity dishEntity = new DishEntity();
+    		providerEntity.addDish(dishEntity);
+    		return dishEntity;
+    	}
+    	return dishFind.findById(providerEntity.getDishes(), dish.getId());
+    }
 
     @Override
     public void inverseMap(ProviderEntity source, Provider target) {
@@ -142,6 +178,7 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
         target.setLastModificationId(source.getLastModificationId());
         target.setName(source.getName());
         target.setStatus(source.getStatus());
+        target.setComment(source.getComment());
 
         if (source.getAddress() != null) {
             if (target.getContact() == null) {
@@ -184,6 +221,16 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
                 additionalCosts.add(additionalCost);
             }
             target.setAdditionalCosts(additionalCosts);
+        }
+        
+        if(HibernateMapperHelper.isCollectionInitialized(source.getDishes())) {
+        	List<Dish> dishes = Lists.newArrayListWithCapacity(source.getDishes().size());
+        	for(DishEntity dbDish : source.getDishes()) {
+        		Dish dish = new Dish();
+        		dishMapper.inverseMap(dbDish, dish);
+        		dishes.add(dish);
+        	}
+        	target.setDishes(dishes);
         }
 
     }

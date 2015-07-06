@@ -3,10 +3,10 @@ package com.timsmeet.persistance.enums;
 import com.timsmeet.persistance.constants.FieldValue;
 
 public enum FoodOrderStatus implements StringValuedEnum {
-    ACTIVE(FieldValue.FoodOrderStatus.Active),
-    CLOSED(FieldValue.FoodOrderStatus.Closed),
-    DELIVERED(FieldValue.FoodOrderStatus.Delivered),
-    CANCELLED(FieldValue.FoodOrderStatus.Cancelled);
+    ACTIVE(FieldValue.FoodOrderStatus.ACTIVE),
+    CLOSED(FieldValue.FoodOrderStatus.CLOSED),
+    DELIVERED(FieldValue.FoodOrderStatus.DELIVERED),
+    CANCELLED(FieldValue.FoodOrderStatus.CANCELLED);
 
     private final String foodOrderStatusCode;
 

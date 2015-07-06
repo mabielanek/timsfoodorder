@@ -6,11 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 @Entity
-@Table(name = "fo_genere")
+@Table(name = DbTable.Genere.TABLE)
 public class GenereEntity {
 
     @Id
@@ -22,10 +25,10 @@ public class GenereEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Genere.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "name", length = 255)
+    @Column(name = DbTable.Genere.NAME, length = 255)
     private String name;
 
     public String getName() {

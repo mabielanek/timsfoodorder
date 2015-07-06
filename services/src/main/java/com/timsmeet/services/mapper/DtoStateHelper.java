@@ -14,4 +14,8 @@ public class DtoStateHelper {
 		return EntityState.ADDED.equals(dtoObject.getEntityAspect().getEntityState());
 	}
 
+    public static boolean isUnchanged(BaseEntity dtoObject) {
+        return EntityState.UNCHANGED.equals(dtoObject.getEntityAspect().getEntityState());
+    }
+
 }

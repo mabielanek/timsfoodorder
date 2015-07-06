@@ -1,6 +1,7 @@
 package com.timsmeet.persistance.model;
 
 import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -11,14 +12,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.AdditionalCostKind;
 
 @Entity
-@Table(name = "fo_add_cost",
-        indexes = @Index(columnList = "provider_id", name = "idx_add_cost_provider_fk"))
+@Table(name = DbTable.AdditionalCost.TABLE,
+        indexes = @Index(columnList = DbTable.AdditionalCost.PROVIDER_ID, name = "idx_add_cost_provider_fk"))
 public class AdditionalCostEntity {
 
     @Id
@@ -30,22 +34,22 @@ public class AdditionalCostEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.AdditionalCost.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.AdditionalCost.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @Column(name = "kind", nullable = false, length = 15)
+    @Column(name = DbTable.AdditionalCost.KIND, nullable = false, length = 15)
     @org.hibernate.annotations.Check(constraints = "kind IN('MINVAL','DELIVERY','PACK')")
     private String kind;
 
-    @Column(name = "cost")
+    @Column(name = DbTable.AdditionalCost.COST)
     private BigDecimal cost;
 
     @ManyToOne
-    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "add_cost_provider_fk"))
+    @JoinColumn(name = DbTable.AdditionalCost.PROVIDER_ID, foreignKey = @ForeignKey(name = "add_cost_provider_fk"))
     private ProviderEntity provider;
 
     public ActivityStatus getStatus() {

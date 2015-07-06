@@ -6,12 +6,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
-@Table(name = "fo_address")
+@Table(name = DbTable.Address.TABLE)
 public class AddressEntity {
 
     @Id
@@ -23,35 +26,35 @@ public class AddressEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Address.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.Address.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @Column(name = "address1", length = 255)
+    @Column(name = DbTable.Address.ADDRESS1, length = 255)
     private String address1;
 
-    @Column(name = "address2", length = 255)
+    @Column(name = DbTable.Address.ADDRESS2, length = 255)
     private String address2;
 
-    @Column(name = "city", length = 255)
+    @Column(name = DbTable.Address.CITY, length = 255)
     private String city;
 
-    @Column(name = "zip_code", length = 15)
+    @Column(name = DbTable.Address.ZIP_CODE, length = 15)
     private String zipCode;
 
-    @Column(name = "state", length = 40)
+    @Column(name = DbTable.Address.STATE, length = 40)
     private String state;
 
-    @Column(name = "country", length = 255)
+    @Column(name = DbTable.Address.COUNTRY, length = 255)
     private String country;
 
-    @Column(name = "comment_text", length = 1024)
+    @Column(name = DbTable.Address.COMMENT_TEXT, length = 1024)
     private String comment;
 
-    @Column(name = "display_index", nullable = false)
+    @Column(name = DbTable.Address.DISPLAY_INDEX, nullable = false)
     private int displayIndex;
 
     /**

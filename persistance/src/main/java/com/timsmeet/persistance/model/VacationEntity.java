@@ -1,6 +1,7 @@
 package com.timsmeet.persistance.model;
 
 import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -12,12 +13,15 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 @Entity
-@Table(name = "fo_vacation",
-        indexes = { @Index(columnList = "provider_id", name = "idx_vacation_provider_fk") })
+@Table(name = DbTable.Vacation.TABLE,
+        indexes = { @Index(columnList = DbTable.Vacation.PROVIDER_ID, name = "idx_vacation_provider_fk") })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING, length = 1)
 public class VacationEntity {
@@ -31,13 +35,13 @@ public class VacationEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Vacation.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "start_day", nullable = false)
+    @Column(name = DbTable.Vacation.START_DAY, nullable = false)
     private Timestamp startDay;
 
-    @Column(name = "end_day", nullable = false)
+    @Column(name = DbTable.Vacation.END_DAY, nullable = false)
     private Timestamp endDay;
 
     /**

@@ -2,6 +2,7 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,16 +15,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.YesNo;
 
 @Entity
-@Table(name = "fo_dish_comp",
-        indexes = @Index(columnList = "dish_id", name = "idx_dish_comp_dish_fk"))
+@Table(name = DbTable.DishComponent.TABLE ,
+        indexes = @Index(columnList = DbTable.DishComponent.DISH_ID, name = "idx_dish_comp_dish_fk"))
 public class DishComponentEntity {
 
     @Id
@@ -35,32 +39,32 @@ public class DishComponentEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.DishComponent.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.DishComponent.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id", foreignKey = @ForeignKey(name = "dish_comp_dish_fk"))
+    @JoinColumn(name = DbTable.DishComponent.DISH_ID, foreignKey = @ForeignKey(name = "dish_comp_dish_fk"))
     private DishEntity dish;
 
-    @Column(name = "description", length = 255)
+    @Column(name = DbTable.DishComponent.DESCRIPTION, length = 255)
     private String description;
 
-    @Column(name = "use_as_dish_price", nullable = false, length = 1)
+    @Column(name = DbTable.DishComponent.USE_AS_DISH_PRICE, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "use_as_dish_price IN('Y','N')")
     private String useComponentPriceAsDishPrice = YesNo.NO.getCode();
 
-    @Column(name = "elements_required", nullable = false)
+    @Column(name = DbTable.DishComponent.ELEMENTS_REQUIRED, nullable = false)
     private Integer numberOfRequiredElements;
 
-    @Column(name = "max_elements", nullable = false)
+    @Column(name = DbTable.DishComponent.MAX_ELEMENTS, nullable = false)
     private Integer maximumNumberOfElements;
 
-    @OneToMany(cascade = { CascadeType.ALL })
-    @JoinColumn(name = "dish_comp_id")
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinColumn(name = DbTable.DishElement.DISH_COMP_ID)
     private List<DishElementEntity> dishElements = new ArrayList<DishElementEntity>();
 
     public ActivityStatus getStatus() {

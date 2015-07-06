@@ -10,13 +10,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
-@Table(name = "fo_email",
-        indexes = @Index(columnList = "contact_id", name = "idx_contact_email_fk"))
+@Table(name = DbTable.Email.TABLE,
+        indexes = @Index(columnList = DbTable.Email.CONTACT_ID, name = "idx_contact_email_fk"))
 public class EmailEntity {
 
     @Id
@@ -28,24 +31,24 @@ public class EmailEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Email.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.Email.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @Column(name = "comment_text", length = 1024)
+    @Column(name = DbTable.Email.COMMENT_TEXT, length = 1024)
     private String comment;
 
-    @Column(name = "display_index", nullable = false)
+    @Column(name = DbTable.Email.DISPLAY_INDEX, nullable = false)
     private int displayIndex;
 
-    @Column(name = "email_address", nullable = false, length = 255)
+    @Column(name = DbTable.Email.EMAIL_ADDRESS, nullable = false, length = 255)
     private String emailAddress;
 
     @ManyToOne
-    @JoinColumn(name = "contact_id", foreignKey = @ForeignKey(name = "email_contact_fk"))
+    @JoinColumn(name = DbTable.Email.CONTACT_ID, foreignKey = @ForeignKey(name = "email_contact_fk"))
     private ContactEntity contact;
 
     /**

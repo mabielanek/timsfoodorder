@@ -1,56 +1,73 @@
 package com.timsmeet.persistance.constants;
 
-public interface FieldValue {
+public final class FieldValue {
 
-    public static interface ActivityStatus {
-        public final static String Active = "A";
-        public final static String Inactive = "I";
-        public final static String Deleted = "D";
+    public static final class ActivityStatus {
+        public final static String ACTIVE = "A";
+        public final static String INACTIVE = "I";
+        public final static String DELETED = "D";
+        
+        private ActivityStatus(){}
     }
 
-    public static interface EmailPreferences {
-        public final static String PlainText = "P";
-        public final static String RichText = "R";
+    public static final class EmailPreferences {
+        public final static String PLAIN_TEXT = "P";
+        public final static String RICH_TEXT = "R";
+        
+        private EmailPreferences(){}
     }
 
-    public static interface PhoneNumberType {
-        public final static String Mobile = "M";
-        public final static String Fax = "F";
-        public final static String Landline = "L";
+    public static final class PhoneNumberType {
+        public final static String MOBILE = "M";
+        public final static String FAX = "F";
+        public final static String LANDLINE = "L";
+        
+        private PhoneNumberType(){}
     }
 
-    public static interface YesNo {
-        public final static String Yes = "Y";
-        public final static String No = "N";
+    public static final class YesNo {
+        public final static String YES = "Y";
+        public final static String NO = "N";
+        
+        private YesNo(){}
     }
 
-    public static interface TimeUnit {
-        public final static String Minute = "M";
-        public final static String Hour = "H";
-        public final static String Day = "D";
+    public static final class TimeUnit {
+        public final static String MINUTE = "M";
+        public final static String HOUR = "H";
+        public final static String DAY = "D";
+        
+        private TimeUnit(){}
     }
 
-    public static interface WeekDay {
-        public final static String Monday = "MONDAY";
-        public final static String Tuesday = "TUESDAY";
-        public final static String Wednesday = "WEDNESDAY";
-        public final static String Thursday = "THURSDAY";
-        public final static String Friday = "FRIDAY";
-        public final static String Saturday = "SATRUDAY";
-        public final static String Sunday = "SUNDAY";
+    public static final class WeekDay {
+        public final static String MONDAY = "MONDAY";
+        public final static String TUESDAY = "TUESDAY";
+        public final static String WEDNESDAY = "WEDNESDAY";
+        public final static String THURSDAY = "THURSDAY";
+        public final static String FRIDAY = "FRIDAY";
+        public final static String SATURDAY = "SATRUDAY";
+        public final static String SUNDAY = "SUNDAY";
+        
+        private WeekDay(){}
     }
 
-    public static interface AdditionalCostKind {
-        public final static String MinimalValue = "MINVAL";
-        public final static String Delivery = "DELIVERY";
-        public final static String Packaging = "PACK";
+    public static final class AdditionalCostKind {
+        public final static String MINIMAL_VALUE = "MINVAL";
+        public final static String DELIVERY = "DELIVERY";
+        public final static String PACKAGING = "PACK";
+        
+        private AdditionalCostKind(){}
     }
 
-    public static interface FoodOrderStatus {
-        public final static String Active = "A";
-        public final static String Closed = "C";
-        public final static String Delivered = "D";
-        public final static String Cancelled = "L";
+    public static final class FoodOrderStatus {
+        public final static String ACTIVE = "A";
+        public final static String CLOSED = "C";
+        public final static String DELIVERED = "D";
+        public final static String CANCELLED = "L";
+        
+        private FoodOrderStatus(){}
     }
-
+    
+    private FieldValue(){}
 }

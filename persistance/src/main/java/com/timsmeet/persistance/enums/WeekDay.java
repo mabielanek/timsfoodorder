@@ -4,13 +4,13 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum WeekDay implements StringValuedEnum {
 
-    MONDAY(FieldValue.WeekDay.Monday),
-    TUESDAY(FieldValue.WeekDay.Tuesday),
-    WEDNESDAY(FieldValue.WeekDay.Wednesday),
-    THURSDAY(FieldValue.WeekDay.Thursday),
-    FRIDAY(FieldValue.WeekDay.Friday),
-    SATRUDAY(FieldValue.WeekDay.Saturday),
-    SUNDAY(FieldValue.WeekDay.Sunday);
+    MONDAY(FieldValue.WeekDay.MONDAY),
+    TUESDAY(FieldValue.WeekDay.TUESDAY),
+    WEDNESDAY(FieldValue.WeekDay.WEDNESDAY),
+    THURSDAY(FieldValue.WeekDay.THURSDAY),
+    FRIDAY(FieldValue.WeekDay.FRIDAY),
+    SATRUDAY(FieldValue.WeekDay.SATURDAY),
+    SUNDAY(FieldValue.WeekDay.SUNDAY);
 
     private final String weekDayCode;
 

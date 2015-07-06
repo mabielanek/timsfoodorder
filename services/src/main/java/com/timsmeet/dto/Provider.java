@@ -111,9 +111,10 @@ public class Provider extends BaseEntity {
     public final static class Builder {
         private final Provider provider = new Provider();
 
-        public Builder(EntityState entityState, String providerName, ActivityStatus status) {
+        public Builder(EntityState entityState, String providerName, String comment, ActivityStatus status) {
             provider.getEntityAspect().setEntityState(entityState);
             provider.setName(providerName);
+            provider.setComment(comment);
             provider.setStatus(status);
         }
 

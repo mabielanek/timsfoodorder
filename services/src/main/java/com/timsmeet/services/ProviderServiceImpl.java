@@ -36,9 +36,9 @@ public class ProviderServiceImpl implements ProviderService {
         List<ProviderEntity> dbProviders = Lists.newArrayList(providerRepository.findAll());
         List<Provider> providers = Lists.newArrayListWithCapacity(dbProviders.size());
         for (ProviderEntity dbProvider : dbProviders) {
-            Provider company = new Provider();
-            providerMapper.inverseMap(dbProvider, company);
-            providers.add(company);
+            Provider provider = new Provider();
+            providerMapper.inverseMap(dbProvider, provider);
+            providers.add(provider);
         }
         return providers;
     }
@@ -111,8 +111,8 @@ public class ProviderServiceImpl implements ProviderService {
         }
 
         providerRepository.delete(dbProvider);
-        contactRepository.delete(dbProvider.getContact());
         addressRepository.delete(dbProvider.getAddress());
+        contactRepository.delete(dbProvider.getContact());
     }
 
 }

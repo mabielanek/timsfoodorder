@@ -4,9 +4,9 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum TimeUnit implements StringValuedEnum {
 
-    MINUTE(FieldValue.TimeUnit.Minute),
-    HOUR(FieldValue.TimeUnit.Hour),
-    DAY(FieldValue.TimeUnit.Day);
+    MINUTE(FieldValue.TimeUnit.MINUTE),
+    HOUR(FieldValue.TimeUnit.HOUR),
+    DAY(FieldValue.TimeUnit.DAY);
 
     private final String tiemUnitCode;
 

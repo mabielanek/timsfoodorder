@@ -10,11 +10,11 @@ public class PhoneNumberTypeTest {
 	@Test
 	public void phoneNumberTypeForCodeTest() {
 		Assert.assertTrue("Should parse as Fax.", 
-				PhoneNumberType.forCode(com.timsmeet.persistance.constants.FieldValue.PhoneNumberType.Fax) == PhoneNumberType.FAX);
+				PhoneNumberType.forCode(com.timsmeet.persistance.constants.FieldValue.PhoneNumberType.FAX) == PhoneNumberType.FAX);
 		Assert.assertTrue("Should parse as Landline.", 
-				PhoneNumberType.forCode(com.timsmeet.persistance.constants.FieldValue.PhoneNumberType.Landline) == PhoneNumberType.LANDLINE);
+				PhoneNumberType.forCode(com.timsmeet.persistance.constants.FieldValue.PhoneNumberType.LANDLINE) == PhoneNumberType.LANDLINE);
 		Assert.assertTrue("Should parse as Mobile.", 
-				PhoneNumberType.forCode(com.timsmeet.persistance.constants.FieldValue.PhoneNumberType.Mobile) == PhoneNumberType.MOBILE);
+				PhoneNumberType.forCode(com.timsmeet.persistance.constants.FieldValue.PhoneNumberType.MOBILE) == PhoneNumberType.MOBILE);
 		Assert.assertNull("Should parse to null.", PhoneNumberType.forCode("XX"));
 
 	}

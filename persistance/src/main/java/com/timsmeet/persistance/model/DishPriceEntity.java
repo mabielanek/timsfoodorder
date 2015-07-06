@@ -2,6 +2,7 @@ package com.timsmeet.persistance.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -12,14 +13,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 @Entity
-@Table(name = "fo_dish_price",
-        indexes = { @Index(columnList = "dish_id", name = "idx_dish_price_dish_fk"),
-                @Index(columnList = "dish_comp_id", name = "idx_dish_price_dish_comp_fk"),
-                @Index(columnList = "dish_elem_id", name = "idx_dish_price_dish_elem_fk")
+@Table(name = DbTable.DishPrice.TABLE,
+        indexes = { @Index(columnList = DbTable.DishPrice.DISH_ID, name = "idx_dish_price_dish_fk"),
+                @Index(columnList = DbTable.DishPrice.DISH_COMP_ID, name = "idx_dish_price_dish_comp_fk"),
+                @Index(columnList = DbTable.DishPrice.DISH_ELEM_ID, name = "idx_dish_price_dish_elem_fk")
         })
 public class DishPriceEntity {
 
@@ -32,25 +36,25 @@ public class DishPriceEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.DishPrice.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "last_upd_time", nullable = false)
+    @Column(name = DbTable.DishPrice.LAST_UPD_TIME, nullable = false)
     private Timestamp lastUpdateTime;
 
-    @Column(name = "cost")
+    @Column(name = DbTable.DishPrice.COST)
     private BigDecimal cost;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id", foreignKey = @ForeignKey(name = "dish_price_dish_fk"))
+    @JoinColumn(name = DbTable.DishPrice.DISH_ID, foreignKey = @ForeignKey(name = "dish_price_dish_fk"))
     private DishEntity dish;
 
     @ManyToOne
-    @JoinColumn(name = "dish_comp_id", foreignKey = @ForeignKey(name = "dish_price_dish_comp_fk"))
+    @JoinColumn(name = DbTable.DishPrice.DISH_COMP_ID, foreignKey = @ForeignKey(name = "dish_price_dish_comp_fk"))
     private DishComponentEntity dishComponent;
 
     @ManyToOne
-    @JoinColumn(name = "dish_elem_id", foreignKey = @ForeignKey(name = "dish_price_dish_elem_fk"))
+    @JoinColumn(name = DbTable.DishPrice.DISH_ELEM_ID, foreignKey = @ForeignKey(name = "dish_price_dish_elem_fk"))
     private DishElementEntity dishElement;
 
     public Timestamp getLastUpdateTime() {

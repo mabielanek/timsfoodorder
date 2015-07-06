@@ -6,11 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 @Entity
-@Table(name = "fo_person")
+@Table(name = DbTable.Person.TABLE)
 public class PersonEntity {
 
     @Id
@@ -21,13 +24,13 @@ public class PersonEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.Person.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "login", nullable = false, length = 255)
+    @Column(name = DbTable.Person.LOGIN, nullable = false, length = 255)
     private String login;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = DbTable.Person.PASSWORD, nullable = false, length = 255)
     private String password;
 
     public String getLogin() {

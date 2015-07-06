@@ -10,13 +10,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
-@Table(name = "fo_web_url",
-        indexes = @Index(columnList = "contact_id", name = "idx_contact_web_url_fk"))
+@Table(name = DbTable.WebUrl.TABLE,
+        indexes = @Index(columnList = DbTable.WebUrl.CONTACT_ID, name = "idx_contact_web_url_fk"))
 public class WebUrlEntity {
 
     @Id
@@ -28,24 +31,24 @@ public class WebUrlEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.WebUrl.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.WebUrl.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
-    @Column(name = "comment_text", length = 1024)
+    @Column(name = DbTable.WebUrl.COMMENT_TEXT, length = 1024)
     private String comment;
 
-    @Column(name = "display_index", nullable = false)
+    @Column(name = DbTable.WebUrl.DISPLAY_INDEX, nullable = false)
     private int displayIndex;
 
-    @Column(name = "web_url_address", nullable = false, length = 255)
+    @Column(name = DbTable.WebUrl.WEB_URL_ADDRESS, nullable = false, length = 255)
     private String webUrlAddress;
 
     @ManyToOne
-    @JoinColumn(name = "contact_id", foreignKey = @ForeignKey(name = "web_url_contact_fk"))
+    @JoinColumn(name = DbTable.WebUrl.CONTACT_ID, foreignKey = @ForeignKey(name = "web_url_contact_fk"))
     private ContactEntity contact;
 
     /**

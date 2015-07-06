@@ -6,6 +6,8 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 /**
  * Stores information about company vacation.
  */
@@ -14,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class ProviderVacationEntity extends VacationEntity {
 
     @ManyToOne
-    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "vacation_provider_fk"))
+    @JoinColumn(name = DbTable.Vacation.PROVIDER_ID, foreignKey = @ForeignKey(name = "vacation_provider_fk"))
     private ProviderEntity provider;
 
     /**

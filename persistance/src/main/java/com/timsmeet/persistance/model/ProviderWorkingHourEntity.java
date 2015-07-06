@@ -6,6 +6,8 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 /**
  * Stores information about company working hour.
  */
@@ -14,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class ProviderWorkingHourEntity extends WorkingHourEntity {
 
     @ManyToOne
-    @JoinColumn(name = "provider_id", foreignKey = @ForeignKey(name = "wrk_hour_provider_fk"))
+    @JoinColumn(name = DbTable.WorkingHour.PROVIDER_ID, foreignKey = @ForeignKey(name = "wrk_hour_provider_fk"))
     private ProviderEntity provider;
 
     /**

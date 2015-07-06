@@ -10,14 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.timsmeet.persistance.constants.DbTable;
+
 @Entity
-@Table(name = "fo_dish_genere",
+@Table(name = DbTable.DishGenere.TABLE,
         indexes = {
-                @Index(columnList = "dish_id", name = "idx_dish_gene_dish_fk"),
-                @Index(columnList = "genere_id", name = "idx_dish_gene_gene_fk") })
+                @Index(columnList = DbTable.DishGenere.DISH_ID, name = "idx_dish_gene_dish_fk"),
+                @Index(columnList = DbTable.DishGenere.GENERE_ID, name = "idx_dish_gene_gene_fk") })
 public class DishGenereEntity {
 
     @Id
@@ -29,15 +32,15 @@ public class DishGenereEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.DishGenere.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id", foreignKey = @ForeignKey(name = "dish_gene_dish_fk"))
+    @JoinColumn(name = DbTable.DishGenere.DISH_ID, foreignKey = @ForeignKey(name = "dish_gene_dish_fk"))
     private DishEntity dish;
 
     @ManyToOne
-    @JoinColumn(name = "genere_id", foreignKey = @ForeignKey(name = "dish_gene_gene_fk"))
+    @JoinColumn(name = DbTable.DishGenere.GENERE_ID, foreignKey = @ForeignKey(name = "dish_gene_gene_fk"))
     private GenereEntity genere;
 
     public DishEntity getDish() {

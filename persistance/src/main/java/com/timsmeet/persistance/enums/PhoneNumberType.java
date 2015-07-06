@@ -4,9 +4,9 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum PhoneNumberType implements StringValuedEnum {
 
-    MOBILE(FieldValue.PhoneNumberType.Mobile),
-    FAX(FieldValue.PhoneNumberType.Fax),
-    LANDLINE(FieldValue.PhoneNumberType.Landline);
+    MOBILE(FieldValue.PhoneNumberType.MOBILE),
+    FAX(FieldValue.PhoneNumberType.FAX),
+    LANDLINE(FieldValue.PhoneNumberType.LANDLINE);
 
     private final String phoneNumberTypeCode;
 

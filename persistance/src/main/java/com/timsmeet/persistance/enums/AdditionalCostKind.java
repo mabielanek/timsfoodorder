@@ -4,9 +4,9 @@ import com.timsmeet.persistance.constants.FieldValue;
 
 public enum AdditionalCostKind implements StringValuedEnum {
 
-    MINIMAL_VALUE(FieldValue.AdditionalCostKind.MinimalValue),
-    DELIVERY(FieldValue.AdditionalCostKind.Delivery),
-    PACKAGING(FieldValue.AdditionalCostKind.Packaging);
+    MINIMAL_VALUE(FieldValue.AdditionalCostKind.MINIMAL_VALUE),
+    DELIVERY(FieldValue.AdditionalCostKind.DELIVERY),
+    PACKAGING(FieldValue.AdditionalCostKind.PACKAGING);
 
     private final String additionalCostKindCode;
 

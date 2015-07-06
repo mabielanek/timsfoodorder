@@ -10,9 +10,9 @@ public class YesNoTest {
   @Test
   public void yesNoForCodeTest() {
     Assert.assertTrue("Should parse as No.",
-      YesNo.forCode(com.timsmeet.persistance.constants.FieldValue.YesNo.No) == YesNo.NO);
+      YesNo.forCode(com.timsmeet.persistance.constants.FieldValue.YesNo.NO) == YesNo.NO);
     Assert.assertTrue("Should parse as Yes.",
-      YesNo.forCode(com.timsmeet.persistance.constants.FieldValue.YesNo.Yes) == YesNo.YES);
+      YesNo.forCode(com.timsmeet.persistance.constants.FieldValue.YesNo.YES) == YesNo.YES);
     Assert.assertNull("Should parse to null.", YesNo.forCode("XX"));
 
   }

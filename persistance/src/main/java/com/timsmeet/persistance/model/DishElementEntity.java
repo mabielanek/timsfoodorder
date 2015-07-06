@@ -10,13 +10,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
-@Table(name = "fo_dish_elem",
-        indexes = @Index(columnList = "dish_comp_id", name = "idx_dish_elem_dish_comp_fk"))
+@Table(name = DbTable.DishElement.TABLE,
+        indexes = @Index(columnList = DbTable.DishElement.DISH_COMP_ID, name = "idx_dish_elem_dish_comp_fk"))
 public class DishElementEntity {
 
     @Id
@@ -28,21 +31,21 @@ public class DishElementEntity {
     private long id;
 
     @Version
-    @Column(name = "last_modification_id")
+    @Column(name = DbTable.DishElement.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = "status", nullable = false, length = 1)
+    @Column(name = DbTable.DishElement.STATUS, nullable = false, length = 1)
     @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "dish_comp_id", foreignKey = @ForeignKey(name = "dish_elem_dish_comp_fk"))
+    @JoinColumn(name = DbTable.DishElement.DISH_COMP_ID, foreignKey = @ForeignKey(name = "dish_elem_dish_comp_fk"))
     private DishComponentEntity dishComponent;
 
-    @Column(name = "name", length = 255)
+    @Column(name = DbTable.DishElement.NAME, length = 255)
     private String name;
 
-    @Column(name = "description", length = 255)
+    @Column(name = DbTable.DishElement.DESCRIPTION, length = 255)
     private String description;
 
     public ActivityStatus getStatus() {
