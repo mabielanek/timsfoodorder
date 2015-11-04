@@ -1,0 +1,9 @@
+
+read providers
+/providers
+/providers?sort=name // all providers sort by name asc
+/providers?sort=-name // all providers sort by name desc
+/providers?sort=status,-name // all providers sort by status asc, name desc
+
+/providers // first page 
+/providers?page=2&perPage=50 // second page of size 50, page numbering start from 1, consider returning links to next/prev/first/last in header as described in https://developer.github.com/v3/#pagination

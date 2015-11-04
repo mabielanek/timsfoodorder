@@ -126,6 +126,10 @@ public class DishEntity {
         return lastModificationId;
     }
 
+    public void setLastModificationId(long lastModificationId) {
+        this.lastModificationId = lastModificationId;
+    }
+
     public List<DishComponentEntity> getDishComponents() {
         return dishComponents;
     }
@@ -159,7 +163,7 @@ public class DishEntity {
         return this.dishGeneres.add(dishGenere);
     }
 
-    public boolean removeDishComponent(DishGenereEntity dishGenere) {
+    public boolean removeDishGenere(DishGenereEntity dishGenere) {
         Preconditions.checkNotNull(dishGenere);
         dishGenere.setDish(null);
         if (this.dishGeneres != null) {

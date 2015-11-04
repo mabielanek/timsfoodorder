@@ -122,6 +122,10 @@ public class DishComponentEntity {
     public long getLastModificationId() {
         return lastModificationId;
     }
+    
+    public void setLastModificationId(long lastModificationId) {
+        this.lastModificationId = lastModificationId;
+    }
 
     public List<DishElementEntity> getDishElements() {
         return dishElements;

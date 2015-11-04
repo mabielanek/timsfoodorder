@@ -42,7 +42,7 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
     
     @Autowired
     private DishMapper dishMapper;
-
+    
     @Autowired
     private FindEntityWithIdAccessor<ProviderVacationEntity> providerVacationFind;
 
@@ -54,7 +54,7 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
     
     @Autowired
     private FindEntityWithIdAccessor<DishEntity> dishFind;
-
+    
     @Override
     public void map(Provider source, ProviderEntity target) {
 
@@ -122,18 +122,27 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
         }
         
         if(source.getDishes() != null) {
-        	for(Dish dish : source.getDishes()) {
-        		if(DtoStateHelper.isDeleted(dish)) {
-        			DishEntity deletedDish = dishFind.findById(target.getDishes(), dish.getId());
-        			if(deletedDish != null) {
-        				target.removeDish(deletedDish);
-        			}
-        		} else {
-        			DishEntity dishEntity = existingOrNewDishEntity(target, dish);
-        			dishMapper.map(dish, dishEntity);
-        		}
-        	}
+            for(Dish dish : source.getDishes()) {
+                if(DtoStateHelper.isDeleted(dish)) {
+                    DishEntity deletedDish = dishFind.findById(target.getDishes(), dish.getId());
+                    if(deletedDish != null) {
+                        target.removeDish(deletedDish);
+                    }
+                } else {
+                    DishEntity dishEntity = existingOrNewDishEntity(target, dish);
+                    dishMapper.map(dish, dishEntity);
+                }
+            }
         }
+    }
+
+    private DishEntity existingOrNewDishEntity(ProviderEntity providerEntity, Dish dish) {
+        if(DtoStateHelper.isNew(dish)) {
+            DishEntity dishEntity = new DishEntity();
+            providerEntity.addDish(dishEntity);
+            return dishEntity;
+        }
+        return dishFind.findById(providerEntity.getDishes(), dish.getId());
     }
 
     private ProviderVacationEntity existingOrNewVacationEntity(ProviderEntity providerEntity, Vacation vacation) {
@@ -161,15 +170,6 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
             return additionalCostEntity;
         }
         return additionalCostFind.findById(providerEntity.getAdditionalCosts(), additionalCost.getId());
-    }
-    
-    private DishEntity existingOrNewDishEntity(ProviderEntity providerEntity, Dish dish) {
-    	if(DtoStateHelper.isNew(dish)) {
-    		DishEntity dishEntity = new DishEntity();
-    		providerEntity.addDish(dishEntity);
-    		return dishEntity;
-    	}
-    	return dishFind.findById(providerEntity.getDishes(), dish.getId());
     }
 
     @Override
@@ -224,14 +224,13 @@ public class ProviderMapper implements Mapper<Provider, ProviderEntity> {
         }
         
         if(HibernateMapperHelper.isCollectionInitialized(source.getDishes())) {
-        	List<Dish> dishes = Lists.newArrayListWithCapacity(source.getDishes().size());
-        	for(DishEntity dbDish : source.getDishes()) {
-        		Dish dish = new Dish();
-        		dishMapper.inverseMap(dbDish, dish);
-        		dishes.add(dish);
-        	}
-        	target.setDishes(dishes);
+            List<Dish> dishes = Lists.newArrayListWithCapacity(source.getDishes().size());
+            for(DishEntity dbDish : source.getDishes()) {
+                Dish dish = new Dish();
+                dishMapper.inverseMap(dbDish, dish);
+                dishes.add(dish);
+            }
+            target.setDishes(dishes);
         }
-
     }
 }

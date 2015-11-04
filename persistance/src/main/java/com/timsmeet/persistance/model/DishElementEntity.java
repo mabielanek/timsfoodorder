@@ -88,4 +88,8 @@ public class DishElementEntity {
         return lastModificationId;
     }
 
+    public void setLastModificationId(long lastModificationId) {
+        this.lastModificationId = lastModificationId;
+    }
+
 }

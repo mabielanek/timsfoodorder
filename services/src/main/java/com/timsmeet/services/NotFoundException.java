@@ -1,23 +1,18 @@
 package com.timsmeet.services;
 
-public class NotFoundException extends RuntimeException {
+import com.timsmeet.errors.ErrorSpecification;
+import com.timsmeet.rest.controllers.BadRequestException;
+
+public class NotFoundException extends BadRequestException {
 
 	private static final long serialVersionUID = -800424749757810801L;
 
-	public NotFoundException() {
-		super();
-	}
+    public NotFoundException(ErrorSpecification errorSpecification) {
+        super(errorSpecification);
+    }
 
-	public NotFoundException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public NotFoundException(String message) {
-		super(message);
-	}
-
-	public NotFoundException(Throwable cause) {
-		super(cause);
-	}
+    public NotFoundException(ErrorSpecification errorSpecification, Throwable cause) {
+        super(errorSpecification, cause);
+    }
 	
 }
