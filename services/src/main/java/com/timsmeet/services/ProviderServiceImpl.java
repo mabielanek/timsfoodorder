@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.timsmeet.dto.Provider;
-import com.timsmeet.errors.ErrorDescribedEnum;
 import com.timsmeet.errors.ErrorBuilder;
+import com.timsmeet.errors.ErrorDescribedEnum;
 import com.timsmeet.persistance.model.ProviderEntity;
 import com.timsmeet.persistance.repositories.AddressRepository;
 import com.timsmeet.persistance.repositories.ContactRepository;
 import com.timsmeet.persistance.repositories.ProviderRepository;
-import com.timsmeet.services.mapper.ProviderMapper;
 
 @Service
 public class ProviderServiceImpl implements ProviderService {
@@ -37,8 +37,8 @@ public class ProviderServiceImpl implements ProviderService {
     private AddressRepository addressRepository;
 
     @Autowired
-    private ProviderMapper providerMapper;
-
+    private ModelMapper modelMapper;
+    
     @Override
     public List<Provider> readProviders() {
         
@@ -48,7 +48,8 @@ public class ProviderServiceImpl implements ProviderService {
         List<Provider> providers = Lists.newArrayListWithCapacity(dbProviders.size());
         for (ProviderEntity dbProvider : dbProviders) {
             Provider provider = new Provider();
-            providerMapper.inverseMap(dbProvider, provider);
+            modelMapper.map(dbProvider, provider);
+            //providerMapper.inverseMap(dbProvider, provider);
             providers.add(provider);
         }
         return providers;
@@ -65,14 +66,16 @@ public class ProviderServiceImpl implements ProviderService {
         }
 
         if (dbProvider != null) {
-            providerMapper.map(provider, dbProvider);
+            modelMapper.map(provider, dbProvider);
+            //providerMapper.map(provider, dbProvider);
             dbProvider = providerRepository.save(dbProvider);
         } else {
             throw new NotFoundException(ErrorBuilder.build(ErrorDescribedEnum.PROVIDER_TO_UPDATE_NOT_FOUND, provider.getId()));
         }
 
         Provider savedProvider = new Provider();
-        providerMapper.inverseMap(dbProvider, savedProvider);
+        modelMapper.map(dbProvider, savedProvider);
+        //providerMapper.inverseMap(dbProvider, savedProvider);
         return savedProvider;
     }
 
@@ -107,7 +110,8 @@ public class ProviderServiceImpl implements ProviderService {
         }
 
         Provider provider = new Provider();
-        providerMapper.inverseMap(dbProvider, provider);
+        modelMapper.map(dbProvider, provider);
+        //providerMapper.inverseMap(dbProvider, provider);
         return provider;
     }
 

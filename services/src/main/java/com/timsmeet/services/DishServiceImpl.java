@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,16 +13,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.timsmeet.dto.Dish;
 import com.timsmeet.dto.Provider;
-import com.timsmeet.errors.ErrorDescribedEnum;
 import com.timsmeet.errors.ErrorBuilder;
+import com.timsmeet.errors.ErrorDescribedEnum;
 import com.timsmeet.persistance.model.DishComponentEntity;
 import com.timsmeet.persistance.model.DishEntity;
 import com.timsmeet.persistance.model.DishGenereEntity;
 import com.timsmeet.persistance.model.ProviderEntity;
 import com.timsmeet.persistance.repositories.DishRepository;
 import com.timsmeet.persistance.repositories.ProviderRepository;
-import com.timsmeet.services.mapper.DishMapper;
-import com.timsmeet.services.mapper.ProviderMapper;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -32,11 +31,8 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private DishRepository dishRepository;
 
-    @Autowired
-    private ProviderMapper providerMapper;
-    
-    @Autowired
-    private DishMapper dishMapper;
+    @Autowired 
+    private ModelMapper modelMapper;
 
     @Override
     public List<Dish> readDishes(Long providerId, String[] embeded) {
@@ -68,7 +64,7 @@ public class DishServiceImpl implements DishService {
             }
             
             Dish dish = new Dish();
-            dishMapper.inverseMap(dbDish, dish);
+            modelMapper.map(dbDish, dish);
             result.add(dish);
         }
         return result;
@@ -80,10 +76,10 @@ public class DishServiceImpl implements DishService {
 
         if (dbProvider != null) {
             Provider provider = new Provider();
-            providerMapper.inverseMap(dbProvider, provider);
+            modelMapper.map(dbProvider, provider);
             provider.setDishes(dishes);
             Hibernate.initialize(dbProvider.getDishes());
-            providerMapper.map(provider, dbProvider);
+            modelMapper.map(provider, dbProvider);
             dbProvider = providerRepository.save(dbProvider);
         } else {
             throw new NotFoundException(ErrorBuilder.build(ErrorDescribedEnum.PROVIDER_TO_SAVE_DISHES_NOT_FOUND, providerId));
@@ -92,7 +88,7 @@ public class DishServiceImpl implements DishService {
         List<Dish> savedDishes = Lists.newArrayListWithCapacity(dbProvider.getDishes().size());
         for(DishEntity dbDish : dbProvider.getDishes()) {
             Dish dish = new Dish();
-            dishMapper.inverseMap(dbDish, dish);
+            modelMapper.map(dbDish, dish);
             savedDishes.add(dish);
         }
         return savedDishes;

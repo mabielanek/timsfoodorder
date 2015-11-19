@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +20,15 @@ import com.timsmeet.persistance.model.FoodOrderEntity;
 import com.timsmeet.persistance.model.OrderItemEntity;
 import com.timsmeet.persistance.model.OrderSubItemEntity;
 import com.timsmeet.persistance.repositories.FoodOrderRepository;
-import com.timsmeet.services.mapper.FoodOrderMapper;
 
 @Service
 public class FoodOrderServiceImpl implements FoodOrderService {
 
     @Autowired 
     private FoodOrderRepository foodOrderRepository;
-    
+
     @Autowired
-    private FoodOrderMapper foodOrderMapper;
+    private ModelMapper modelMapper;
     
     @Override
     public FoodOrder readFoodOrder(Long foodOrderId, String[] embeded) {
@@ -40,7 +40,7 @@ public class FoodOrderServiceImpl implements FoodOrderService {
         
         initEmbeded(dbFoodOrder, embeded);
         FoodOrder foodOrder = new FoodOrder();
-        foodOrderMapper.inverseMap(dbFoodOrder, foodOrder);
+        modelMapper.map(dbFoodOrder, foodOrder);
         return foodOrder;
         
     }
@@ -63,7 +63,7 @@ public class FoodOrderServiceImpl implements FoodOrderService {
             initEmbeded(dbFoodOrder, embeded);
             
             FoodOrder foodOrder = new FoodOrder();
-            foodOrderMapper.inverseMap(dbFoodOrder, foodOrder);
+            modelMapper.map(dbFoodOrder, foodOrder);
             result.add(foodOrder);
         }
         
