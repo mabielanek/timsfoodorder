@@ -20,6 +20,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
 @Entity
 @Table(name = DbTable.Email.TABLE,
         indexes = @Index(columnList = DbTable.Email.CONTACT_ID, name = "idx_contact_email_fk"))
+@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
 public class EmailEntity {
 
     @Id
@@ -35,7 +36,6 @@ public class EmailEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.Email.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @Column(name = DbTable.Email.COMMENT_TEXT, length = 1024)

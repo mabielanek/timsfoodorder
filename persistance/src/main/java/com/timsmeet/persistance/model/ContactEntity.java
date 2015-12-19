@@ -26,6 +26,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
  */
 @Entity
 @Table(name = DbTable.Contact.TABLE)
+@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
 public class ContactEntity {
 
     @Id
@@ -41,7 +42,6 @@ public class ContactEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.Contact.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     
-    <fo_provider id="-1001" last_modification_id="1" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="-1001" contact_id="-1001"/>
-    <fo_provider id="-1002" last_modification_id="0" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="-1002" contact_id="-1002"/>
+    <fo_provider id="1" last_modification_id="1" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="1" contact_id="1"/>
+    <fo_provider id="2" last_modification_id="0" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
 
-    <fo_vacation id="-1002" last_modification_id="0" owner_type="P" start_day="2000-08-01" end_day="2000-08-02" provider_id="-1001" />
+    <fo_vacation id="2" last_modification_id="0" owner_type="P" start_day="2000-08-01" end_day="2000-08-02" provider_id="1" />
     
 </dataset>

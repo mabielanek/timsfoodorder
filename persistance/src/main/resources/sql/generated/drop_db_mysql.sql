@@ -37,7 +37,7 @@
 
     alter table fo_email 
         drop 
-        foreign key FK_bu7amv53jcvjdrtfeqv09w99s;
+        foreign key email_contact_fk;
 
     alter table fo_food_order 
         drop 
@@ -59,21 +59,21 @@
         drop 
         foreign key order_item_person_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_dish_comp_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_dish_elem_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_ord_item_fk;
 
     alter table fo_phone 
         drop 
-        foreign key FK_jes52mwkd3q1ccscxsh361cid;
+        foreign key phone_contact_fk;
 
     alter table fo_provider 
         drop 
@@ -89,7 +89,7 @@
 
     alter table fo_web_url 
         drop 
-        foreign key FK_kcetlus2967vaxqflmv9asjfv;
+        foreign key web_url_contact_fk;
 
     alter table fo_working_hour 
         drop 
@@ -118,6 +118,8 @@
     drop table if exists fo_genere;
 
     drop table if exists fo_order_item;
+
+    drop table if exists fo_order_sub_item;
 
     drop table if exists fo_person;
 
@@ -167,4 +169,4 @@
 
     drop table if exists seq_fo_web_url_id;
 
-    drop table if exists seq_fo_working_hours_id;
+    drop table if exists seq_fo_working_hour_id;

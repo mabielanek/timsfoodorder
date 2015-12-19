@@ -2,6 +2,11 @@ package com.timsmeet.errors;
 
 
 public enum ErrorDescribedEnum implements ErrorSpecification {
+    
+    PAGE_PARAM_IS_NEGATIVE("1001", "Param page can not be negative, current value: %d"),
+    PER_PAGE_SHOULD_BE_POSITIVE("1002", "Param perPage should be positive, current value: %d"),
+    INVALID_EMBEDED_PARAM("1003", "Param embed contains invalid values: %s"),
+    INVALID_SORT_PARAM("1004", "Param sort contains invalid values: %s"),
 	
 	ADD_ORDER_ONLY_FOR_ACTIVE_PROVIDER("0100", "Order can be created only for active provider. %s is not active."),
 	ADD_ORDER_ITEM_ONLY_FOR_ACTIVE_ORDER("0101", "Item can be added only to actctive order."),

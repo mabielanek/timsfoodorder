@@ -25,13 +25,13 @@ class GlobalControllerExceptionHandler {
     
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(WrongParamException.class)
-    @ResponseBody ErrorCollection handleWrongParam(HttpServletRequest req, NotFoundException ex) {
+    @ResponseBody ErrorCollection handleWrongParam(HttpServletRequest req, WrongParamException ex) {
         return build(req, ex);
     }
     
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400
     @ExceptionHandler(WrongOperationException.class)
-    @ResponseBody ErrorCollection handleWrongOperation(HttpServletRequest req, NotFoundException ex) {
+    @ResponseBody ErrorCollection handleWrongOperation(HttpServletRequest req, WrongOperationException ex) {
         return build(req, ex);
     }
 

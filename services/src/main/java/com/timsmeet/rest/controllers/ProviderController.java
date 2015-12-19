@@ -12,50 +12,64 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.timsmeet.dto.Provider;
 import com.timsmeet.rest.controllers.constants.Endpoint;
+import com.timsmeet.rest.controllers.util.RestParamHelper;
 import com.timsmeet.services.ProviderService;
 
 @Controller
 @RequestMapping(value = Endpoint.PROVIDER, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProviderController {
 
-  @Autowired
-  private ProviderService providerService;
+    @Autowired
+    private ProviderService providerService;
 
-  private static final Splitter COMMA_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public List<Provider> readProviders(
+            @RequestParam(required = false) String sort, 
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer perPage) {
+        
+        RestParamHelper paramHelper = new RestParamHelper()
+            .specifyPaging(page, perPage)
+            .withSorting(sort)
+            .allowSortBy(ProviderService.ALLOW_SORT_ID, ProviderService.ALLOW_SORT_NAME);
+        
+        return providerService.readProviders(paramHelper.buildPageable());
+    }
 
-  @RequestMapping(method = RequestMethod.GET)
-  @ResponseBody
-  public List<Provider> readProviders(@RequestParam(required = false) String orderBy) {
-    return providerService.readProviders();
-  }
+    @RequestMapping(method = RequestMethod.GET, value = Endpoint.PROVDER_ID_PARAM)
+    @ResponseBody
+    public Provider getProvider(@PathVariable Long providerId, @RequestParam(required = false) String embeded) {
+        RestParamHelper paramHelper = new RestParamHelper().
+                withEmbeded(embeded).
+                allowEmbed(ProviderService.EMBED_ADDITIONAL_COSTS, 
+                        ProviderService.EMBED_CONTACT_EMAILS, 
+                        ProviderService.EMBED_CONTACT_PHONES,
+                        ProviderService.EMBED_CONTACT_WEB_URLS, 
+                        ProviderService.EMBED_VACATIONS, 
+                        ProviderService.EMBED_WORKING_HOURS);
+        
+        return providerService.readProvider(providerId, paramHelper.buildEmbeded());
+    }
 
-  @RequestMapping(method = RequestMethod.GET, value = Endpoint.PROVDER_ID_PARAM)
-  @ResponseBody
-  public Provider getProvider(@PathVariable Long providerId, @RequestParam(required = false) String embeded) {
-    String[] embededFields = COMMA_SPLITTER.splitToList(Strings.nullToEmpty(embeded)).toArray(new String[0]);
-    return providerService.readProvider(providerId, embededFields);
-  }
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public Provider saveProvider(@RequestBody Provider provider) {
+        return providerService.save(provider);
+    }
 
-  @RequestMapping(method = RequestMethod.POST)
-  @ResponseBody
-  public Provider saveProvider(@RequestBody Provider provider) {
-	  return providerService.save(provider);
-  }
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public Provider updateProvider(@RequestBody Provider provider) {
+        return providerService.save(provider);
+    }
 
-  @RequestMapping(method = RequestMethod.PUT)
-  @ResponseBody
-  public Provider updateProvider(@RequestBody Provider provider) {
-	  return providerService.save(provider);
-  }
-
-  @RequestMapping(method = RequestMethod.DELETE, value = Endpoint.PROVDER_ID_PARAM)
-  @ResponseBody
-  public void deleteProvider(@PathVariable Long providerId) {
-	  providerService.delete(providerId);
-  }
+    @RequestMapping(method = RequestMethod.DELETE, value = Endpoint.PROVDER_ID_PARAM)
+    @ResponseBody
+    public void deleteProvider(@PathVariable Long providerId) {
+        providerService.delete(providerId);
+    }
 
 }

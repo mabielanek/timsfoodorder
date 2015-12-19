@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import com.google.common.base.Verify;
+
 public class DateBuilder {
 
     private static final Calendar calendarPattern = Calendar.getInstance();
@@ -25,8 +27,10 @@ public class DateBuilder {
     }
 
     public static Timestamp utcDateAsTimestamp(int year, int month, int day) {
+        Verify.verify(month >= 1, "Supported month value [1...12], but passed: %s", month);
+        Verify.verify(month <= 12, "Supported month value [1...12], but passed: %s", month);
         Calendar cal = (Calendar) calendarPattern.clone();
-        cal.set(year, month, day);
+        cal.set(year, month - 1, day);
         return new Timestamp(cal.getTimeInMillis());
     }
 

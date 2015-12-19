@@ -23,6 +23,7 @@ import com.timsmeet.persistance.enums.AdditionalCostKind;
 @Entity
 @Table(name = DbTable.AdditionalCost.TABLE,
         indexes = @Index(columnList = DbTable.AdditionalCost.PROVIDER_ID, name = "idx_add_cost_provider_fk"))
+@org.hibernate.annotations.Check(constraints = "status IN('A','I','D') and kind IN('MINVAL','DELIVERY','PACK')")
 public class AdditionalCostEntity {
 
     @Id
@@ -38,11 +39,9 @@ public class AdditionalCostEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.AdditionalCost.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @Column(name = DbTable.AdditionalCost.KIND, nullable = false, length = 15)
-    @org.hibernate.annotations.Check(constraints = "kind IN('MINVAL','DELIVERY','PACK')")
     private String kind;
 
     @Column(name = DbTable.AdditionalCost.COST)

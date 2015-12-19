@@ -28,6 +28,7 @@ import com.timsmeet.persistance.enums.YesNo;
 @Entity
 @Table(name = DbTable.DishComponent.TABLE ,
         indexes = @Index(columnList = DbTable.DishComponent.DISH_ID, name = "idx_dish_comp_dish_fk"))
+@org.hibernate.annotations.Check(constraints = "status IN('A','I','D') and use_as_dish_price IN('Y','N')")
 public class DishComponentEntity {
 
     @Id
@@ -43,7 +44,6 @@ public class DishComponentEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.DishComponent.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @ManyToOne
@@ -54,7 +54,6 @@ public class DishComponentEntity {
     private String description;
 
     @Column(name = DbTable.DishComponent.USE_AS_DISH_PRICE, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "use_as_dish_price IN('Y','N')")
     private String useComponentPriceAsDishPrice = YesNo.NO.getCode();
 
     @Column(name = DbTable.DishComponent.ELEMENTS_REQUIRED, nullable = false)

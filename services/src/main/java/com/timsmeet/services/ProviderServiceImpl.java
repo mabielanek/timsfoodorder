@@ -7,10 +7,7 @@ import java.util.Set;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,16 +37,13 @@ public class ProviderServiceImpl implements ProviderService {
     private ModelMapper modelMapper;
     
     @Override
-    public List<Provider> readProviders() {
+    public List<Provider> readProviders(Pageable pageable) {
         
-        Pageable pageRequest = new PageRequest(0, 100, new Sort(new Sort.Order(Direction.ASC, "name")));
-        
-        List<ProviderEntity> dbProviders = Lists.newArrayList(providerRepository.findAll(pageRequest));
+        List<ProviderEntity> dbProviders = Lists.newArrayList(providerRepository.findAll(pageable));
         List<Provider> providers = Lists.newArrayListWithCapacity(dbProviders.size());
         for (ProviderEntity dbProvider : dbProviders) {
             Provider provider = new Provider();
             modelMapper.map(dbProvider, provider);
-            //providerMapper.inverseMap(dbProvider, provider);
             providers.add(provider);
         }
         return providers;
@@ -90,22 +84,22 @@ public class ProviderServiceImpl implements ProviderService {
             throw new NotFoundException(ErrorBuilder.build(ErrorDescribedEnum.PROVIDER_TO_READ_NOT_FOUND, providerId));
         }
 
-        if (embededSet.contains("workingHours")) {
+        if (embededSet.contains(EMBED_WORKING_HOURS)) {
             Hibernate.initialize(dbProvider.getWorkingHours());
         }
-        if (embededSet.contains("vacations")) {
+        if (embededSet.contains(EMBED_VACATIONS)) {
             Hibernate.initialize(dbProvider.getVacations());
         }
-        if (embededSet.contains("contact.emails")) {
+        if (embededSet.contains(EMBED_CONTACT_EMAILS)) {
             Hibernate.initialize(dbProvider.getContact().getEmails());
         }
-        if (embededSet.contains("contact.phones")) {
+        if (embededSet.contains(EMBED_CONTACT_PHONES)) {
             Hibernate.initialize(dbProvider.getContact().getPhones());
         }
-        if (embededSet.contains("contact.webUrls")) {
+        if (embededSet.contains(EMBED_CONTACT_WEB_URLS)) {
             Hibernate.initialize(dbProvider.getContact().getWebUrls());
         }
-        if(embededSet.contains("additionalCosts")) {
+        if(embededSet.contains(EMBED_ADDITIONAL_COSTS)) {
             Hibernate.initialize(dbProvider.getAdditionalCosts());
         }
 

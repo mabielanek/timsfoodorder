@@ -15,6 +15,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
 @Table(name = DbTable.Address.TABLE)
+@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
 public class AddressEntity {
 
     @Id
@@ -30,7 +31,6 @@ public class AddressEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.Address.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @Column(name = DbTable.Address.ADDRESS1, length = 255)

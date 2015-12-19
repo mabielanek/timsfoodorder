@@ -6,6 +6,8 @@
     <fo_address />
     <fo_provider />
     <fo_dish />
+    <fo_dish_comp />
+    <fo_dish_elem />
     
     
 </dataset>

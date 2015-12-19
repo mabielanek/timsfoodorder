@@ -23,6 +23,8 @@
 
     drop table fo_order_item cascade constraints;
 
+    drop table fo_order_sub_item cascade constraints;
+
     drop table fo_person cascade constraints;
 
     drop table fo_phone cascade constraints;
@@ -71,4 +73,4 @@
 
     drop sequence seq_fo_web_url_id;
 
-    drop sequence seq_fo_working_hours_id;
+    drop sequence seq_fo_working_hour_id;

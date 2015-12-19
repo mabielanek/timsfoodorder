@@ -21,6 +21,8 @@ import com.timsmeet.persistance.enums.PhoneNumberType;
 @Entity
 @Table(name = DbTable.Phone.TABLE,
         indexes = @Index(columnList = DbTable.Phone.CONTACT_ID, name = "idx_contact_phone_fk"))
+@org.hibernate.annotations.Check(constraints = "number_type IN('M','F','L') and status IN('A','I','D')")
+
 public class PhoneEntity {
 
     @Id
@@ -36,7 +38,6 @@ public class PhoneEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.Phone.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @Column(name = DbTable.Phone.PHONE, length = 15)
@@ -46,7 +47,6 @@ public class PhoneEntity {
     private String phoneExt;
 
     @Column(name = DbTable.Phone.NUMBER_TYPE, length = 1, nullable = false)
-    @org.hibernate.annotations.Check(constraints = "status IN('M','F','S')")
     private String numberType;
 
     @Column(name = DbTable.Phone.COMMENT_TEXT, length = 1024)

@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.timsmeet.dto.Dish;
 import com.timsmeet.rest.controllers.constants.Endpoint;
+import com.timsmeet.rest.controllers.util.RestParamHelper;
 import com.timsmeet.services.DishService;
 
 @Controller
@@ -25,13 +24,20 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
-    private static final Splitter COMMA_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
-
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Dish> getDishes(@PathVariable Long providerId, @RequestParam(required = false) String embeded) {
-        String[] embededFields = COMMA_SPLITTER.splitToList(Strings.nullToEmpty(embeded)).toArray(new String[0]);
-        return dishService.readDishes(providerId, embededFields);
+    public List<Dish> getDishes(@PathVariable Long providerId, 
+            @RequestParam(required = false) String embeded, 
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Boolean onlyActive) {
+        RestParamHelper paramHelper = new RestParamHelper().
+                withEmbeded(embeded).
+                allowEmbed(DishService.EMBED_DISH_COMPONENTS, 
+                        DishService.EMBED_DISH_COMPONENT_ELEMENTS, 
+                        DishService.EMBED_DISH_GENERES).
+                withSorting(sort).
+                allowSortBy(DishService.ALLOW_SORT_ID, DishService.ALLOW_SORT_NAME);
+        return dishService.readDishes(providerId, onlyActive, paramHelper.buildEmbeded(), paramHelper.buildPageable());
     }
 
     @RequestMapping(method = RequestMethod.POST)

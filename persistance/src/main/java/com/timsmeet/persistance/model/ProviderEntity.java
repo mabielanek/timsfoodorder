@@ -36,6 +36,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
                 @Index(columnList = DbTable.Provider.NAME, name = "idx_provider_name"),
                 @Index(columnList = DbTable.Provider.ADDRESS_ID, name = "idx_provider_address_fk"),
                 @Index(columnList = DbTable.Provider.CONTACT_ID, name = "idx_provider_contact_fk") })
+@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
 public class ProviderEntity {
 
     @Id
@@ -53,7 +54,6 @@ public class ProviderEntity {
     private long lastModificationId;
 
     @Column(name = DbTable.Provider.STATUS, nullable = false, length = 1)
-    @org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
     private String status;
 
     @Column(name = DbTable.Provider.NAME, nullable = false, length = 255)

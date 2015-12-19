@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+	<fo_provider id="1" last_modification_id="1" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="1" contact_id="1"/>
+	<fo_provider id="2" last_modification_id="0" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>	
+	
+	<!-- Acme Corp dishes - when deleted -->
+	<fo_dish id="1" last_modification_id="0" status="A" provider_id="1" name="Kebab" description = "Best kebab in town" start_day = "2000-06-01 06:00:00.000000000" end_day = "2999-06-01 06:00:00.000000000" />
+	<fo_dish id="3" last_modification_id="0" status="A" provider_id="1" name="Chicken sticks" description = "Fat chicken sticks" start_day = "2000-06-01 06:00:00.000000000" end_day = "2999-06-01 06:00:00.000000000" />
+	<fo_dish id="4" last_modification_id="0" status="A" provider_id="1" name="Potato pancakes" description = "Potato pancakes with sour cream" start_day = "2000-06-01 06:00:00.000000000" end_day = "2999-06-01 06:00:00.000000000" />
+	<fo_dish id="5" last_modification_id="0" status="I" provider_id="1" name="Dummy dish" description = "Dummy inactive dish" start_day = "2000-06-01 06:00:00.000000000" end_day = "2999-06-01 06:00:00.000000000" />
+	
+	<!-- Acme Corp, Kebab, components -->
+	<fo_dish_comp id="1" last_modification_id="0" status="A" dish_id="1" description="sauces" use_as_dish_price="N" elements_required="0" max_elements="1" />
+	<fo_dish_comp id="2" last_modification_id="0" status="A" dish_id="1" description="kind of meat" use_as_dish_price="Y" elements_required="1" max_elements="1" />
+
+	<!-- Acme Corp, Kebab, sauces, elements -->
+	<fo_dish_elem id="1" last_modification_id="0" status="A" dish_comp_id="1" name="spicy sauce" description="spicy souce (very spicy)" />
+	<fo_dish_elem id="2" last_modification_id="0" status="A" dish_comp_id="1" name="mild sauce" description=" " />
+	<fo_dish_elem id="3" last_modification_id="0" status="A" dish_comp_id="1" name="mixed sauce" description="not spicy, and not mild" />
+
+	<!-- Acme Corp, Kebab, sauces, elements -->
+	<fo_dish_elem id="4" last_modification_id="0" status="A" dish_comp_id="2" name="mutton" description=" " />
+	<fo_dish_elem id="5" last_modification_id="0" status="A" dish_comp_id="2" name="chicken" description="fresh chicken" />
+
+
+</dataset>

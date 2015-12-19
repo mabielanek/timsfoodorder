@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 public class RestTestUtil {
 
@@ -25,6 +26,11 @@ public class RestTestUtil {
 			Class<T> valueType) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		return (T) mapper.readValue(bytes, valueType);
+	}
+	
+	public static <T> T[] convertJsonBytesToArray(byte[] bytes, Class<T> valueType) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(bytes, TypeFactory.defaultInstance().constructArrayType(valueType));
 	}
 
 }

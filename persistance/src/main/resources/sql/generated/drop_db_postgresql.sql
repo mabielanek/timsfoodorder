@@ -27,7 +27,7 @@
         drop constraint dish_price_dish_elem_fk;
 
     alter table fo_email 
-        drop constraint FK_bu7amv53jcvjdrtfeqv09w99s;
+        drop constraint email_contact_fk;
 
     alter table fo_food_order 
         drop constraint food_order_person_fk;
@@ -44,17 +44,17 @@
     alter table fo_order_item 
         drop constraint order_item_person_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop constraint ord_sub_item_dish_comp_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop constraint ord_sub_item_dish_elem_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop constraint ord_sub_item_ord_item_fk;
 
     alter table fo_phone 
-        drop constraint FK_jes52mwkd3q1ccscxsh361cid;
+        drop constraint phone_contact_fk;
 
     alter table fo_provider 
         drop constraint provider_address_fk;
@@ -66,7 +66,7 @@
         drop constraint vacation_provider_fk;
 
     alter table fo_web_url 
-        drop constraint FK_kcetlus2967vaxqflmv9asjfv;
+        drop constraint web_url_contact_fk;
 
     alter table fo_working_hour 
         drop constraint wrk_hour_provider_fk;
@@ -94,6 +94,8 @@
     drop table if exists fo_genere cascade;
 
     drop table if exists fo_order_item cascade;
+
+    drop table if exists fo_order_sub_item cascade;
 
     drop table if exists fo_person cascade;
 
@@ -143,4 +145,4 @@
 
     drop sequence seq_fo_web_url_id;
 
-    drop sequence seq_fo_working_hours_id;
+    drop sequence seq_fo_working_hour_id;

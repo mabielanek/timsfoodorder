@@ -37,7 +37,7 @@
 
     alter table fo_email 
         drop 
-        foreign key FK_bu7amv53jcvjdrtfeqv09w99s;
+        foreign key email_contact_fk;
 
     alter table fo_food_order 
         drop 
@@ -59,21 +59,21 @@
         drop 
         foreign key order_item_person_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_dish_comp_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_dish_elem_fk;
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_ord_item_fk;
 
     alter table fo_phone 
         drop 
-        foreign key FK_jes52mwkd3q1ccscxsh361cid;
+        foreign key phone_contact_fk;
 
     alter table fo_provider 
         drop 
@@ -89,7 +89,7 @@
 
     alter table fo_web_url 
         drop 
-        foreign key FK_kcetlus2967vaxqflmv9asjfv;
+        foreign key web_url_contact_fk;
 
     alter table fo_working_hour 
         drop 
@@ -118,6 +118,8 @@
     drop table if exists fo_genere;
 
     drop table if exists fo_order_item;
+
+    drop table if exists fo_order_sub_item;
 
     drop table if exists fo_person;
 
@@ -167,7 +169,7 @@
 
     drop table if exists seq_fo_web_url_id;
 
-    drop table if exists seq_fo_working_hours_id;
+    drop table if exists seq_fo_working_hour_id;
 
     create table fo_add_cost (
         id bigint not null,
@@ -176,7 +178,8 @@
         last_modification_id bigint,
         status varchar(1) not null,
         provider_id bigint,
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D') and kind IN('MINVAL','DELIVERY','PACK'))
     );
 
     create table fo_address (
@@ -191,14 +194,16 @@
         state varchar(40),
         status varchar(1) not null,
         zip_code varchar(15),
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_contact (
         id bigint not null,
         last_modification_id bigint,
         status varchar(1) not null,
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_dish (
@@ -210,7 +215,8 @@
         name varchar(255),
         status varchar(1) not null,
         provider_id bigint,
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_dish_comp (
@@ -222,7 +228,8 @@
         status varchar(1) not null,
         use_as_dish_price varchar(1) not null,
         dish_id bigint,
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D') and use_as_dish_price IN('Y','N'))
     );
 
     create table fo_dish_elem (
@@ -232,7 +239,8 @@
         name varchar(255),
         status varchar(1) not null,
         dish_comp_id bigint,
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_dish_genere (
@@ -261,8 +269,9 @@
         email_address varchar(255) not null,
         last_modification_id bigint,
         status varchar(1) not null,
-        contact_id bigint not null,
-        primary key (id)
+        contact_id bigint,
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_food_order (
@@ -273,7 +282,8 @@
         order_time datetime not null,
         person_id bigint,
         provider_id bigint,
-        primary key (id)
+        primary key (id),
+        check (orderStatus IN('A','C','D','L'))
     );
 
     create table fo_genere (
@@ -290,6 +300,12 @@
         dish_id bigint,
         food_order_id bigint,
         person_id bigint,
+        primary key (id)
+    );
+
+    create table fo_order_sub_item (
+        id bigint not null,
+        last_modification_id bigint,
         dish_comp_id bigint,
         dish_elem_id bigint,
         order_item_id bigint,
@@ -313,8 +329,9 @@
         phone varchar(15),
         phone_ext varchar(15),
         status varchar(1) not null,
-        contact_id bigint not null,
-        primary key (id)
+        contact_id bigint,
+        primary key (id),
+        check (number_type IN('M','F','L') and status IN('A','I','D'))
     );
 
     create table fo_provider (
@@ -325,7 +342,8 @@
         status varchar(1) not null,
         address_id bigint,
         contact_id bigint,
-        primary key (id)
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_vacation (
@@ -345,8 +363,9 @@
         last_modification_id bigint,
         status varchar(1) not null,
         web_url_address varchar(255) not null,
-        contact_id bigint not null,
-        primary key (id)
+        contact_id bigint,
+        primary key (id),
+        check (status IN('A','I','D'))
     );
 
     create table fo_working_hour (
@@ -391,6 +410,12 @@
     create index idx_order_item_food_ord_fk on fo_order_item (food_order_id);
 
     create index idx_order_item_dish_fk on fo_order_item (dish_id);
+
+    create index idx_ord_sub_item_ord_item_fk on fo_order_sub_item (order_item_id);
+
+    create index idx_ord_subitem_dish_comp_fk on fo_order_sub_item (dish_comp_id);
+
+    create index idx_ord_subitem_dish_elem_fk on fo_order_sub_item (dish_elem_id);
 
     create index idx_contact_phone_fk on fo_phone (contact_id);
 
@@ -452,7 +477,7 @@
         references fo_dish_elem (id);
 
     alter table fo_email 
-        add constraint FK_bu7amv53jcvjdrtfeqv09w99s 
+        add constraint email_contact_fk 
         foreign key (contact_id) 
         references fo_contact (id);
 
@@ -481,23 +506,23 @@
         foreign key (person_id) 
         references fo_person (id);
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         add constraint ord_sub_item_dish_comp_fk 
         foreign key (dish_comp_id) 
         references fo_dish_comp (id);
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         add constraint ord_sub_item_dish_elem_fk 
         foreign key (dish_elem_id) 
         references fo_dish_elem (id);
 
-    alter table fo_order_item 
+    alter table fo_order_sub_item 
         add constraint ord_sub_item_ord_item_fk 
         foreign key (order_item_id) 
         references fo_order_item (id);
 
     alter table fo_phone 
-        add constraint FK_jes52mwkd3q1ccscxsh361cid 
+        add constraint phone_contact_fk 
         foreign key (contact_id) 
         references fo_contact (id);
 
@@ -517,7 +542,7 @@
         references fo_provider (id);
 
     alter table fo_web_url 
-        add constraint FK_kcetlus2967vaxqflmv9asjfv 
+        add constraint web_url_contact_fk 
         foreign key (contact_id) 
         references fo_contact (id);
 
@@ -634,8 +659,8 @@
 
     insert into seq_fo_web_url_id values ( 1 );
 
-    create table seq_fo_working_hours_id (
+    create table seq_fo_working_hour_id (
          next_val bigint 
     );
 
-    insert into seq_fo_working_hours_id values ( 1 );
+    insert into seq_fo_working_hour_id values ( 1 );

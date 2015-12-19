@@ -90,6 +90,46 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)));
   }
+  
+  @Test
+  @ExpectedDatabases({
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+  })
+  public void shouldErrosOnWrongPageSize() throws Exception {
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("perPage", "-2"))
+          .andDo(MockMvcResultHandlers.print())
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PER_PAGE_SHOULD_BE_POSITIVE.getErrorCode())));
+  }
+  
+  @Test
+  @ExpectedDatabases({
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+  })
+  public void shouldErrosOnWrongPage() throws Exception {
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("page", "-2"))
+          .andDo(MockMvcResultHandlers.print())
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PAGE_PARAM_IS_NEGATIVE.getErrorCode())));
+  }
 
   @Test
   @ExpectedDatabases({
@@ -102,12 +142,75 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
   })
+  public void shouldErrosOnWrongSort() throws Exception {
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("sort", "unknown"))
+          .andDo(MockMvcResultHandlers.print())
+          .andExpect(MockMvcResultMatchers.status().isBadRequest())
+          .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+          .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
+          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.INVALID_SORT_PARAM.getErrorCode())));
+  }
+  
+  @Test
+  @ExpectedDatabases({
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+  })
+  public void shouldSortByNameAsc() throws Exception {
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("sort", "name"))
+      .andDo(MockMvcResultHandlers.print())
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", equalTo("Acme Corp")))
+      .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", equalTo("Binton Corp")));
+  }
+
+  @Test
+  @ExpectedDatabases({
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+  })
+  public void shouldSortByNameDesc() throws Exception {
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("sort", "-name"))
+      .andDo(MockMvcResultHandlers.print())
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", equalTo("Binton Corp")))
+      .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", equalTo("Acme Corp")));
+  }
+
+  
+  @Test
+  @ExpectedDatabases({
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+  })
   public void shouldFindProviderById() throws Exception {
-      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001"))
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(-1001)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)))
               .andExpect(MockMvcResultMatchers.jsonPath("$.status", is(ActivityStatus.ACTIVE.toString())))
               .andExpect(MockMvcResultMatchers.jsonPath("$.name", is("Acme Corp")));
   }
@@ -132,6 +235,27 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PROVIDER_TO_READ_NOT_FOUND.getErrorCode())));
 
   }
+  
+  @Test
+  @ExpectedDatabases({
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+  })
+  public void shouldErrorWhenWrongEmbeded() throws Exception {
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "wrongEmbeded"))
+      .andDo(MockMvcResultHandlers.print())
+      .andExpect(MockMvcResultMatchers.status().isBadRequest())
+      .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.INVALID_EMBEDED_PARAM.getErrorCode())));
+
+  }
 
   @Test
   @ExpectedDatabases({
@@ -145,7 +269,7 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value = "provider/operations/ProviderDelete.xml", table = DbTable.Vacation.TABLE, override = false),
   })
   public void shouldDeleteExistingProviderWithChildrenEntities() throws Exception {
-      mockMvc.perform(MockMvcRequestBuilders.delete(Endpoint.PROVIDER + "/-1001"))
+      mockMvc.perform(MockMvcRequestBuilders.delete(Endpoint.PROVIDER + "/1"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk());
   }
@@ -185,11 +309,11 @@ public class ProviderControllerTest extends BaseControllerTest {
   })
   public void shouldFindByIdWithEmbededWorkingHours() throws Exception {
 	  ResultActions resultActions = 
-      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "workingHours"))
+      mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "workingHours"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(-1001)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
 	  
 	  resultActions = andValidateReadComanyWorkingHours(resultActions);
   }
@@ -198,29 +322,29 @@ public class ProviderControllerTest extends BaseControllerTest {
       return resultActions
     		  
     		  .andExpect(MockMvcResultMatchers.jsonPath("$.workingHours", hasSize(6)))
-    		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1001)].weekDay", hasItem(WeekDay.MONDAY.toString())))
-    		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1001)].startTime", hasItem("2000-06-01T06:00:00.000+0000")))
-    		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1001)].endTime", hasItem("2000-06-01T13:00:00.000+0000")))
+    		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].weekDay", hasItem(WeekDay.MONDAY.toString())))
+    		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].startTime", hasItem("2000-06-01T06:00:00.000+0000")))
+    		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].endTime", hasItem("2000-06-01T13:00:00.000+0000")))
 
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1002)].weekDay", hasItem(WeekDay.MONDAY.toString())))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1002)].startTime", hasItem("2000-06-01T14:00:00.000+0000")))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1002)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==2)].weekDay", hasItem(WeekDay.MONDAY.toString())))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==2)].startTime", hasItem("2000-06-01T14:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==2)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
 
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1003)].weekDay", hasItem(WeekDay.TUESDAY.toString())))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1003)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1003)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==3)].weekDay", hasItem(WeekDay.TUESDAY.toString())))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==3)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==3)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
 
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1004)].weekDay", hasItem(WeekDay.WEDNESDAY.toString())))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1004)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1004)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==4)].weekDay", hasItem(WeekDay.WEDNESDAY.toString())))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==4)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==4)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
 
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1005)].weekDay", hasItem(WeekDay.THURSDAY.toString())))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1005)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1005)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==5)].weekDay", hasItem(WeekDay.THURSDAY.toString())))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==5)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==5)].endTime", hasItem("2000-06-01T16:00:00.000+0000")))
 
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1006)].weekDay", hasItem(WeekDay.FRIDAY.toString())))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1006)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
-			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==-1006)].endTime", hasItem("2000-06-01T16:00:00.000+0000")));
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==6)].weekDay", hasItem(WeekDay.FRIDAY.toString())))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==6)].startTime", hasItem("2000-06-01T08:00:00.000+0000")))
+			  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==6)].endTime", hasItem("2000-06-01T16:00:00.000+0000")));
   }
 
   @Test
@@ -236,22 +360,22 @@ public class ProviderControllerTest extends BaseControllerTest {
   })
   public void shouldFindByIdWithEmbededVacations() throws Exception {
 	  ResultActions resultActions = 
-			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "vacations"))
+			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(-1001)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
 	  resultActions = andValidateProviderVacations(resultActions);
   }
   
   private ResultActions andValidateProviderVacations(ResultActions resultActions) throws Exception {
 	  return resultActions
               .andExpect(MockMvcResultMatchers.jsonPath("$.vacations", hasSize(2)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==-1001)].startDay", hasItem("2000-06-01T00:00:00.000+0000")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==-1001)].endDay", hasItem("2000-06-05T00:00:00.000+0000")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==1)].startDay", hasItem("2000-06-01T00:00:00.000+0000")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==1)].endDay", hasItem("2000-06-05T00:00:00.000+0000")))
 
-	  		  .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==-1002)].startDay", hasItem("2000-08-01T00:00:00.000+0000")))
-		      .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==-1002)].endDay", hasItem("2000-08-02T00:00:00.000+0000")));
+	  		  .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==2)].startDay", hasItem("2000-08-01T00:00:00.000+0000")))
+		      .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==2)].endDay", hasItem("2000-08-02T00:00:00.000+0000")));
   }
   
   @Test
@@ -266,10 +390,10 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value="provider/operations/VacationAdd.xml", table=DbTable.Vacation.TABLE, override=false),
   })
   public void shouldAddEmbededVacations() throws Exception {
-      final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 8, 10);
-      final Timestamp vacationEnd1 = DateBuilder.utcDateAsTimestamp(2014, 8, 11);
+      final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 9, 10);
+      final Timestamp vacationEnd1 = DateBuilder.utcDateAsTimestamp(2014, 9, 11);
 
-      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001")).andReturn().getResponse();
+      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1")).andReturn().getResponse();
       
       Provider provider = RestTestUtil.convertJsonBytesToObject(existingProviderResponse.getContentAsByteArray(), Provider.class);
       provider.getVacations().add(new Vacation.Builder(EntityState.ADDED, vacationStart1, vacationEnd1).build());
@@ -295,9 +419,9 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value="provider/operations/VacationDelete.xml", table=DbTable.Vacation.TABLE, override=false),
   })
   public void shouldRemoveEmbededVacations() throws Exception {
-      final Timestamp vacationToRemoveStart = DateBuilder.utcDateAsTimestamp(2000, 5, 1);
+      final Timestamp vacationToRemoveStart = DateBuilder.utcDateAsTimestamp(2000, 6, 1);
 
-      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "vacations"))
+      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andReturn().getResponse();
       
       Provider provider = RestTestUtil.convertJsonBytesToObject(existingProviderResponse.getContentAsByteArray(), Provider.class);
@@ -324,11 +448,11 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value="provider/operations/VacationModify.xml", table=DbTable.Vacation.TABLE, override=false),
   })
   public void shouldModifyEmbededVacations() throws Exception {
-      final Timestamp vacationToModifyStart = DateBuilder.utcDateAsTimestamp(2000, 5, 1);
-      final Timestamp modifiedStart = DateBuilder.utcDateAsTimestamp(2000, 5, 15);
-      final Timestamp modifiedEnd = DateBuilder.utcDateAsTimestamp(2000, 5, 18);
+      final Timestamp vacationToModifyStart = DateBuilder.utcDateAsTimestamp(2000, 6, 1);
+      final Timestamp modifiedStart = DateBuilder.utcDateAsTimestamp(2000, 6, 15);
+      final Timestamp modifiedEnd = DateBuilder.utcDateAsTimestamp(2000, 6, 18);
 
-      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "vacations"))
+      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andReturn().getResponse();
       
       Provider provider = RestTestUtil.convertJsonBytesToObject(existingProviderResponse.getContentAsByteArray(), Provider.class);
@@ -359,42 +483,42 @@ public class ProviderControllerTest extends BaseControllerTest {
   })
   public void shouldFindByIdWithEmbededContacts() throws Exception {
 	  ResultActions resultActions =
-			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "contact.emails", "contact.webUrls", "contact.phones"))
+			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "contact.emails", "contact.webUrls", "contact.phones"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(-1001)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
 	  resultActions = andValidateProviderContacts(resultActions);
   }
   
   private ResultActions andValidateProviderContacts(ResultActions resultActions) throws Exception {
 	  return resultActions
               .andExpect(MockMvcResultMatchers.jsonPath("$.contact.emails", hasSize(2)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1001)].status", hasItem(ActivityStatus.ACTIVE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1001)].comment", hasItem("Office email")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1001)].emailAddress", hasItem("office@acme.corp.com")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1001)].displayIndex", hasItem(0)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1002)].status", hasItem(ActivityStatus.ACTIVE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1002)].comment", hasItem("Support email")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1002)].emailAddress", hasItem("support@acme.corp.com")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==-1002)].displayIndex", hasItem(1)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==1)].status", hasItem(ActivityStatus.ACTIVE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==1)].comment", hasItem("Office email")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==1)].emailAddress", hasItem("office@acme.corp.com")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==1)].displayIndex", hasItem(0)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==2)].status", hasItem(ActivityStatus.ACTIVE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==2)].comment", hasItem("Support email")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==2)].emailAddress", hasItem("support@acme.corp.com")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..emails[?(@.id==2)].displayIndex", hasItem(1)))
               .andExpect(MockMvcResultMatchers.jsonPath("$.contact.webUrls", hasSize(1)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==-1001)].status", hasItem(ActivityStatus.ACTIVE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==-1001)].webUrlAddress", hasItem("http://acme.corp.com")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==-1001)].comment", hasItem("Main web address")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==-1001)].displayIndex", hasItem(0)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==1)].status", hasItem(ActivityStatus.ACTIVE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==1)].webUrlAddress", hasItem("http://acme.corp.com")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==1)].comment", hasItem("Main web address")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..webUrls[?(@.id==1)].displayIndex", hasItem(0)))
               .andExpect(MockMvcResultMatchers.jsonPath("$.contact.phones", hasSize(2)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1001)].status", hasItem(ActivityStatus.ACTIVE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1001)].phone", hasItem("508334321")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1001)].phoneExt", hasItem("1234")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1001)].numberType", hasItem(PhoneNumberType.MOBILE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1001)].comment", hasItem("Mobile phone to manager")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1001)].displayIndex", hasItem(1)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1002)].status", hasItem(ActivityStatus.ACTIVE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1002)].phone", hasItem("345223421")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1002)].numberType", hasItem(PhoneNumberType.LANDLINE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1002)].comment", hasItem("Provider std phone")))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==-1002)].displayIndex", hasItem(0)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==1)].status", hasItem(ActivityStatus.ACTIVE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==1)].phone", hasItem("508334321")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==1)].phoneExt", hasItem("1234")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==1)].numberType", hasItem(PhoneNumberType.MOBILE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==1)].comment", hasItem("Mobile phone to manager")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==1)].displayIndex", hasItem(1)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==2)].status", hasItem(ActivityStatus.ACTIVE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==2)].phone", hasItem("345223421")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==2)].numberType", hasItem(PhoneNumberType.LANDLINE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==2)].comment", hasItem("Provider std phone")))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==2)].displayIndex", hasItem(0)));
   }
 
   
@@ -411,11 +535,11 @@ public class ProviderControllerTest extends BaseControllerTest {
   })
   public void shouldFindByIdWithMultiEmbededEntities() throws Exception {
 	  ResultActions resultActions =
-			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "workingHours", "vacations", "contact.emails", "contact.webUrls", "contact.phones"))
+			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "workingHours", "vacations", "contact.emails", "contact.webUrls", "contact.phones"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(-1001)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
 	  resultActions = andValidateReadComanyWorkingHours(resultActions);
 	  resultActions = andValidateProviderVacations(resultActions);
 	  resultActions = andValidateProviderContacts(resultActions);
@@ -426,8 +550,8 @@ public class ProviderControllerTest extends BaseControllerTest {
   @Transactional
   public void shouldSaveProviderWithEmbededObjects() throws Exception {
 	  
-	  final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 1, 3);
-	  final Timestamp vacationEnd1 = DateBuilder.utcDateAsTimestamp(2014, 1, 6);
+	  final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 2, 3);
+	  final Timestamp vacationEnd1 = DateBuilder.utcDateAsTimestamp(2014, 2, 6);
 	  final Timestamp workingHourStart1 = DateBuilder.utcTimeAsTimestamp(8, 30);
 	  final Timestamp workingHourEnd1 = DateBuilder.utcTimeAsTimestamp(16, 30);
 	  final Timestamp workingHourStart2 = DateBuilder.utcTimeAsTimestamp(9, 15);
@@ -538,11 +662,11 @@ public class ProviderControllerTest extends BaseControllerTest {
 	public void shouldUpdateProviderWithEmbededObjects() throws Exception {
 
 		MockHttpServletResponse response =
-				mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "workingHours", "vacations", "contact.emails", "contact.webUrls", "contact.phones"))
+				mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "workingHours", "vacations", "contact.emails", "contact.webUrls", "contact.phones"))
 	            .andDo(MockMvcResultHandlers.print())
 	            .andExpect(MockMvcResultMatchers.status().isOk())
 	            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-	            .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(-1001)))
+	            .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)))
 	            .andReturn().getResponse();
 		
 		Provider provider = RestTestUtil.convertJsonBytesToObject(response.getContentAsByteArray(), Provider.class);
