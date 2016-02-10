@@ -1,12 +1,9 @@
 package com.timsmeet.dto;
 
-import java.util.ArrayList;
 import java.util.List;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Provider extends BaseEntity {
+public class Provider {
 
     private Long id;
     private Long lastModificationId;
@@ -15,10 +12,10 @@ public class Provider extends BaseEntity {
     private String comment;
     private Address address;
     private Contact contact;
-    private List<WorkingHour> workingHours = new ArrayList<WorkingHour>();
-    private List<Vacation> vacations = new ArrayList<Vacation>();
-    private List<AdditionalCost> additionalCosts = new ArrayList<AdditionalCost>();
-    private List<Dish> dishes = new ArrayList<Dish>();
+    private List<WorkingHour> workingHours;
+    private List<Vacation> vacations;
+    private List<AdditionalCost> additionalCosts;
+    private List<Dish> dishes;
 
     public Long getId() {
         return id;
@@ -111,8 +108,7 @@ public class Provider extends BaseEntity {
     public final static class Builder {
         private final Provider provider = new Provider();
 
-        public Builder(EntityState entityState, String providerName, String comment, ActivityStatus status) {
-            provider.getEntityAspect().setEntityState(entityState);
+        public Builder(String providerName, String comment, ActivityStatus status) {
             provider.setName(providerName);
             provider.setComment(comment);
             provider.setStatus(status);

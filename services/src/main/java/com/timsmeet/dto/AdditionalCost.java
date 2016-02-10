@@ -1,12 +1,10 @@
 package com.timsmeet.dto;
 
 import java.math.BigDecimal;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.AdditionalCostKind;
 
-public class AdditionalCost extends BaseEntity {
+public class AdditionalCost {
 
     private Long id;
     private Long lastModificationId;
@@ -57,8 +55,7 @@ public class AdditionalCost extends BaseEntity {
     public final static class Builder {
         private final AdditionalCost additionalCost = new AdditionalCost();
 
-        public Builder(EntityState entityState, ActivityStatus status) {
-            additionalCost.getEntityAspect().setEntityState(entityState);
+        public Builder(ActivityStatus status) {
             additionalCost.setStatus(status);
         }
 

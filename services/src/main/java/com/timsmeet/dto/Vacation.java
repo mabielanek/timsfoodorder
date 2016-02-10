@@ -1,10 +1,8 @@
 package com.timsmeet.dto;
 
 import java.sql.Timestamp;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 
-public class Vacation extends BaseEntity {
+public class Vacation {
 
     private Long id;
     private Long lastModificationId;
@@ -46,8 +44,7 @@ public class Vacation extends BaseEntity {
     public static final class Builder {
         private final Vacation vacation = new Vacation();
 
-        public Builder(EntityState entityState, Timestamp startDay, Timestamp endDay) {
-            vacation.getEntityAspect().setEntityState(entityState);
+        public Builder(Timestamp startDay, Timestamp endDay) {
             vacation.setStartDay(startDay);
             vacation.setEndDay(endDay);
         }

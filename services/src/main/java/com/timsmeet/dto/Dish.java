@@ -1,13 +1,11 @@
 package com.timsmeet.dto;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Dish extends BaseEntity {
+public class Dish {
 
     private Long id;
     private Long lastModificationId;
@@ -16,8 +14,9 @@ public class Dish extends BaseEntity {
     private String description;
     private Timestamp avaiabilityStartDay;
     private Timestamp avaiabilityEndDay;
-    private List<DishComponent> dishComponents = new ArrayList<DishComponent>();
-    private List<Genere> generes = new ArrayList<Genere>();
+    private BigDecimal price;
+    private List<DishComponent> dishComponents;
+    private List<Genere> generes;
 
     public Long getId() {
         return id;
@@ -75,6 +74,14 @@ public class Dish extends BaseEntity {
         this.avaiabilityEndDay = avaiabilityEndDay;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public List<DishComponent> getDishComponents() {
         return dishComponents;
     }
@@ -94,8 +101,7 @@ public class Dish extends BaseEntity {
     public final static class Builder {
         private final Dish dish = new Dish();
 
-        public Builder(EntityState entityState, String providerName, ActivityStatus status) {
-            dish.getEntityAspect().setEntityState(entityState);
+        public Builder(String providerName, ActivityStatus status) {
             dish.setName(providerName);
             dish.setStatus(status);
         }
@@ -136,6 +142,11 @@ public class Dish extends BaseEntity {
 
         public Builder avaiabilityEndDay(Timestamp avaiabilityEndDay) {
             dish.setAvaiabilityEndDay(avaiabilityEndDay);
+            return this;
+        }
+
+        public Builder price(BigDecimal price) {
+            dish.setPrice(price);
             return this;
         }
 

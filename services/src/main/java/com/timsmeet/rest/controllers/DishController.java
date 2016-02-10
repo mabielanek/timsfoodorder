@@ -1,7 +1,6 @@
 package com.timsmeet.rest.controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.timsmeet.dto.Dish;
 import com.timsmeet.rest.controllers.constants.Endpoint;
 import com.timsmeet.rest.controllers.util.RestParamHelper;
@@ -26,14 +24,14 @@ public class DishController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Dish> getDishes(@PathVariable Long providerId, 
-            @RequestParam(required = false) String embeded, 
+    public List<Dish> getDishes(@PathVariable Long providerId,
+            @RequestParam(required = false) String embeded,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Boolean onlyActive) {
         RestParamHelper paramHelper = new RestParamHelper().
                 withEmbeded(embeded).
-                allowEmbed(DishService.EMBED_DISH_COMPONENTS, 
-                        DishService.EMBED_DISH_COMPONENT_ELEMENTS, 
+                allowEmbed(DishService.EMBED_DISH_COMPONENTS,
+                        DishService.EMBED_DISH_COMPONENT_ELEMENTS,
                         DishService.EMBED_DISH_GENERES).
                 withSorting(sort).
                 allowSortBy(DishService.ALLOW_SORT_ID, DishService.ALLOW_SORT_NAME);
@@ -42,8 +40,20 @@ public class DishController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public List<Dish> saveDishes(@PathVariable Long providerId, @RequestBody List<Dish> dishes) {
-        return dishService.saveDishes(providerId, dishes);
+    public Dish saveDish(@PathVariable Long providerId, @RequestBody Dish dish) {
+        return dishService.saveDish(providerId, dish);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public Dish upateDish(@PathVariable Long providerId, @RequestBody Dish dish) {
+        return dishService.saveDish(providerId, dish);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = Endpoint.DISH_ID_PARAM)
+    @ResponseBody
+    public void deleteDish(@PathVariable Long providerId, @PathVariable Long dishId) {
+        dishService.deleteDish(providerId, dishId);
     }
 
 }

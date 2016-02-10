@@ -1,9 +1,7 @@
 package com.timsmeet.dto;
 
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 
-public class OrderSubItem extends BaseEntity {
+public class OrderSubItem {
     private Long id;
     private Long lastModificationId;
     private OrderItem orderItem;
@@ -53,9 +51,7 @@ public class OrderSubItem extends BaseEntity {
     public final static class Builder {
         private final OrderSubItem orderSubItem = new OrderSubItem();
 
-        public Builder(EntityState entityState) {
-            orderSubItem.getEntityAspect().setEntityState(entityState);
-        }
+        public Builder() { }
 
         public OrderSubItem build() {
             return orderSubItem;

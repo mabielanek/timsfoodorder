@@ -1,8 +1,8 @@
 package com.timsmeet.persistance.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.constants.DbTable;
@@ -52,6 +50,9 @@ public class DishComponentEntity {
 
     @Column(name = DbTable.DishComponent.DESCRIPTION, length = 255)
     private String description;
+
+    @Column(name = DbTable.DishComponent.PRICE)
+    private BigDecimal price;
 
     @Column(name = DbTable.DishComponent.USE_AS_DISH_PRICE, nullable = false, length = 1)
     private String useComponentPriceAsDishPrice = YesNo.NO.getCode();
@@ -90,6 +91,14 @@ public class DishComponentEntity {
         this.description = description;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public YesNo getUseComponentPriceAsDishPrice() {
         return YesNo.forCode(useComponentPriceAsDishPrice);
     }
@@ -121,7 +130,7 @@ public class DishComponentEntity {
     public long getLastModificationId() {
         return lastModificationId;
     }
-    
+
     public void setLastModificationId(long lastModificationId) {
         this.lastModificationId = lastModificationId;
     }

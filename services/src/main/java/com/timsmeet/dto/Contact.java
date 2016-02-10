@@ -1,18 +1,15 @@
 package com.timsmeet.dto;
 
-import java.util.ArrayList;
 import java.util.List;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Contact extends BaseEntity {
+public class Contact {
     private Long id;
     private Long lastModificationId;
     private ActivityStatus status;
-    private List<Phone> phones = new ArrayList<Phone>();
-    private List<WebUrl> webUrls = new ArrayList<WebUrl>();
-    private List<Email> emails = new ArrayList<Email>();
+    private List<Phone> phones;
+    private List<WebUrl> webUrls;
+    private List<Email> emails;
 
     public Long getId() {
         return id;
@@ -65,8 +62,7 @@ public class Contact extends BaseEntity {
     public static final class Builder {
         private final Contact contact = new Contact();
 
-        public Builder(EntityState entityState, ActivityStatus status) {
-            contact.getEntityAspect().setEntityState(entityState);
+        public Builder(ActivityStatus status) {
             contact.setStatus(status);
         }
 

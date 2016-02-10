@@ -7,12 +7,10 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -39,7 +36,6 @@ import com.timsmeet.dto.Provider;
 import com.timsmeet.dto.Vacation;
 import com.timsmeet.dto.WebUrl;
 import com.timsmeet.dto.WorkingHour;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.errors.ErrorDescribedEnum;
 import com.timsmeet.persistance.DbTestUtil;
 import com.timsmeet.persistance.constants.DbTable;
@@ -63,14 +59,14 @@ public class ProviderControllerTest extends BaseControllerTest {
 
 	@Autowired
 	private ProviderService providerService;
-	
+
 	@Autowired
 	private ProviderRepository providerRepository;
-	
+
     @Before
     public void setUpProviderControler() throws SQLException {
         DbTestUtil.resetAutoIncrementColumns(webApplicationContext, DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Email.TABLE, DbTable.WebUrl.TABLE, DbTable.Address.TABLE, DbTable.Provider.TABLE, DbTable.WorkingHour.TABLE, DbTable.Vacation.TABLE);
-    }	
+    }
 
   @Test
     @ExpectedDatabases({
@@ -90,7 +86,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)));
   }
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -110,7 +106,7 @@ public class ProviderControllerTest extends BaseControllerTest {
           .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
           .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PER_PAGE_SHOULD_BE_POSITIVE.getErrorCode())));
   }
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -150,7 +146,7 @@ public class ProviderControllerTest extends BaseControllerTest {
           .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
           .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.INVALID_SORT_PARAM.getErrorCode())));
   }
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -193,7 +189,7 @@ public class ProviderControllerTest extends BaseControllerTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", equalTo("Acme Corp")));
   }
 
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -235,7 +231,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PROVIDER_TO_READ_NOT_FOUND.getErrorCode())));
 
   }
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -273,8 +269,8 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk());
   }
-  
-  
+
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -295,7 +291,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PROVIDER_TO_DELETE_NOT_FOUND.getErrorCode())));
   }
 
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
@@ -308,19 +304,19 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
   })
   public void shouldFindByIdWithEmbededWorkingHours() throws Exception {
-	  ResultActions resultActions = 
+	  ResultActions resultActions =
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "workingHours"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
-	  
+
 	  resultActions = andValidateReadComanyWorkingHours(resultActions);
   }
-  
+
   private ResultActions andValidateReadComanyWorkingHours(ResultActions resultActions) throws Exception {
       return resultActions
-    		  
+
     		  .andExpect(MockMvcResultMatchers.jsonPath("$.workingHours", hasSize(6)))
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].weekDay", hasItem(WeekDay.MONDAY.toString())))
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].startTime", hasItem("2000-06-01T06:00:00.000+0000")))
@@ -359,7 +355,7 @@ public class ProviderControllerTest extends BaseControllerTest {
       @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
   })
   public void shouldFindByIdWithEmbededVacations() throws Exception {
-	  ResultActions resultActions = 
+	  ResultActions resultActions =
 			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
@@ -367,7 +363,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
 	  resultActions = andValidateProviderVacations(resultActions);
   }
-  
+
   private ResultActions andValidateProviderVacations(ResultActions resultActions) throws Exception {
 	  return resultActions
               .andExpect(MockMvcResultMatchers.jsonPath("$.vacations", hasSize(2)))
@@ -377,7 +373,7 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  		  .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==2)].startDay", hasItem("2000-08-01T00:00:00.000+0000")))
 		      .andExpect(MockMvcResultMatchers.jsonPath("$..vacations[?(@.id==2)].endDay", hasItem("2000-08-02T00:00:00.000+0000")));
   }
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
@@ -393,11 +389,12 @@ public class ProviderControllerTest extends BaseControllerTest {
       final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 9, 10);
       final Timestamp vacationEnd1 = DateBuilder.utcDateAsTimestamp(2014, 9, 11);
 
-      MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1")).andReturn().getResponse();
-      
+      MockHttpServletResponse existingProviderResponse =
+              mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", ProviderService.EMBED_VACATIONS)).andReturn().getResponse();
+
       Provider provider = RestTestUtil.convertJsonBytesToObject(existingProviderResponse.getContentAsByteArray(), Provider.class);
-      provider.getVacations().add(new Vacation.Builder(EntityState.ADDED, vacationStart1, vacationEnd1).build());
-      
+      provider.getVacations().add(new Vacation.Builder(vacationStart1, vacationEnd1).build());
+
       mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
               .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
               .content(RestTestUtil.convertObjectToJsonBytes(provider)))
@@ -406,7 +403,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
               .andReturn().getResponse();
   }
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
@@ -423,10 +420,11 @@ public class ProviderControllerTest extends BaseControllerTest {
 
       MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andReturn().getResponse();
-      
+
       Provider provider = RestTestUtil.convertJsonBytesToObject(existingProviderResponse.getContentAsByteArray(), Provider.class);
-      findVacationByStartDay(provider.getVacations(), vacationToRemoveStart).getEntityAspect().setEntityState(EntityState.DELETED);
-      
+      provider.getVacations().remove(findVacationByStartDay(provider.getVacations(), vacationToRemoveStart));
+      //findVacationByStartDay(provider.getVacations(), vacationToRemoveStart).getEntityAspect().setEntityState(EntityState.DELETED);
+
       mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
               .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
               .content(RestTestUtil.convertObjectToJsonBytes(provider)))
@@ -454,12 +452,11 @@ public class ProviderControllerTest extends BaseControllerTest {
 
       MockHttpServletResponse existingProviderResponse = mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andReturn().getResponse();
-      
+
       Provider provider = RestTestUtil.convertJsonBytesToObject(existingProviderResponse.getContentAsByteArray(), Provider.class);
       Vacation vacationToModify = findVacationByStartDay(provider.getVacations(), vacationToModifyStart);
       vacationToModify.setStartDay(modifiedStart);
       vacationToModify.setEndDay(modifiedEnd);
-      vacationToModify.getEntityAspect().setEntityState(EntityState.MODIFIED);
 
       mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
               .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
@@ -490,7 +487,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
 	  resultActions = andValidateProviderContacts(resultActions);
   }
-  
+
   private ResultActions andValidateProviderContacts(ResultActions resultActions) throws Exception {
 	  return resultActions
               .andExpect(MockMvcResultMatchers.jsonPath("$.contact.emails", hasSize(2)))
@@ -521,7 +518,7 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.contact..phones[?(@.id==2)].displayIndex", hasItem(0)));
   }
 
-  
+
   @Test
   @ExpectedDatabases({
       @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
@@ -545,11 +542,11 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  resultActions = andValidateProviderContacts(resultActions);
   }
 
-  
+
   @Test
   @Transactional
   public void shouldSaveProviderWithEmbededObjects() throws Exception {
-	  
+
 	  final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 2, 3);
 	  final Timestamp vacationEnd1 = DateBuilder.utcDateAsTimestamp(2014, 2, 6);
 	  final Timestamp workingHourStart1 = DateBuilder.utcTimeAsTimestamp(8, 30);
@@ -557,26 +554,26 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  final Timestamp workingHourStart2 = DateBuilder.utcTimeAsTimestamp(9, 15);
 	  final Timestamp workingHourEnd2 = DateBuilder.utcTimeAsTimestamp(16, 45);
 
-	  
-	  Provider providerToSave = new Provider.Builder(EntityState.ADDED, "Added Provider", "Added Provider Comment", ActivityStatus.ACTIVE)
-	  	.vacations(Arrays.asList(new Vacation.Builder(EntityState.ADDED, vacationStart1, vacationEnd1).build()))
+
+	  Provider providerToSave = new Provider.Builder("Added Provider", "Added Provider Comment", ActivityStatus.ACTIVE)
+	  	.vacations(Arrays.asList(new Vacation.Builder(vacationStart1, vacationEnd1).build()))
 	  	.workingHours(Arrays.asList(
-	  			new WorkingHour.Builder(EntityState.ADDED, WeekDay.MONDAY, workingHourStart1, workingHourEnd1).build(),
-	  			new WorkingHour.Builder(EntityState.ADDED, WeekDay.TUESDAY, workingHourStart2, workingHourEnd2).build()
+	  			new WorkingHour.Builder(WeekDay.MONDAY, workingHourStart1, workingHourEnd1).build(),
+	  			new WorkingHour.Builder(WeekDay.TUESDAY, workingHourStart2, workingHourEnd2).build()
 	  			))
-	  	.address(new Address.Builder(EntityState.ADDED, ActivityStatus.ACTIVE).address1("ADD1").address2("ADD2").city("Paris").comment("add comment").country("France").displayIndex(1).state("ASD").zipCode("321123").build())
-	  	.contact(new Contact.Builder(EntityState.ADDED, ActivityStatus.ACTIVE)
+	  	.address(new Address.Builder(ActivityStatus.ACTIVE).address1("ADD1").address2("ADD2").city("Paris").comment("add comment").country("France").displayIndex(1).state("ASD").zipCode("321123").build())
+	  	.contact(new Contact.Builder(ActivityStatus.ACTIVE)
 	  		.phones(Arrays.asList(
-	  				new Phone.Builder(EntityState.ADDED, ActivityStatus.ACTIVE, PhoneNumberType.MOBILE).displayIndex(0).phone("112233").phoneExt("23").build(),
-	  				new Phone.Builder(EntityState.ADDED, ActivityStatus.ACTIVE, PhoneNumberType.LANDLINE).displayIndex(1).phone("556677").build()))
+	  				new Phone.Builder(ActivityStatus.ACTIVE, PhoneNumberType.MOBILE).displayIndex(0).phone("112233").phoneExt("23").build(),
+	  				new Phone.Builder(ActivityStatus.ACTIVE, PhoneNumberType.LANDLINE).displayIndex(1).phone("556677").build()))
 	  		.webUrls(Arrays.asList(
-	  				new WebUrl.Builder(EntityState.ADDED, ActivityStatus.ACTIVE).displayIndex(0).webUrlAddress("http://allo.allo").comment("allo comment").build(),
-	  				new WebUrl.Builder(EntityState.ADDED, ActivityStatus.ACTIVE).displayIndex(1).webUrlAddress("https://support.allo").build()))
+	  				new WebUrl.Builder(ActivityStatus.ACTIVE).displayIndex(0).webUrlAddress("http://allo.allo").comment("allo comment").build(),
+	  				new WebUrl.Builder(ActivityStatus.ACTIVE).displayIndex(1).webUrlAddress("https://support.allo").build()))
 	  		.emails(Arrays.asList(
-	  				new Email.Builder(EntityState.ADDED, ActivityStatus.ACTIVE).displayIndex(0).emailAddress("mis@allo.com").comment("write an email here").build()))
+	  				new Email.Builder(ActivityStatus.ACTIVE).displayIndex(0).emailAddress("mis@allo.com").comment("write an email here").build()))
 	  	.build())
 	  	.build();
-	  
+
 	  MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
 			  .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
 			  .content(RestTestUtil.convertObjectToJsonBytes(providerToSave)))
@@ -586,9 +583,9 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.id", notNullValue()))
               .andExpect(MockMvcResultMatchers.jsonPath("$.lastModificationId", notNullValue()))
               .andReturn().getResponse();
-	  
+
 	  Provider provider = RestTestUtil.convertJsonBytesToObject(response.getContentAsByteArray(), Provider.class);
-	  
+
 	  ProviderEntity insertedProviderDb = providerRepository.findOne(provider.getId());
 	  assertThat(insertedProviderDb.getVacations(), hasSize(1));
 	  assertThat(insertedProviderDb.getVacations().get(0), hasProperty("startDay", equalTo(vacationStart1)));
@@ -604,9 +601,9 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  assertThat(insertedProviderDb.getAddress().getState(), equalTo("ASD"));
 	  assertThat(insertedProviderDb.getAddress().getZipCode(), equalTo("321123"));
 	  assertThat(insertedProviderDb.getAddress().getStatus(), equalTo(ActivityStatus.ACTIVE));
-	  
+
 	  assertThat(insertedProviderDb.getContact().getStatus(), equalTo(ActivityStatus.ACTIVE));
-	  
+
 	  assertThat(insertedProviderDb.getContact().getPhones(), hasSize(2));
 	  List<PhoneEntity> phonesCheck = Lists.newArrayList(findDbPhoneByNumber(insertedProviderDb.getContact().getPhones(), "112233"));
 	  assertThat(phonesCheck, hasSize(1));
@@ -620,7 +617,7 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  assertThat(phonesCheck.get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
 	  assertThat(phonesCheck.get(0), hasProperty("displayIndex", equalTo(1)));
 	  assertThat(phonesCheck.get(0), hasProperty("numberType", equalTo(PhoneNumberType.LANDLINE)));
-	  
+
 	  assertThat(insertedProviderDb.getContact().getWebUrls(), hasSize(2));
 	  List<WebUrlEntity> urlsCheck = Lists.newArrayList(findDbWebUrlByUrl(insertedProviderDb.getContact().getWebUrls(), "http://allo.allo"));
 	  assertThat(urlsCheck, hasSize(1));
@@ -638,25 +635,25 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
 	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("displayIndex", equalTo(0)));
 	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("comment", equalTo("write an email here")));
-	  
+
 	  assertThat(insertedProviderDb.getWorkingHours(), hasSize(2));
-	  List<ProviderWorkingHourEntity> mondayWorkingHoursDb = 
+	  List<ProviderWorkingHourEntity> mondayWorkingHoursDb =
 			  Lists.newArrayList(findDbWorkingHourByWeekDay(insertedProviderDb.getWorkingHours(), WeekDay.MONDAY));
 	  assertThat(mondayWorkingHoursDb, hasSize(1));
 	  assertThat(mondayWorkingHoursDb.get(0), hasProperty("weekDay", equalTo(WeekDay.MONDAY)));
 	  assertThat(mondayWorkingHoursDb.get(0), hasProperty("startTime", equalTo(workingHourStart1)));
 	  assertThat(mondayWorkingHoursDb.get(0), hasProperty("endTime", equalTo(workingHourEnd1)));
 
-	  List<ProviderWorkingHourEntity> tuesdayWorkingHoursDb = 
+	  List<ProviderWorkingHourEntity> tuesdayWorkingHoursDb =
 			  Lists.newArrayList(findDbWorkingHourByWeekDay(insertedProviderDb.getWorkingHours(), WeekDay.TUESDAY));
 	  assertThat(tuesdayWorkingHoursDb, hasSize(1));
 	  assertThat(tuesdayWorkingHoursDb.get(0), hasProperty("weekDay", equalTo(WeekDay.TUESDAY)));
 	  assertThat(tuesdayWorkingHoursDb.get(0), hasProperty("startTime", equalTo(workingHourStart2)));
 	  assertThat(tuesdayWorkingHoursDb.get(0), hasProperty("endTime", equalTo(workingHourEnd2)));
-	  
+
   }
-  
-  
+
+
 	@Test
 	@Transactional
 	public void shouldUpdateProviderWithEmbededObjects() throws Exception {
@@ -668,13 +665,13 @@ public class ProviderControllerTest extends BaseControllerTest {
 	            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 	            .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)))
 	            .andReturn().getResponse();
-		
+
 		Provider provider = RestTestUtil.convertJsonBytesToObject(response.getContentAsByteArray(), Provider.class);
-		
+
 		provider.setName("Modified name");
 		provider.getAddress().setAddress1("Modified add 1");
-		
-		
+
+
 		mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
 				.contentType(RestTestUtil.APPLICATION_JSON_UTF8)
 				.content(RestTestUtil.convertObjectToJsonBytes(provider)))
@@ -696,25 +693,25 @@ public class ProviderControllerTest extends BaseControllerTest {
 			}
 		});
 	}
-	
+
 	private Iterable<PhoneEntity> findDbPhoneByNumber(List<PhoneEntity> phones, final String number) {
 		return Iterables.filter(phones, new Predicate<PhoneEntity>() {
 			@Override
 			public boolean apply(PhoneEntity input) {
 				return number.equals(input.getPhone());
 			}
-			
+
 		});
 	}
 
-	
+
 	private Iterable<WebUrlEntity> findDbWebUrlByUrl(List<WebUrlEntity> webUrls, final String url) {
 		return Iterables.filter(webUrls, new Predicate<WebUrlEntity>() {
 			@Override
 			public boolean apply(WebUrlEntity input) {
 				return url.equals(input.getWebUrlAddress());
 			}
-			
+
 		});
 	}
 
@@ -727,5 +724,5 @@ public class ProviderControllerTest extends BaseControllerTest {
             }
         });
     }
-	
+
 }

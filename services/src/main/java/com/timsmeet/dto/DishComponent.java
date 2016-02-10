@@ -1,13 +1,11 @@
 package com.timsmeet.dto;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.YesNo;
 
-public class DishComponent extends BaseEntity {
+public class DishComponent {
 
     private Long id;
     private Long lastModificationId;
@@ -16,7 +14,8 @@ public class DishComponent extends BaseEntity {
     private YesNo useComponentPriceAsDishPrice;
     private Integer numberOfRequiredElements;
     private Integer maximumNumberOfElements;
-    private List<DishElement> dishElements = new ArrayList<DishElement>();
+    private BigDecimal price;
+    private List<DishElement> dishElements;
 
     public Long getId() {
         return id;
@@ -74,6 +73,14 @@ public class DishComponent extends BaseEntity {
         this.maximumNumberOfElements = maximumNumberOfElements;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public List<DishElement> getDishElements() {
         return dishElements;
     }
@@ -85,8 +92,7 @@ public class DishComponent extends BaseEntity {
     public final static class Builder {
         private final DishComponent dishComponent = new DishComponent();
 
-        public Builder(EntityState entityState, String description, ActivityStatus status) {
-            dishComponent.getEntityAspect().setEntityState(entityState);
+        public Builder(String description, ActivityStatus status) {
             dishComponent.setDescription(description);
             dishComponent.setStatus(status);
         }
@@ -127,6 +133,11 @@ public class DishComponent extends BaseEntity {
 
         public Builder maximumNumberOfElements(Integer maximumNumberOfElements) {
             dishComponent.setMaximumNumberOfElements(maximumNumberOfElements);
+            return this;
+        }
+
+        public Builder price(BigDecimal price) {
+            dishComponent.setPrice(price);;
             return this;
         }
 

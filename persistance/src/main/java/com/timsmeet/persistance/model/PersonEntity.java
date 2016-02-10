@@ -1,15 +1,18 @@
 package com.timsmeet.persistance.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 
 @Entity
@@ -33,6 +36,20 @@ public class PersonEntity {
     @Column(name = DbTable.Person.PASSWORD, nullable = false, length = 255)
     private String password;
 
+    @OneToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name = DbTable.Person.CONTACT_ID, foreignKey = @ForeignKey(name = "person_contact_fk"))
+    private ContactEntity contact;
+
+    @ManyToOne
+    @JoinColumn(name = DbTable.Person.LOCATION_ID, foreignKey = @ForeignKey(name = "person_location_fk"))
+    private LocationEntity location;
+
+    @Column(name = DbTable.Person.ROOM, length = 15)
+    private String room;
+
+    @Column(name = DbTable.Person.DESK, length = 15)
+    private String desk;
+
     public String getLogin() {
         return login;
     }
@@ -49,6 +66,38 @@ public class PersonEntity {
         this.password = password;
     }
 
+    public ContactEntity getContact() {
+        return contact;
+    }
+
+    public void setContact(ContactEntity contact) {
+        this.contact = contact;
+    }
+
+    public LocationEntity getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationEntity location) {
+        this.location = location;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getDesk() {
+        return desk;
+    }
+
+    public void setDesk(String desk) {
+        this.desk = desk;
+    }
+
     public long getId() {
         return id;
     }
@@ -56,5 +105,10 @@ public class PersonEntity {
     public long getLastModificationId() {
         return lastModificationId;
     }
+
+    public void setLastModificationId(long lastModificationId) {
+        this.lastModificationId = lastModificationId;
+    }
+
 
 }

@@ -2,7 +2,6 @@ package com.timsmeet.services.spring;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnitUtil;
-
 import org.modelmapper.Condition;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -12,7 +11,6 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.timsmeet.dto.AdditionalCost;
 import com.timsmeet.dto.Address;
 import com.timsmeet.dto.Contact;
@@ -59,30 +57,31 @@ public class MapperConfig {
     @Bean
     public ModelMapper getModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        
+
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         final PersistenceUnitUtil unitUtil = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
         modelMapper.getConfiguration().setPropertyCondition(new Condition<Object, Object>() {
+            @Override
             public boolean applies(MappingContext<Object, Object> context) {
                 return unitUtil.isLoaded(context.getSource());
             }
         });
-        
+
         modelMapper.addMappings(new PropertyMap<AdditionalCost, AdditionalCostEntity>() {
             @Override
             protected void configure() {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         });
-        
+
         modelMapper.addMappings(new PropertyMap<Address, AddressEntity>() {
             @Override
             protected void configure() {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         });
-        
+
         modelMapper.addMappings(new PropertyMap<Contact, ContactEntity>() {
             @Override
             protected void configure() {
@@ -100,7 +99,7 @@ public class MapperConfig {
             }
         }).setPostConverter(new ChildEntityConverterBuilder<Dish, DishEntity>()
                 .addChildCollectionConverterFrom(new DishDishComponentsAccess()).build());
-        
+
         modelMapper.addMappings(new PropertyMap<DishComponent, DishComponentEntity>() {
             @Override
             protected void configure() {
@@ -108,7 +107,7 @@ public class MapperConfig {
             }
         }).setPostConverter(new ChildEntityConverterBuilder<DishComponent, DishComponentEntity>()
                 .addChildCollectionConverterFrom(new DishComponentDishElementsAccess()).build());
-        
+
         modelMapper.addMappings(new PropertyMap<DishElement, DishElementEntity>() {
             @Override
             protected void configure() {
@@ -129,7 +128,7 @@ public class MapperConfig {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         });
-        
+
         modelMapper.addMappings(new PropertyMap<Provider, ProviderEntity>() {
             @Override
             protected void configure() {
@@ -143,7 +142,7 @@ public class MapperConfig {
                 .addChildCollectionConverterFrom(new ProviderWorkingHoursConversionAccess())
                 .addChildCollectionConverterFrom(new ProviderDishesConversionAccess())
                 .addChildEntityConverterFrom(new ProviderContactConversionAccess())
-                .addChildEntityConverterFrom(new ProviderAddressConversionAccess()).build());        
+                .addChildEntityConverterFrom(new ProviderAddressConversionAccess()).build());
 
         modelMapper.addMappings(new PropertyMap<Vacation, VacationEntity>() {
             @Override
@@ -165,11 +164,11 @@ public class MapperConfig {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         });
-        
-        
+
+
 
         //===============================================================================================
-        
+
         modelMapper.addMappings(new PropertyMap<ProviderEntity, Provider>() {
             @Override
             protected void configure() {
@@ -177,8 +176,8 @@ public class MapperConfig {
                 when(Conditions.isNotNull()).map(source.getContact()).setContact(null);
             }
         });
-        
-        
+
+
         return modelMapper;
     }
 

@@ -1,8 +1,8 @@
 package com.timsmeet.persistance.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.constants.DbTable;
@@ -53,6 +51,9 @@ public class OrderItemEntity {
     @ManyToOne
     @JoinColumn(name = DbTable.OrderItem.DISH_ID, foreignKey = @ForeignKey(name = "order_item_dish_fk"))
     private DishEntity dish;
+
+    @Column(name = DbTable.OrderItem.PRICE)
+    private BigDecimal price;
 
     @Column(name = DbTable.OrderItem.COUNT, nullable = false)
     private int count;

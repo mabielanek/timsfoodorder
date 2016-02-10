@@ -1,5 +1,6 @@
 package com.timsmeet.persistance.model;
 
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -10,10 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
@@ -48,6 +47,9 @@ public class DishElementEntity {
     @Column(name = DbTable.DishElement.DESCRIPTION, length = 255)
     private String description;
 
+    @Column(name = DbTable.DishElement.PRICE)
+    private BigDecimal price;
+
     public ActivityStatus getStatus() {
         return ActivityStatus.forCode(status);
     }
@@ -78,6 +80,14 @@ public class DishElementEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public long getId() {

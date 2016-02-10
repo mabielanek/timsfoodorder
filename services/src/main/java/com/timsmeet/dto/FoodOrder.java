@@ -1,13 +1,10 @@
 package com.timsmeet.dto;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.FoodOrderStatus;
 
-public class FoodOrder extends BaseEntity {
+public class FoodOrder {
 
     private Long id;
     private Long lastModificationId;
@@ -16,7 +13,7 @@ public class FoodOrder extends BaseEntity {
     private FoodOrderStatus orderStatus;
     private Timestamp orderAdded;
     private Timestamp orderTime;
-    private List<OrderItem> orderItems = new ArrayList<OrderItem>();
+    private List<OrderItem> orderItems;
 
     public Long getId() {
         return id;
@@ -85,8 +82,7 @@ public class FoodOrder extends BaseEntity {
     public final static class Builder {
         private final FoodOrder foodOrder = new FoodOrder();
 
-        public Builder(EntityState entityState, Person person, Provider provider) {
-            foodOrder.getEntityAspect().setEntityState(entityState);
+        public Builder(Person person, Provider provider) {
             foodOrder.setPerson(person);
             foodOrder.setProvider(provider);
         }

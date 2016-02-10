@@ -1,9 +1,7 @@
 package com.timsmeet.dto;
 
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 
-public class Genere extends BaseEntity {
+public class Genere {
 
     private Long id;
     private Long lastModificationId;
@@ -36,8 +34,7 @@ public class Genere extends BaseEntity {
     public final static class Builder {
         private final Genere genere = new Genere();
 
-        public Builder(EntityState entityState, String name) {
-            genere.getEntityAspect().setEntityState(entityState);
+        public Builder(String name) {
             genere.setName(name);
         }
 

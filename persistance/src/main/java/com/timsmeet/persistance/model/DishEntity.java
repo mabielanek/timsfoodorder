@@ -1,9 +1,9 @@
 package com.timsmeet.persistance.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.constants.DbTable;
@@ -45,7 +43,7 @@ public class DishEntity {
 
     @Column(name = DbTable.Dish.STATUS, nullable = false, length = 1)
     private String status;
-    
+
     @ManyToOne
     @JoinColumn(name = DbTable.Dish.PROVIDER_ID, foreignKey = @ForeignKey(name = "dish_provider_fk"))
     private ProviderEntity provider;
@@ -61,6 +59,9 @@ public class DishEntity {
 
     @Column(name = DbTable.Dish.END_DAY, nullable = false)
     private Timestamp avaiabilityEndDay;
+
+    @Column(name = DbTable.Dish.PRICE)
+    private BigDecimal price;
 
     @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JoinColumn(name = DbTable.DishComponent.DISH_ID)
@@ -116,6 +117,14 @@ public class DishEntity {
 
     public void setAvaiabilityEndDay(Timestamp avaiabilityEndDay) {
         this.avaiabilityEndDay = avaiabilityEndDay;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public long getId() {

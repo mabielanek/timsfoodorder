@@ -1,10 +1,8 @@
 package com.timsmeet.dto;
 
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class Email extends BaseEntity {
+public class Email {
     private Long id;
     private Long lastModificationId;
     private ActivityStatus status;
@@ -63,8 +61,7 @@ public class Email extends BaseEntity {
     public static final class Builder {
         private final Email email = new Email();
 
-        public Builder(EntityState entityState, ActivityStatus status) {
-            email.getEntityAspect().setEntityState(entityState);
+        public Builder(ActivityStatus status) {
             email.setStatus(status);
         }
 

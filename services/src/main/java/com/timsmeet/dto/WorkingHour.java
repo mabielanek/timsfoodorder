@@ -1,11 +1,9 @@
 package com.timsmeet.dto;
 
 import java.sql.Timestamp;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 import com.timsmeet.persistance.enums.WeekDay;
 
-public class WorkingHour extends BaseEntity {
+public class WorkingHour {
     private Long id;
     private Long lastModificationId;
     private WeekDay weekDay;
@@ -55,8 +53,7 @@ public class WorkingHour extends BaseEntity {
     public static final class Builder {
         private final WorkingHour workingHour = new WorkingHour();
 
-        public Builder(EntityState entityState, WeekDay weekDay, Timestamp startTime, Timestamp endTime) {
-            workingHour.getEntityAspect().setEntityState(entityState);
+        public Builder(WeekDay weekDay, Timestamp startTime, Timestamp endTime) {
             workingHour.setWeekDay(weekDay);
             workingHour.setStartTime(startTime);
             workingHour.setEndTime(endTime);

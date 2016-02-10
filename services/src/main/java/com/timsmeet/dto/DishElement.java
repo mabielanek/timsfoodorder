@@ -1,16 +1,16 @@
 package com.timsmeet.dto;
 
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
+import java.math.BigDecimal;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
-public class DishElement extends BaseEntity {
+public class DishElement {
 
     private Long id;
     private Long lastModificationId;
     private ActivityStatus status;
     private String name;
     private String description;
+    private BigDecimal price;
 
     public Long getId() {
         return id;
@@ -52,11 +52,18 @@ public class DishElement extends BaseEntity {
         this.description = description;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public final static class Builder {
         private final DishElement dishElement = new DishElement();
 
-        public Builder(EntityState entityState, ActivityStatus status) {
-            dishElement.getEntityAspect().setEntityState(entityState);
+        public Builder(ActivityStatus status) {
             dishElement.setStatus(status);
         }
 
@@ -86,6 +93,11 @@ public class DishElement extends BaseEntity {
 
         public Builder description(String description) {
             dishElement.setDescription(description);
+            return this;
+        }
+
+        public Builder price(BigDecimal price) {
+            dishElement.setPrice(price);
             return this;
         }
     }

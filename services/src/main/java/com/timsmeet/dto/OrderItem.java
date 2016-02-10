@@ -1,17 +1,14 @@
 package com.timsmeet.dto;
 
-import java.util.ArrayList;
 import java.util.List;
-import com.timsmeet.dto.entity.BaseEntity;
-import com.timsmeet.dto.entity.EntityState;
 
-public class OrderItem extends BaseEntity {
+public class OrderItem {
     private Long id;
     private Long lastModificationId;
     private Person person;
     private Dish dish;
     private Integer count;
-    private List<OrderSubItem> orderSubItems = new ArrayList<OrderSubItem>();
+    private List<OrderSubItem> orderSubItems;
 
     public Long getId() {
         return id;
@@ -64,8 +61,7 @@ public class OrderItem extends BaseEntity {
     public final static class Builder {
         private final OrderItem orderItem = new OrderItem();
 
-        public Builder(EntityState entityState, Person person, Dish dish) {
-            orderItem.getEntityAspect().setEntityState(entityState);
+        public Builder(Person person, Dish dish) {
             orderItem.setPerson(person);
             orderItem.setDish(dish);
         }

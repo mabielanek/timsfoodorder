@@ -3,14 +3,12 @@ package com.timsmeet.services;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.timsmeet.dto.Provider;
@@ -35,10 +33,10 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Autowired
     private ModelMapper modelMapper;
-    
+
     @Override
     public List<Provider> readProviders(Pageable pageable) {
-        
+
         List<ProviderEntity> dbProviders = Lists.newArrayList(providerRepository.findAll(pageable));
         List<Provider> providers = Lists.newArrayListWithCapacity(dbProviders.size());
         for (ProviderEntity dbProvider : dbProviders) {
@@ -52,12 +50,8 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     @Transactional
     public Provider save(Provider provider) {
-        ProviderEntity dbProvider = null;
-        if (provider.getId() == null) {
-            dbProvider = new ProviderEntity();
-        } else {
-            dbProvider = providerRepository.findOne(provider.getId());
-        }
+        ProviderEntity dbProvider =
+                (provider.getId() == null) ? new ProviderEntity() : providerRepository.findOne(provider.getId());
 
         if (dbProvider != null) {
             modelMapper.map(provider, dbProvider);
