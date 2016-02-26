@@ -1,14 +1,13 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.contact;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.Contact;
 import com.timsmeet.dto.Phone;
 import com.timsmeet.persistance.model.ContactEntity;
 import com.timsmeet.persistance.model.PhoneEntity;
+import com.timsmeet.services.mapper.OneToManyConversionAccess;
 
 public class ContactPhonesConversionAccess implements OneToManyConversionAccess<Contact, ContactEntity, Phone, PhoneEntity> {
     @Override

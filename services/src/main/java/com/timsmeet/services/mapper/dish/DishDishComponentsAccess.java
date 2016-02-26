@@ -1,14 +1,13 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.dish;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.Dish;
 import com.timsmeet.dto.DishComponent;
 import com.timsmeet.persistance.model.DishComponentEntity;
 import com.timsmeet.persistance.model.DishEntity;
+import com.timsmeet.services.mapper.OneToManyConversionAccess;
 
 public class DishDishComponentsAccess implements
         OneToManyConversionAccess<com.timsmeet.dto.Dish, com.timsmeet.persistance.model.DishEntity, DishComponent, DishComponentEntity> {

@@ -39,18 +39,18 @@ import com.timsmeet.persistance.model.WebUrlEntity;
 import com.timsmeet.persistance.model.WorkingHourEntity;
 import com.timsmeet.persistance.repositories.GenereRepository;
 import com.timsmeet.services.mapper.ChildEntityConverterBuilder;
-import com.timsmeet.services.mapper.ContactEmailsConversionAccess;
-import com.timsmeet.services.mapper.ContactPhonesConversionAccess;
-import com.timsmeet.services.mapper.ContactWebUrlsConversionAccess;
-import com.timsmeet.services.mapper.DishComponentDishElementsAccess;
-import com.timsmeet.services.mapper.DishDishComponentsAccess;
-import com.timsmeet.services.mapper.DishGeneresConversionAccess;
-import com.timsmeet.services.mapper.ProviderAdditionalCostsConvertionAccess;
-import com.timsmeet.services.mapper.ProviderAddressConversionAccess;
-import com.timsmeet.services.mapper.ProviderContactConversionAccess;
-import com.timsmeet.services.mapper.ProviderDishesConversionAccess;
-import com.timsmeet.services.mapper.ProviderVacationsConversionAccess;
-import com.timsmeet.services.mapper.ProviderWorkingHoursConversionAccess;
+import com.timsmeet.services.mapper.contact.ContactEmailsConversionAccess;
+import com.timsmeet.services.mapper.contact.ContactPhonesConversionAccess;
+import com.timsmeet.services.mapper.contact.ContactWebUrlsConversionAccess;
+import com.timsmeet.services.mapper.dish.DishDishComponentsAccess;
+import com.timsmeet.services.mapper.dish.DishGeneresConversionAccess;
+import com.timsmeet.services.mapper.dishComponent.DishComponentDishElementsAccess;
+import com.timsmeet.services.mapper.provider.ProviderAdditionalCostsConvertionAccess;
+import com.timsmeet.services.mapper.provider.ProviderAddressConversionAccess;
+import com.timsmeet.services.mapper.provider.ProviderContactConversionAccess;
+import com.timsmeet.services.mapper.provider.ProviderDishesConversionAccess;
+import com.timsmeet.services.mapper.provider.ProviderVacationsConversionAccess;
+import com.timsmeet.services.mapper.provider.ProviderWorkingHoursConversionAccess;
 
 @Configuration
 public class MapperConfig {
@@ -95,9 +95,9 @@ public class MapperConfig {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         }).setPostConverter(new ChildEntityConverterBuilder<Contact, ContactEntity>()
-                .addChildCollectionConverterFrom(new ContactEmailsConversionAccess())
-                .addChildCollectionConverterFrom(new ContactWebUrlsConversionAccess())
-                .addChildCollectionConverterFrom(new ContactPhonesConversionAccess()).build());
+                .addCollectionConverterFrom(new ContactEmailsConversionAccess())
+                .addCollectionConverterFrom(new ContactWebUrlsConversionAccess())
+                .addCollectionConverterFrom(new ContactPhonesConversionAccess()).build());
 
          modelMapper.addMappings(new PropertyMap<Dish, DishEntity>() {
             @Override
@@ -105,8 +105,8 @@ public class MapperConfig {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         }).setPostConverter(new ChildEntityConverterBuilder<Dish, DishEntity>()
-                .addChildCollectionConverterFrom(new DishDishComponentsAccess())
-                .addChildJoinCollectionConverterFrom(new DishGeneresConversionAccess(genereRepository)).build());
+                .addCollectionConverterFrom(new DishDishComponentsAccess())
+                .addJoinCollectionConverterFrom(new DishGeneresConversionAccess(genereRepository)).build());
 
         modelMapper.addMappings(new PropertyMap<DishComponent, DishComponentEntity>() {
             @Override
@@ -114,7 +114,7 @@ public class MapperConfig {
                 when(Conditions.isNotNull()).map().setLastModificationId(source.getLastModificationId());
             }
         }).setPostConverter(new ChildEntityConverterBuilder<DishComponent, DishComponentEntity>()
-                .addChildCollectionConverterFrom(new DishComponentDishElementsAccess()).build());
+                .addCollectionConverterFrom(new DishComponentDishElementsAccess()).build());
 
         modelMapper.addMappings(new PropertyMap<DishElement, DishElementEntity>() {
             @Override
@@ -145,12 +145,12 @@ public class MapperConfig {
                 skip().setContact(null);// done by post conversion
             }
         }).setPostConverter(new ChildEntityConverterBuilder<Provider, ProviderEntity>()
-                .addChildCollectionConverterFrom(new ProviderVacationsConversionAccess())
-                .addChildCollectionConverterFrom(new ProviderAdditionalCostsConvertionAccess())
-                .addChildCollectionConverterFrom(new ProviderWorkingHoursConversionAccess())
-                .addChildCollectionConverterFrom(new ProviderDishesConversionAccess())
-                .addChildEntityConverterFrom(new ProviderContactConversionAccess())
-                .addChildEntityConverterFrom(new ProviderAddressConversionAccess()).build());
+                .addCollectionConverterFrom(new ProviderVacationsConversionAccess())
+                .addCollectionConverterFrom(new ProviderAdditionalCostsConvertionAccess())
+                .addCollectionConverterFrom(new ProviderWorkingHoursConversionAccess())
+                .addCollectionConverterFrom(new ProviderDishesConversionAccess())
+                .addEntityConverterFrom(new ProviderContactConversionAccess())
+                .addEntityConverterFrom(new ProviderAddressConversionAccess()).build());
 
         modelMapper.addMappings(new PropertyMap<Vacation, VacationEntity>() {
             @Override
@@ -189,6 +189,7 @@ public class MapperConfig {
 
             @Override
             protected void configure() {
+                // mapping when source and dest properties has different types
                 map(source.getDishGeneres()).setGeneres(null);
             }
         });

@@ -1,13 +1,12 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.provider;
 
 import java.lang.reflect.Type;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.Address;
 import com.timsmeet.dto.Provider;
 import com.timsmeet.persistance.model.AddressEntity;
 import com.timsmeet.persistance.model.ProviderEntity;
+import com.timsmeet.services.mapper.OneToOneConversionAccess;
 
 public class ProviderAddressConversionAccess implements OneToOneConversionAccess<Provider, ProviderEntity, Address, AddressEntity> {
 

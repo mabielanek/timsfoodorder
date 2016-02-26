@@ -1,14 +1,13 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.contact;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.Contact;
 import com.timsmeet.dto.WebUrl;
 import com.timsmeet.persistance.model.ContactEntity;
 import com.timsmeet.persistance.model.WebUrlEntity;
+import com.timsmeet.services.mapper.OneToManyConversionAccess;
 
 public class ContactWebUrlsConversionAccess implements OneToManyConversionAccess<Contact, ContactEntity, WebUrl, WebUrlEntity> {
     @Override

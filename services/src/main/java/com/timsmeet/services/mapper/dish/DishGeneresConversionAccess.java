@@ -1,4 +1,4 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.dish;
 
 import java.util.Collection;
 import com.timsmeet.dto.Dish;
@@ -7,6 +7,7 @@ import com.timsmeet.persistance.model.DishEntity;
 import com.timsmeet.persistance.model.DishGenereEntity;
 import com.timsmeet.persistance.model.GenereEntity;
 import com.timsmeet.persistance.repositories.GenereRepository;
+import com.timsmeet.services.mapper.OneToManyJoinConversionAccess;
 
 public class DishGeneresConversionAccess implements OneToManyJoinConversionAccess<Dish, DishEntity, Genere, GenereEntity, DishGenereEntity>
 {

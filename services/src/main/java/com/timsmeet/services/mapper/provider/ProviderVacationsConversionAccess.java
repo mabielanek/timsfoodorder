@@ -1,14 +1,13 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.provider;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.Provider;
 import com.timsmeet.dto.Vacation;
 import com.timsmeet.persistance.model.ProviderEntity;
 import com.timsmeet.persistance.model.ProviderVacationEntity;
+import com.timsmeet.services.mapper.OneToManyConversionAccess;
 
 public class ProviderVacationsConversionAccess implements
         OneToManyConversionAccess<Provider, ProviderEntity, Vacation, ProviderVacationEntity> {

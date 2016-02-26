@@ -1,14 +1,13 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.provider;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.Provider;
 import com.timsmeet.dto.WorkingHour;
 import com.timsmeet.persistance.model.ProviderEntity;
 import com.timsmeet.persistance.model.ProviderWorkingHourEntity;
+import com.timsmeet.services.mapper.OneToManyConversionAccess;
 
 public class ProviderWorkingHoursConversionAccess implements OneToManyConversionAccess<Provider, ProviderEntity, WorkingHour, ProviderWorkingHourEntity> {
 

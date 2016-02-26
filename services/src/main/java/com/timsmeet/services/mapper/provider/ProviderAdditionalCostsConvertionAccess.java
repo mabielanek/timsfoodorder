@@ -1,14 +1,13 @@
-package com.timsmeet.services.mapper;
+package com.timsmeet.services.mapper.provider;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-
 import org.modelmapper.TypeToken;
-
 import com.timsmeet.dto.AdditionalCost;
 import com.timsmeet.dto.Provider;
 import com.timsmeet.persistance.model.AdditionalCostEntity;
 import com.timsmeet.persistance.model.ProviderEntity;
+import com.timsmeet.services.mapper.OneToManyConversionAccess;
 
 public class ProviderAdditionalCostsConvertionAccess implements OneToManyConversionAccess<Provider, ProviderEntity, AdditionalCost, AdditionalCostEntity> {
 
