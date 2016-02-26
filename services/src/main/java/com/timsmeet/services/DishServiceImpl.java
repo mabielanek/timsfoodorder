@@ -123,8 +123,8 @@ public class DishServiceImpl implements DishService {
         }
 
         if (initializeDishGeneres) {
-            Hibernate.initialize(dbDish.getDishGneres());
-            for(DishGenereEntity dbDishGenere : dbDish.getDishGneres()) {
+            Hibernate.initialize(dbDish.getDishGeneres());
+            for(DishGenereEntity dbDishGenere : dbDish.getDishGeneres()) {
                 Hibernate.initialize(dbDishGenere.getGenere());
             }
         }

@@ -65,7 +65,9 @@ public class ProviderControllerTest extends BaseControllerTest {
 
     @Before
     public void setUpProviderControler() throws SQLException {
-        DbTestUtil.resetAutoIncrementColumns(webApplicationContext, DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Email.TABLE, DbTable.WebUrl.TABLE, DbTable.Address.TABLE, DbTable.Provider.TABLE, DbTable.WorkingHour.TABLE, DbTable.Vacation.TABLE);
+        DbTestUtil.resetAutoIncrementColumns(webApplicationContext,
+                DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Email.TABLE, DbTable.WebUrl.TABLE, DbTable.Address.TABLE,
+                DbTable.Provider.TABLE, DbTable.WorkingHour.TABLE, DbTable.Vacation.TABLE);
     }
 
   @Test
@@ -318,6 +320,7 @@ public class ProviderControllerTest extends BaseControllerTest {
       return resultActions
 
     		  .andExpect(MockMvcResultMatchers.jsonPath("$.workingHours", hasSize(6)))
+    		  //PathCreator().arrayByFieldValue("id", "1").field("workingHours").arrayByFieldValue("id", "1").field("weekDay").matcher(hasItem(WeekDay.MONDAY.toString()));
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].weekDay", hasItem(WeekDay.MONDAY.toString())))
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].startTime", hasItem("2000-06-01T06:00:00.000+0000")))
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].endTime", hasItem("2000-06-01T13:00:00.000+0000")))

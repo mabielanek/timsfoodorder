@@ -8,6 +8,9 @@
     <fo_dish />
     <fo_dish_comp />
     <fo_dish_elem />
+    <fo_genere />
+    <fo_dish_genere />
+    
     
     
 </dataset>

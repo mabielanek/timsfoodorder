@@ -11,6 +11,8 @@
     <fo_address id="1" last_modification_id="0" status="A" address1="Some Road" address2="24th Obernister" city="London" zip_code="340092" state="Capitol" country="England" comment_text="Address in London for tests" display_index="0"/>
     <fo_address id="2" last_modification_id="0" status="A" address1="Other Road" address2="12th Londita" city="Malia" zip_code="233DS3" state="Marina" country="Greece" comment_text="Address with sample text" display_index="0"/>
 
+    <fo_genere id="1" last_modification_id="0" name="italian food" />
+    <fo_genere id="2" last_modification_id="0" name="wegetarian" />
 
     <fo_provider id="1" last_modification_id="0" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="1" contact_id="1"/>
     <fo_provider id="2" last_modification_id="0" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
@@ -41,4 +43,8 @@
 	<fo_dish_elem id="4" last_modification_id="0" status="A" dish_comp_id="2" name="mutton" description=" " price = "9.0"/>
 	<fo_dish_elem id="5" last_modification_id="0" status="A" dish_comp_id="2" name="chicken" description="fresh chicken" price = "8.5"/>
 
+
+    <fo_dish_genere id="1" last_modification_id="0" dish_id="2" genere_id="1" />
+    <fo_dish_genere id="2" last_modification_id="0" dish_id="4" genere_id="2" />
+    
 </dataset>

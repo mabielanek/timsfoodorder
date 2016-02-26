@@ -160,7 +160,7 @@ public class DishEntity {
         return false;
     }
 
-    public List<DishGenereEntity> getDishGneres() {
+    public List<DishGenereEntity> getDishGeneres() {
         return dishGeneres;
     }
 

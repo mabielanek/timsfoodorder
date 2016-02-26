@@ -40,6 +40,11 @@ public class ChildEntityConverterBuilder<S, D> {
         return this;
     }
 
+    public <SC, JC, DC> ChildEntityConverterBuilder<S, D> addChildJoinCollectionConverterFrom(OneToManyJoinConversionAccess<S, D, SC, JC, DC> oneToManyJoinConversionAccess) {
+        chainedConverter.addConverter(new OneToManyJoinEntityConverter<S, D, SC, JC, DC>(oneToManyJoinConversionAccess));
+        return this;
+    }
+
     public <SC, DC> ChildEntityConverterBuilder<S, D> addChildEntityConverterFrom(OneToOneConversionAccess<S, D, SC, DC> oneToOneConversionAccess) {
         chainedConverter.addConverter(new OneToOneEntityConverter<S, D, SC, DC>(oneToOneConversionAccess));
         return this;

@@ -44,5 +44,11 @@ public class PostConverterBuilder<S, D> {
         chainedConverter.addConverter(new OneToOneEntityConverter<S, D, SC, DC>(oneToOneConversionAccess));
         return this;
     }
+    
+    public <SC, JC, DC> PostConverterBuilder<S, D> addChildJoinConverterFrom(OneToManyJoinConversionAccess<S, D, SC, JC, DC> oneToManyJoinConversionAccess) {
+        chainedConverter.addConverter(new OneToManyJoinEntityConverter<S, D, SC, JC, DC>(oneToManyJoinConversionAccess));
+        return this;
+        
+    }
 
 }

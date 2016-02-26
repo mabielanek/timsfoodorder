@@ -1,5 +1,6 @@
 package com.timsmeet.rest.controllers;
 
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.timsmeet.dto.Dish;
 import com.timsmeet.dto.DishComponent;
 import com.timsmeet.dto.DishElement;
+import com.timsmeet.dto.Genere;
 import com.timsmeet.errors.ErrorDescribedEnum;
 import com.timsmeet.persistance.DbTestUtil;
 import com.timsmeet.persistance.constants.DbTable;
@@ -29,18 +31,21 @@ import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.YesNo;
 import com.timsmeet.rest.RestTestUtil;
 import com.timsmeet.rest.controllers.constants.Endpoint;
+import com.timsmeet.services.DishService;
 import com.timsmeet.services.builder.DateBuilder;
 
 @DatabaseSetup("dish/InitialData.xml")
 @DatabaseTearDown("dish/ClearTables.xml")
 @ExpectedDatabases({
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Dish.TABLE, override = false),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishComponent.TABLE, override = false),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishElement.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Contact.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Phone.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Address.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Provider.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Dish.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishComponent.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishElement.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Genere.TABLE),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishGenere.TABLE)
 })
 public class DishControllerTest extends BaseControllerTest{
 
@@ -48,20 +53,32 @@ public class DishControllerTest extends BaseControllerTest{
     @Before
     public void setUpProviderControler() throws SQLException {
         DbTestUtil.resetAutoIncrementColumns(webApplicationContext, DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Address.TABLE,
-                DbTable.Provider.TABLE, DbTable.Dish.TABLE, DbTable.DishComponent.TABLE, DbTable.DishElement.TABLE);
+                DbTable.Provider.TABLE, DbTable.Dish.TABLE, DbTable.DishComponent.TABLE, DbTable.DishElement.TABLE,
+                DbTable.DishGenere.TABLE);
     }
 
     @Test
     public void shouldFindDishByProviderId() throws Exception {
         ResultActions resultActions =
-        mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1/" + Endpoint.DISH).param("sort", "id"))
+        mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1/" + Endpoint.DISH)
+                .param("sort", "id").param("embeded", DishService.EMBED_DISH_GENERES))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(5)));
 
         resultActions = andValidateProviderDishes(resultActions, false);
+        resultActions = andValidateDishGeneres(resultActions);
     }
+
+    private ResultActions andValidateDishGeneres(ResultActions resultActions) throws Exception {
+        resultActions
+            .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.id==2)].generes[?(@.id==1)].name", hasItem("italian food")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.id==4)].generes[?(@.id==2)].name", hasItem("wegetarian")));
+        return resultActions;
+    }
+    //PathCreator().arrayByIndex(0).field("generes").arrayByFieldValue("id", "1").field("name").matcher(hasItem("italian food"));
+    //arrayPathByIndex(0).fieldPath("generes").arrayPathByFieldValue("id", "1").fieldPath("name").matcher(hasItem("italian food"));
 
     private ResultActions andValidateProviderDishes(ResultActions resultActions, boolean onlyActive) throws Exception {
 
@@ -182,13 +199,11 @@ public class DishControllerTest extends BaseControllerTest{
     }
 
 
-
-
     @Test
     @ExpectedDatabases({
-        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.Dish.TABLE, override = true),
-        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishComponent.TABLE, override = true),
-        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishElement.TABLE, override = true),
+        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.Dish.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishComponent.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishElement.TABLE),
     })
     public void shouldDeleteDishWithComponentsAndElements() throws Exception {
 
@@ -201,9 +216,9 @@ public class DishControllerTest extends BaseControllerTest{
 
     @Test
     @ExpectedDatabases({
-        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.Dish.TABLE, override = true),
-        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishComponent.TABLE, override = true),
-        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishElement.TABLE, override = true),
+        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.Dish.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishComponent.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishElement.TABLE),
     })
     public void shouldModifyDishWithComponentsAndElements() throws Exception {
 
@@ -230,6 +245,33 @@ public class DishControllerTest extends BaseControllerTest{
                         new DishElement.Builder(ActivityStatus.ACTIVE).name("Added element 2").description("Added element desc 2")
                         .price(new BigDecimal("55.55")).build()))
                 .build());
+
+        mockMvc.perform(MockMvcRequestBuilders.put(Endpoint.PROVIDER + "/1/" + Endpoint.DISH)
+                .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
+                .content(RestTestUtil.convertObjectToJsonBytes(toModify)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+    }
+
+    @Test
+    @ExpectedDatabases({
+        @ExpectedDatabase(value = "dish/operations/DishGenereModify.xml", table = DbTable.DishGenere.TABLE),
+
+    })
+    public void shouldModifyDishGeneres() throws Exception {
+
+        MockHttpServletResponse existingDishResponse =
+                mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1/" + Endpoint.DISH)
+                        .param("sort", "id").param("embeded", DishService.EMBED_DISH_GENERES))
+                .andReturn().getResponse();
+
+        Dish[] dishes = RestTestUtil.convertJsonBytesToArray(existingDishResponse.getContentAsByteArray(), Dish.class);
+        Dish toModify = dishes[1];
+        toModify.setGeneres(Lists.newArrayList(toModify.getGeneres().get(0),
+                new Genere.Builder("wegetarian").id(2L).lastModificationId(0L).build()));
 
         mockMvc.perform(MockMvcRequestBuilders.put(Endpoint.PROVIDER + "/1/" + Endpoint.DISH)
                 .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
