@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     
-    <fo_provider id="2" last_modification_id="0" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
+    <fo_provider id="2" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
 
-    <fo_contact id="2" last_modification_id="0" status="A"/>
+    <fo_contact id="2" status="A"/>
 
-    <fo_phone id="3" last_modification_id="0" status="A" contact_id="2" phone="993844092" phone_ext="12" number_type="L" comment_text="Main Phone Number" display_index="0"/>
+    <fo_phone id="3" status="A" contact_id="2" phone="993844092" phone_ext="12" number_type="L" comment_text="Main Phone Number" display_index="0"/>
 
-    <fo_web_url id="2" last_modification_id="0" status="A" contact_id="2" web_url_address="https://binton.com" comment_text="Binton web page" display_index="0"/>
-    <fo_web_url id="3" last_modification_id="0" status="A" contact_id="2" web_url_address="http://support.binton.com" comment_text="Support web page" display_index="1"/>
+    <fo_web_url id="2" status="A" contact_id="2" web_url_address="https://binton.com" comment_text="Binton web page" display_index="0"/>
+    <fo_web_url id="3" status="A" contact_id="2" web_url_address="http://support.binton.com" comment_text="Support web page" display_index="1"/>
 
-    <fo_email id="3" last_modification_id="0" status="A" contact_id="2" email_address="help@binton.com" comment_text="Binton help email" display_index="0"/>
+    <fo_email id="3" status="A" contact_id="2" email_address="help@binton.com" comment_text="Binton help email" display_index="0"/>
 
-    <fo_address id="2" last_modification_id="0" status="A" address1="Other Road" address2="12th Londita" city="Malia" zip_code="233DS3" state="Marina" country="Greece" comment_text="Address with sample text" display_index="0"/>
+    <fo_address id="2" status="A" address1="Other Road" address2="12th Londita" city="Malia" zip_code="233DS3" state="Marina" country="Greece" comment_text="Address with sample text" display_index="0"/>
 
     <fo_vacation />
     
-    <fo_working_hour id="101" last_modification_id="0" owner_type="P" week_day="MONDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="2"/>
-    <fo_working_hour id="102" last_modification_id="0" owner_type="P" week_day="FRIDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="2"/>
+    <fo_working_hour id="101" owner_type="P" week_day="MONDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="2"/>
+    <fo_working_hour id="102" owner_type="P" week_day="FRIDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="2"/>
     
 </dataset>

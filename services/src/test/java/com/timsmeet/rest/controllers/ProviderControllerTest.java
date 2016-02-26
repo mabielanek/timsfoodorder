@@ -1,16 +1,15 @@
 package com.timsmeet.rest.controllers;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,15 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.github.springtestdbunit.ExcludedColumns;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.annotation.ExpectedDatabases;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.timsmeet.dto.Address;
 import com.timsmeet.dto.Contact;
 import com.timsmeet.dto.Email;
@@ -42,19 +42,36 @@ import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.PhoneNumberType;
 import com.timsmeet.persistance.enums.WeekDay;
-import com.timsmeet.persistance.model.PhoneEntity;
-import com.timsmeet.persistance.model.ProviderEntity;
-import com.timsmeet.persistance.model.ProviderWorkingHourEntity;
-import com.timsmeet.persistance.model.WebUrlEntity;
 import com.timsmeet.persistance.repositories.ProviderRepository;
 import com.timsmeet.rest.RestTestUtil;
 import com.timsmeet.rest.controllers.constants.Endpoint;
 import com.timsmeet.services.ProviderService;
 import com.timsmeet.services.builder.DateBuilder;
+import com.timsmeet.spring.ColumnSensingReplacementDataSetLoader;
 
+/*
+ * @DbUnitConfiguration(dataSetLoader = ColumnSensingReplacementDataSetLoader.class)
+ *      - replacement dataset loader is used, so for null db values, [null] string can be entered in falt xml dataset
+ * @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+ *      - table is specified, as only then this can be overwritten in specific test (otherwise whole dataset is loaded and compared)
+ *      - override = false - default true break checking for other tables (bug in spring-test-dbunit-1.2.1 ?)
+ *      - excluded columns - to exclude e.g. last_modification_id, but this should be present in file for @DatabaseSetup, only for @ExpectedDatabase can be ommited
+ */
 
+@DbUnitConfiguration(dataSetLoader = ColumnSensingReplacementDataSetLoader.class)
 @DatabaseSetup("provider/InitialData.xml")
 @DatabaseTearDown("provider/ClearTables.xml")
+@ExpectedDatabases({
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
+    @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
+})
+@ExcludedColumns("last_modification_id")
 public class ProviderControllerTest extends BaseControllerTest {
 
 	@Autowired
@@ -65,22 +82,10 @@ public class ProviderControllerTest extends BaseControllerTest {
 
     @Before
     public void setUpProviderControler() throws SQLException {
-        DbTestUtil.resetAutoIncrementColumns(webApplicationContext,
-                DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Email.TABLE, DbTable.WebUrl.TABLE, DbTable.Address.TABLE,
-                DbTable.Provider.TABLE, DbTable.WorkingHour.TABLE, DbTable.Vacation.TABLE);
+        DbTestUtil.resetAutoIncrementColumns(webApplicationContext, DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Email.TABLE, DbTable.WebUrl.TABLE, DbTable.Address.TABLE, DbTable.Provider.TABLE, DbTable.WorkingHour.TABLE, DbTable.Vacation.TABLE);
     }
 
   @Test
-    @ExpectedDatabases({
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-            @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-    })
   public void shouldFindAllProviders() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER))
               .andDo(MockMvcResultHandlers.print())
@@ -90,76 +95,36 @@ public class ProviderControllerTest extends BaseControllerTest {
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldErrosOnWrongPageSize() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("perPage", "-2"))
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PER_PAGE_SHOULD_BE_POSITIVE.getErrorCode())));
+          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", equalTo(ErrorDescribedEnum.PER_PAGE_SHOULD_BE_POSITIVE.getErrorCode())));
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldErrosOnWrongPage() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("page", "-2"))
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PAGE_PARAM_IS_NEGATIVE.getErrorCode())));
+          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", equalTo(ErrorDescribedEnum.PAGE_PARAM_IS_NEGATIVE.getErrorCode())));
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldErrosOnWrongSort() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("sort", "unknown"))
           .andDo(MockMvcResultHandlers.print())
           .andExpect(MockMvcResultMatchers.status().isBadRequest())
           .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
           .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
-          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.INVALID_SORT_PARAM.getErrorCode())));
+          .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", equalTo(ErrorDescribedEnum.INVALID_SORT_PARAM.getErrorCode())));
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldSortByNameAsc() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("sort", "name"))
       .andDo(MockMvcResultHandlers.print())
@@ -171,16 +136,6 @@ public class ProviderControllerTest extends BaseControllerTest {
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldSortByNameDesc() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER).param("sort", "-name"))
       .andDo(MockMvcResultHandlers.print())
@@ -193,65 +148,35 @@ public class ProviderControllerTest extends BaseControllerTest {
 
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldFindProviderById() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.status", is(ActivityStatus.ACTIVE.toString())))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.name", is("Acme Corp")));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(1)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.status", equalTo(ActivityStatus.ACTIVE.toString())))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.name", equalTo("Acme Corp")));
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldErrorNotFoundWhenGetNotExistingProvider() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-3001"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isNotFound())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PROVIDER_TO_READ_NOT_FOUND.getErrorCode())));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", equalTo(ErrorDescribedEnum.PROVIDER_TO_READ_NOT_FOUND.getErrorCode())));
 
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldErrorWhenWrongEmbeded() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/-1001").param("embeded", "wrongEmbeded"))
       .andDo(MockMvcResultHandlers.print())
       .andExpect(MockMvcResultMatchers.status().isBadRequest())
       .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
       .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
-      .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.INVALID_EMBEDED_PARAM.getErrorCode())));
+      .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode",  equalTo(ErrorDescribedEnum.INVALID_EMBEDED_PARAM.getErrorCode())));
 
   }
 
@@ -274,44 +199,24 @@ public class ProviderControllerTest extends BaseControllerTest {
 
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldErrorNotFoundWhenDeleteNotExistingProvider() throws Exception {
       mockMvc.perform(MockMvcRequestBuilders.delete(Endpoint.PROVIDER + "/-3001"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isNotFound())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(MockMvcResultMatchers.jsonPath("$..errorCode", hasSize(1)))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", is(ErrorDescribedEnum.PROVIDER_TO_DELETE_NOT_FOUND.getErrorCode())));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].errorCode", equalTo(ErrorDescribedEnum.PROVIDER_TO_DELETE_NOT_FOUND.getErrorCode())));
   }
 
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldFindByIdWithEmbededWorkingHours() throws Exception {
 	  ResultActions resultActions =
       mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "workingHours"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(1)));
 
 	  resultActions = andValidateReadComanyWorkingHours(resultActions);
   }
@@ -320,7 +225,6 @@ public class ProviderControllerTest extends BaseControllerTest {
       return resultActions
 
     		  .andExpect(MockMvcResultMatchers.jsonPath("$.workingHours", hasSize(6)))
-    		  //PathCreator().arrayByFieldValue("id", "1").field("workingHours").arrayByFieldValue("id", "1").field("weekDay").matcher(hasItem(WeekDay.MONDAY.toString()));
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].weekDay", hasItem(WeekDay.MONDAY.toString())))
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].startTime", hasItem("2000-06-01T06:00:00.000+0000")))
     		  .andExpect(MockMvcResultMatchers.jsonPath("$..workingHours[?(@.id==1)].endTime", hasItem("2000-06-01T13:00:00.000+0000")))
@@ -347,23 +251,13 @@ public class ProviderControllerTest extends BaseControllerTest {
   }
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Email.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WebUrl.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Address.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.WorkingHour.TABLE, override = false),
-      @ExpectedDatabase(value = "provider/InitialData.xml", table = DbTable.Vacation.TABLE, override = false),
-  })
   public void shouldFindByIdWithEmbededVacations() throws Exception {
 	  ResultActions resultActions =
 			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(1)));
 	  resultActions = andValidateProviderVacations(resultActions);
   }
 
@@ -379,12 +273,6 @@ public class ProviderControllerTest extends BaseControllerTest {
 
   @Test
   @ExpectedDatabases({
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Phone.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Email.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WebUrl.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Address.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WorkingHour.TABLE, override=false),
       @ExpectedDatabase(value="provider/operations/VacationAdd.xml", table=DbTable.Provider.TABLE, override=false),
       @ExpectedDatabase(value="provider/operations/VacationAdd.xml", table=DbTable.Vacation.TABLE, override=false),
   })
@@ -409,12 +297,6 @@ public class ProviderControllerTest extends BaseControllerTest {
 
   @Test
   @ExpectedDatabases({
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Phone.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Email.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WebUrl.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Address.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WorkingHour.TABLE, override=false),
       @ExpectedDatabase(value="provider/operations/VacationDelete.xml", table=DbTable.Provider.TABLE, override=false),
       @ExpectedDatabase(value="provider/operations/VacationDelete.xml", table=DbTable.Vacation.TABLE, override=false),
   })
@@ -439,12 +321,6 @@ public class ProviderControllerTest extends BaseControllerTest {
 
   @Test
   @ExpectedDatabases({
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Phone.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Email.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WebUrl.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Address.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WorkingHour.TABLE, override=false),
       @ExpectedDatabase(value="provider/operations/VacationModify.xml", table=DbTable.Provider.TABLE, override=false),
       @ExpectedDatabase(value="provider/operations/VacationModify.xml", table=DbTable.Vacation.TABLE, override=false),
   })
@@ -470,24 +346,16 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andReturn().getResponse();
   }
 
-@Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Phone.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Email.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WebUrl.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Address.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Provider.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WorkingHour.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Vacation.TABLE, override=false),
-  })
+  @Test
   public void shouldFindByIdWithEmbededContacts() throws Exception {
 	  ResultActions resultActions =
 			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "contact.emails", "contact.webUrls", "contact.phones"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(1)));
+	  
+	  
 	  resultActions = andValidateProviderContacts(resultActions);
   }
 
@@ -523,23 +391,13 @@ public class ProviderControllerTest extends BaseControllerTest {
 
 
   @Test
-  @ExpectedDatabases({
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Contact.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Phone.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Email.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WebUrl.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Address.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Provider.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.WorkingHour.TABLE, override=false),
-      @ExpectedDatabase(value="provider/InitialData.xml", table=DbTable.Vacation.TABLE, override=false),
-  })
   public void shouldFindByIdWithMultiEmbededEntities() throws Exception {
 	  ResultActions resultActions =
 			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "workingHours", "vacations", "contact.emails", "contact.webUrls", "contact.phones"))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)));
+              .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(1)));
 	  resultActions = andValidateReadComanyWorkingHours(resultActions);
 	  resultActions = andValidateProviderVacations(resultActions);
 	  resultActions = andValidateProviderContacts(resultActions);
@@ -547,7 +405,16 @@ public class ProviderControllerTest extends BaseControllerTest {
 
 
   @Test
-  @Transactional
+  @ExpectedDatabases({
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.Contact.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.Phone.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.Email.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.WebUrl.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.Address.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.Provider.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.WorkingHour.TABLE, override=false),
+      @ExpectedDatabase(value="provider/operations/ProviderAdd.xml", table=DbTable.Vacation.TABLE, override=false),
+  })
   public void shouldSaveProviderWithEmbededObjects() throws Exception {
 
 	  final Timestamp vacationStart1 = DateBuilder.utcDateAsTimestamp(2014, 2, 3);
@@ -564,20 +431,20 @@ public class ProviderControllerTest extends BaseControllerTest {
 	  			new WorkingHour.Builder(WeekDay.MONDAY, workingHourStart1, workingHourEnd1).build(),
 	  			new WorkingHour.Builder(WeekDay.TUESDAY, workingHourStart2, workingHourEnd2).build()
 	  			))
-	  	.address(new Address.Builder(ActivityStatus.ACTIVE).address1("ADD1").address2("ADD2").city("Paris").comment("add comment").country("France").displayIndex(1).state("ASD").zipCode("321123").build())
+	  	.address(new Address.Builder(ActivityStatus.ACTIVE).address1("ADD1").address2("ADD2").city("Paris").comment("add comment").country("France").displayIndex(0).state("ASD").zipCode("321123").build())
 	  	.contact(new Contact.Builder(ActivityStatus.ACTIVE)
 	  		.phones(Arrays.asList(
-	  				new Phone.Builder(ActivityStatus.ACTIVE, PhoneNumberType.MOBILE).displayIndex(0).phone("112233").phoneExt("23").build(),
-	  				new Phone.Builder(ActivityStatus.ACTIVE, PhoneNumberType.LANDLINE).displayIndex(1).phone("556677").build()))
+	  				new Phone.Builder(ActivityStatus.ACTIVE, PhoneNumberType.MOBILE).displayIndex(0).phone("112233").phoneExt("23").comment("pha").build(),
+	  				new Phone.Builder(ActivityStatus.ACTIVE, PhoneNumberType.LANDLINE).displayIndex(1).phone("556677").phoneExt("34").comment("phb").build()))
 	  		.webUrls(Arrays.asList(
 	  				new WebUrl.Builder(ActivityStatus.ACTIVE).displayIndex(0).webUrlAddress("http://allo.allo").comment("allo comment").build(),
-	  				new WebUrl.Builder(ActivityStatus.ACTIVE).displayIndex(1).webUrlAddress("https://support.allo").build()))
+	  				new WebUrl.Builder(ActivityStatus.ACTIVE).displayIndex(1).webUrlAddress("https://support.allo").comment("support comment").build()))
 	  		.emails(Arrays.asList(
 	  				new Email.Builder(ActivityStatus.ACTIVE).displayIndex(0).emailAddress("mis@allo.com").comment("write an email here").build()))
 	  	.build())
 	  	.build();
 
-	  MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
+	  mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
 			  .contentType(RestTestUtil.APPLICATION_JSON_UTF8)
 			  .content(RestTestUtil.convertObjectToJsonBytes(providerToSave)))
               .andDo(MockMvcResultHandlers.print())
@@ -587,78 +454,14 @@ public class ProviderControllerTest extends BaseControllerTest {
               .andExpect(MockMvcResultMatchers.jsonPath("$.lastModificationId", notNullValue()))
               .andReturn().getResponse();
 
-	  Provider provider = RestTestUtil.convertJsonBytesToObject(response.getContentAsByteArray(), Provider.class);
-
-	  ProviderEntity insertedProviderDb = providerRepository.findOne(provider.getId());
-	  assertThat(insertedProviderDb.getVacations(), hasSize(1));
-	  assertThat(insertedProviderDb.getVacations().get(0), hasProperty("startDay", equalTo(vacationStart1)));
-	  assertThat(insertedProviderDb.getVacations().get(0), hasProperty("endDay", equalTo(vacationEnd1)));
-
-	  assertThat(insertedProviderDb.getAddress(), is(notNullValue()));
-	  assertThat(insertedProviderDb.getAddress().getAddress1(), equalTo("ADD1"));
-	  assertThat(insertedProviderDb.getAddress().getAddress2(), equalTo("ADD2"));
-	  assertThat(insertedProviderDb.getAddress().getCity(), equalTo("Paris"));
-	  assertThat(insertedProviderDb.getAddress().getComment(), equalTo("add comment"));
-	  assertThat(insertedProviderDb.getAddress().getCountry(), equalTo("France"));
-	  assertThat(insertedProviderDb.getAddress().getDisplayIndex(), equalTo(1));
-	  assertThat(insertedProviderDb.getAddress().getState(), equalTo("ASD"));
-	  assertThat(insertedProviderDb.getAddress().getZipCode(), equalTo("321123"));
-	  assertThat(insertedProviderDb.getAddress().getStatus(), equalTo(ActivityStatus.ACTIVE));
-
-	  assertThat(insertedProviderDb.getContact().getStatus(), equalTo(ActivityStatus.ACTIVE));
-
-	  assertThat(insertedProviderDb.getContact().getPhones(), hasSize(2));
-	  List<PhoneEntity> phonesCheck = Lists.newArrayList(findDbPhoneByNumber(insertedProviderDb.getContact().getPhones(), "112233"));
-	  assertThat(phonesCheck, hasSize(1));
-	  assertThat(phonesCheck.get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
-	  assertThat(phonesCheck.get(0), hasProperty("displayIndex", equalTo(0)));
-	  assertThat(phonesCheck.get(0), hasProperty("numberType", equalTo(PhoneNumberType.MOBILE)));
-	  assertThat(phonesCheck.get(0), hasProperty("phoneExt", equalTo("23")));
-
-	  phonesCheck = Lists.newArrayList(findDbPhoneByNumber(insertedProviderDb.getContact().getPhones(), "556677"));
-	  assertThat(phonesCheck, hasSize(1));
-	  assertThat(phonesCheck.get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
-	  assertThat(phonesCheck.get(0), hasProperty("displayIndex", equalTo(1)));
-	  assertThat(phonesCheck.get(0), hasProperty("numberType", equalTo(PhoneNumberType.LANDLINE)));
-
-	  assertThat(insertedProviderDb.getContact().getWebUrls(), hasSize(2));
-	  List<WebUrlEntity> urlsCheck = Lists.newArrayList(findDbWebUrlByUrl(insertedProviderDb.getContact().getWebUrls(), "http://allo.allo"));
-	  assertThat(urlsCheck, hasSize(1));
-	  assertThat(urlsCheck.get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
-	  assertThat(urlsCheck.get(0), hasProperty("displayIndex", equalTo(0)));
-	  assertThat(urlsCheck.get(0), hasProperty("comment", equalTo("allo comment")));
-
-	  urlsCheck = Lists.newArrayList(findDbWebUrlByUrl(insertedProviderDb.getContact().getWebUrls(), "https://support.allo"));
-	  assertThat(urlsCheck, hasSize(1));
-	  assertThat(urlsCheck.get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
-	  assertThat(urlsCheck.get(0), hasProperty("displayIndex", equalTo(1)));
-
-	  assertThat(insertedProviderDb.getContact().getEmails(), hasSize(1));
-	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("emailAddress", equalTo("mis@allo.com")));
-	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("status", equalTo(ActivityStatus.ACTIVE)));
-	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("displayIndex", equalTo(0)));
-	  assertThat(insertedProviderDb.getContact().getEmails().get(0), hasProperty("comment", equalTo("write an email here")));
-
-	  assertThat(insertedProviderDb.getWorkingHours(), hasSize(2));
-	  List<ProviderWorkingHourEntity> mondayWorkingHoursDb =
-			  Lists.newArrayList(findDbWorkingHourByWeekDay(insertedProviderDb.getWorkingHours(), WeekDay.MONDAY));
-	  assertThat(mondayWorkingHoursDb, hasSize(1));
-	  assertThat(mondayWorkingHoursDb.get(0), hasProperty("weekDay", equalTo(WeekDay.MONDAY)));
-	  assertThat(mondayWorkingHoursDb.get(0), hasProperty("startTime", equalTo(workingHourStart1)));
-	  assertThat(mondayWorkingHoursDb.get(0), hasProperty("endTime", equalTo(workingHourEnd1)));
-
-	  List<ProviderWorkingHourEntity> tuesdayWorkingHoursDb =
-			  Lists.newArrayList(findDbWorkingHourByWeekDay(insertedProviderDb.getWorkingHours(), WeekDay.TUESDAY));
-	  assertThat(tuesdayWorkingHoursDb, hasSize(1));
-	  assertThat(tuesdayWorkingHoursDb.get(0), hasProperty("weekDay", equalTo(WeekDay.TUESDAY)));
-	  assertThat(tuesdayWorkingHoursDb.get(0), hasProperty("startTime", equalTo(workingHourStart2)));
-	  assertThat(tuesdayWorkingHoursDb.get(0), hasProperty("endTime", equalTo(workingHourEnd2)));
-
   }
 
 
 	@Test
-	@Transactional
+	  @ExpectedDatabases({
+	      @ExpectedDatabase(value="provider/operations/ProviderModify.xml", table=DbTable.Address.TABLE, override=false),
+	      @ExpectedDatabase(value="provider/operations/ProviderModify.xml", table=DbTable.Provider.TABLE, override=false),
+	  })
 	public void shouldUpdateProviderWithEmbededObjects() throws Exception {
 
 		MockHttpServletResponse response =
@@ -666,13 +469,14 @@ public class ProviderControllerTest extends BaseControllerTest {
 	            .andDo(MockMvcResultHandlers.print())
 	            .andExpect(MockMvcResultMatchers.status().isOk())
 	            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-	            .andExpect(MockMvcResultMatchers.jsonPath("$.id", is(1)))
+	            .andExpect(MockMvcResultMatchers.jsonPath("$.id", equalTo(1)))
 	            .andReturn().getResponse();
 
 		Provider provider = RestTestUtil.convertJsonBytesToObject(response.getContentAsByteArray(), Provider.class);
 
 		provider.setName("Modified name");
 		provider.getAddress().setAddress1("Modified add 1");
+		provider.getAddress().setAddress2(null);
 
 
 		mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
@@ -682,41 +486,8 @@ public class ProviderControllerTest extends BaseControllerTest {
 	            .andExpect(MockMvcResultMatchers.status().isOk())
 	            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
 	            .andReturn().getResponse();
-
-		ProviderEntity updatedProviderDb = providerRepository.findOne(provider.getId());
-		assertThat(updatedProviderDb.getName(), equalTo("Modified name"));
-		assertThat(updatedProviderDb.getAddress().getAddress1(), equalTo("Modified add 1"));
 	}
 
-	private Iterable<ProviderWorkingHourEntity> findDbWorkingHourByWeekDay(List<ProviderWorkingHourEntity> workingHours, final WeekDay weekDay) {
-		return Iterables.filter(workingHours, new Predicate<ProviderWorkingHourEntity>() {
-			@Override
-			public boolean apply(ProviderWorkingHourEntity input) {
-				return weekDay.equals(input.getWeekDay());
-			}
-		});
-	}
-
-	private Iterable<PhoneEntity> findDbPhoneByNumber(List<PhoneEntity> phones, final String number) {
-		return Iterables.filter(phones, new Predicate<PhoneEntity>() {
-			@Override
-			public boolean apply(PhoneEntity input) {
-				return number.equals(input.getPhone());
-			}
-
-		});
-	}
-
-
-	private Iterable<WebUrlEntity> findDbWebUrlByUrl(List<WebUrlEntity> webUrls, final String url) {
-		return Iterables.filter(webUrls, new Predicate<WebUrlEntity>() {
-			@Override
-			public boolean apply(WebUrlEntity input) {
-				return url.equals(input.getWebUrlAddress());
-			}
-
-		});
-	}
 
     private Vacation findVacationByStartDay(List<Vacation> vacations, final Timestamp vacationToRemoveStart) {
         return Iterables.find(vacations, new Predicate<Vacation>() {

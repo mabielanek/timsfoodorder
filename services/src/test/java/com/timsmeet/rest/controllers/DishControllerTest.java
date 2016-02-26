@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import com.github.springtestdbunit.ExcludedColumns;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -37,23 +38,24 @@ import com.timsmeet.services.builder.DateBuilder;
 @DatabaseSetup("dish/InitialData.xml")
 @DatabaseTearDown("dish/ClearTables.xml")
 @ExpectedDatabases({
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Contact.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Phone.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Address.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Provider.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Dish.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishComponent.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishElement.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Genere.TABLE),
-    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishGenere.TABLE)
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Contact.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Phone.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Address.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Provider.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Dish.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishComponent.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishElement.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.Genere.TABLE, override = false),
+    @ExpectedDatabase(value = "dish/InitialData.xml", table = DbTable.DishGenere.TABLE, override = false)
 })
+@ExcludedColumns("last_modification_id")
 public class DishControllerTest extends BaseControllerTest{
 
 
     @Before
     public void setUpProviderControler() throws SQLException {
-        DbTestUtil.resetAutoIncrementColumns(webApplicationContext, DbTable.Contact.TABLE, DbTable.Phone.TABLE, DbTable.Address.TABLE,
-                DbTable.Provider.TABLE, DbTable.Dish.TABLE, DbTable.DishComponent.TABLE, DbTable.DishElement.TABLE,
+        DbTestUtil.resetAutoIncrementColumns(webApplicationContext,
+                DbTable.Dish.TABLE, DbTable.DishComponent.TABLE, DbTable.DishElement.TABLE,
                 DbTable.DishGenere.TABLE);
     }
 
@@ -162,9 +164,9 @@ public class DishControllerTest extends BaseControllerTest{
 
     @Test
     @ExpectedDatabases({
-        @ExpectedDatabase(value = "dish/operations/DishAdd.xml", table = DbTable.Dish.TABLE, override = true),
-        @ExpectedDatabase(value = "dish/operations/DishAdd.xml", table = DbTable.DishComponent.TABLE, override = true),
-        @ExpectedDatabase(value = "dish/operations/DishAdd.xml", table = DbTable.DishElement.TABLE, override = true),
+        @ExpectedDatabase(value = "dish/operations/DishAdd.xml", table = DbTable.Dish.TABLE, override = false),
+        @ExpectedDatabase(value = "dish/operations/DishAdd.xml", table = DbTable.DishComponent.TABLE, override = false),
+        @ExpectedDatabase(value = "dish/operations/DishAdd.xml", table = DbTable.DishElement.TABLE, override = false),
     })
     public void shouldAddNewDish() throws Exception {
 
@@ -201,9 +203,9 @@ public class DishControllerTest extends BaseControllerTest{
 
     @Test
     @ExpectedDatabases({
-        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.Dish.TABLE),
-        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishComponent.TABLE),
-        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishElement.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.Dish.TABLE, override = false),
+        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishComponent.TABLE, override = false),
+        @ExpectedDatabase(value = "dish/operations/DishDelete.xml", table = DbTable.DishElement.TABLE, override = false),
     })
     public void shouldDeleteDishWithComponentsAndElements() throws Exception {
 
@@ -216,9 +218,9 @@ public class DishControllerTest extends BaseControllerTest{
 
     @Test
     @ExpectedDatabases({
-        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.Dish.TABLE),
-        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishComponent.TABLE),
-        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishElement.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.Dish.TABLE, override = false),
+        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishComponent.TABLE, override = false),
+        @ExpectedDatabase(value = "dish/operations/DishModify.xml", table = DbTable.DishElement.TABLE, override = false),
     })
     public void shouldModifyDishWithComponentsAndElements() throws Exception {
 
@@ -258,7 +260,7 @@ public class DishControllerTest extends BaseControllerTest{
 
     @Test
     @ExpectedDatabases({
-        @ExpectedDatabase(value = "dish/operations/DishGenereModify.xml", table = DbTable.DishGenere.TABLE),
+        @ExpectedDatabase(value = "dish/operations/DishGenereModify.xml", table = DbTable.DishGenere.TABLE, override = false),
 
     })
     public void shouldModifyDishGeneres() throws Exception {

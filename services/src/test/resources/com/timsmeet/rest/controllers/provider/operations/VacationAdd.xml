@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     
-    <fo_provider id="1" last_modification_id="1" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="1" contact_id="1"/>
-    <fo_provider id="2" last_modification_id="0" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
+    <fo_provider id="1" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="1" contact_id="1"/>
+    <fo_provider id="2" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
 
-    <fo_vacation id="1" last_modification_id="0" owner_type="P" start_day="2000-06-01" end_day="2000-06-05" provider_id="1" />
-    <fo_vacation id="2" last_modification_id="0" owner_type="P" start_day="2000-08-01" end_day="2000-08-02" provider_id="1" />
-    <fo_vacation id="1000" last_modification_id="0" owner_type="P" start_day="2014-09-10" end_day="2014-09-11" provider_id="1" />
+    <fo_vacation id="1" owner_type="P" start_day="2000-06-01" end_day="2000-06-05" provider_id="1" />
+    <fo_vacation id="2" owner_type="P" start_day="2000-08-01" end_day="2000-08-02" provider_id="1" />
+    <fo_vacation id="1000" owner_type="P" start_day="2014-09-10" end_day="2014-09-11" provider_id="1" />
     
 </dataset>

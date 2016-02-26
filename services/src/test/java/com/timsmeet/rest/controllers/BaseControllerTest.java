@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.ExpectTableOverwritenTestExecutionListener;
 import com.timsmeet.rest.controllers.spring.RestServicesConfig;
 import com.timsmeet.spring.TestConfig;
 
@@ -31,7 +31,7 @@ import com.timsmeet.spring.TestConfig;
   DirtiesContextTestExecutionListener.class,
   TransactionalTestExecutionListener.class,
   ServletTestExecutionListener.class,
-  DbUnitTestExecutionListener.class })
+  ExpectTableOverwritenTestExecutionListener.class })
 @Ignore
 public class BaseControllerTest {
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <fo_dish_genere id="1" last_modification_id="0" dish_id="2" genere_id="1" />
+    <fo_dish_genere id="2" last_modification_id="0" dish_id="4" genere_id="2" />
+    <fo_dish_genere id="1000" last_modification_id="0" dish_id="2" genere_id="2" />
+</dataset>

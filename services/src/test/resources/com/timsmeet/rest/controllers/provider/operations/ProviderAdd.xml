@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <!-- provider -->
+    <fo_contact id="1" status="A"/>
+    <fo_contact id="2" status="A"/>
+    <fo_contact id="1000" status="A"/>
+
+
+	<!-- provider -->    
+    <fo_phone id="1" status="A" contact_id="1" phone="508334321" phone_ext="1234" number_type="M" comment_text="Mobile phone to manager" display_index="1"/>
+    <fo_phone id="2" status="A" contact_id="1" phone="345223421" number_type="L" comment_text="Provider std phone" display_index="0"/>
+    <fo_phone id="3" status="A" contact_id="2" phone="993844092" phone_ext="12" number_type="L" comment_text="Main Phone Number" display_index="0"/>
+    <fo_phone id="1000" status="A" contact_id="1000" phone="112233" phone_ext="23" number_type="M" comment_text="pha" display_index="0"/>
+    <fo_phone id="1001" status="A" contact_id="1000" phone="556677" phone_ext="34" number_type="L" comment_text="phb" display_index="1"/>
+
+
+    <!--  provider -->
+    <fo_email id="1" status="A" contact_id="1" email_address="office@acme.corp.com" comment_text="Office email" display_index="0"/>
+    <fo_email id="2" status="A" contact_id="1" email_address="support@acme.corp.com" comment_text="Support email" display_index="1"/>
+    <fo_email id="3" status="A" contact_id="2" email_address="help@binton.com" comment_text="Binton help email" display_index="0"/>
+    <fo_email id="1000" status="A" contact_id="1000" email_address="mis@allo.com" comment_text="write an email here" display_index="0"/>
+    
+
+    <!-- provider -->
+    <fo_web_url id="1" status="A" contact_id="1" web_url_address="http://acme.corp.com" comment_text="Main web address" display_index="0"/>
+    <fo_web_url id="2" status="A" contact_id="2" web_url_address="https://binton.com" comment_text="Binton web page" display_index="0"/>
+    <fo_web_url id="3" status="A" contact_id="2" web_url_address="http://support.binton.com" comment_text="Support web page" display_index="1"/>
+    <fo_web_url id="1000" status="A" contact_id="1000" web_url_address="http://allo.allo" comment_text="allo comment" display_index="0"/>
+    <fo_web_url id="1001" status="A" contact_id="1000" web_url_address="https://support.allo" comment_text="support comment" display_index="1"/>
+
+
+	<!-- provider -->
+    <fo_address id="1" status="A" address1="Some Road" address2="24th Obernister" city="London" zip_code="340092" state="Capitol" country="England" comment_text="Address in London for tests" display_index="0"/>
+    <fo_address id="2" status="A" address1="Other Road" address2="12th Londita" city="Malia" zip_code="233DS3" state="Marina" country="Greece" comment_text="Address with sample text" display_index="0"/>
+    <fo_address id="1000" status="A" address1="ADD1" address2="ADD2" city="Paris" zip_code="321123" state="ASD" country="France" comment_text="add comment" display_index="0"/>
+
+
+    <fo_provider id="1" status="A" name="Acme Corp" comment="Acme Corp comment" address_id="1" contact_id="1"/>
+    <fo_provider id="2" status="A" name="Binton Corp" comment="Binton Corp comment" address_id="2" contact_id="2"/>
+    <fo_provider id="1000" status="A" name="Added Provider" comment="Added Provider Comment" address_id="1000" contact_id="1000"/>
+
+
+    <!-- provider -->
+    <fo_working_hour id="1" owner_type="P" week_day="MONDAY" start_time="2000-06-01 06:00:00.000000000" end_time="2000-06-01 13:00:00.000000000" provider_id="1" />
+    <fo_working_hour id="2" owner_type="P" week_day="MONDAY" start_time="2000-06-01 14:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="1"/>
+    <fo_working_hour id="3" owner_type="P" week_day="TUESDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="1"/>
+    <fo_working_hour id="4" owner_type="P" week_day="WEDNESDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="1"/>
+    <fo_working_hour id="5" owner_type="P" week_day="THURSDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="1"/>
+    <fo_working_hour id="6" owner_type="P" week_day="FRIDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="1"/>
+    
+    <fo_working_hour id="101" owner_type="P" week_day="MONDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="2"/>
+    <fo_working_hour id="102" owner_type="P" week_day="FRIDAY" start_time="2000-06-01 08:00:00.000000000" end_time="2000-06-01 16:00:00.000000000" provider_id="2"/>
+    
+    <fo_working_hour id="1000" owner_type="P" week_day="MONDAY" start_time="2000-07-01 08:30:00.000000000" end_time="2000-07-01 16:30:00.000000000" provider_id="1000"/>
+    <fo_working_hour id="1001" owner_type="P" week_day="TUESDAY" start_time="2000-07-01 09:15:00.000000000" end_time="2000-07-01 16:45:00.000000000" provider_id="1000"/>
+
+
+    <!-- provider -->
+    <fo_vacation id="1" owner_type="P" start_day="2000-06-01" end_day="2000-06-05" provider_id="1" />
+    <fo_vacation id="2" owner_type="P" start_day="2000-08-01" end_day="2000-08-02" provider_id="1" />
+    
+    <fo_vacation id="1000" owner_type="P" start_day="2014-02-03" end_day="2014-02-06" provider_id="1000" />
+    
+
+</dataset>
