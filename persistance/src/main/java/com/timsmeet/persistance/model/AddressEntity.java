@@ -6,16 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
 @Table(name = DbTable.Address.TABLE)
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED')")
 public class AddressEntity {
 
     @Id
@@ -30,7 +28,7 @@ public class AddressEntity {
     @Column(name = DbTable.Address.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.Address.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.Address.STATUS, nullable = false, length = 15)
     private String status;
 
     @Column(name = DbTable.Address.ADDRESS1, length = 255)

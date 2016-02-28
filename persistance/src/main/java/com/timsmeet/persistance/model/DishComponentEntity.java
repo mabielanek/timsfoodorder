@@ -26,7 +26,7 @@ import com.timsmeet.persistance.enums.YesNo;
 @Entity
 @Table(name = DbTable.DishComponent.TABLE ,
         indexes = @Index(columnList = DbTable.DishComponent.DISH_ID, name = "idx_dish_comp_dish_fk"))
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D') and use_as_dish_price IN('Y','N')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED') and use_as_dish_price IN('Y','N')")
 public class DishComponentEntity {
 
     @Id
@@ -41,7 +41,7 @@ public class DishComponentEntity {
     @Column(name = DbTable.DishComponent.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.DishComponent.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.DishComponent.STATUS, nullable = false, length = 15)
     private String status;
 
     @ManyToOne

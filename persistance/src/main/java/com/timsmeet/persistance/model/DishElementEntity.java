@@ -19,7 +19,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
 @Entity
 @Table(name = DbTable.DishElement.TABLE,
         indexes = @Index(columnList = DbTable.DishElement.DISH_COMP_ID, name = "idx_dish_elem_dish_comp_fk"))
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED')")
 public class DishElementEntity {
 
     @Id
@@ -34,7 +34,7 @@ public class DishElementEntity {
     @Column(name = DbTable.DishElement.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.DishElement.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.DishElement.STATUS, nullable = false, length = 15)
     private String status;
 
     @ManyToOne

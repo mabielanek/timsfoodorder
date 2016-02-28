@@ -2,37 +2,37 @@
 <dataset>
 
 	<!-- Acme Corp dishes -->
-    <fo_dish id="1" last_modification_id="0" status="A" provider_id="1" name="Kebab" description = "Best kebab in town" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "0.0"/>
-    <fo_dish id="2" last_modification_id="0" status="A" provider_id="1" name="Pizza super" description = "Really great pizza" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "0.0"/>
-    <fo_dish id="3" last_modification_id="0" status="A" provider_id="1" name="Chicken sticks" description = "Fat chicken sticks" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "5.0"/>
-    <fo_dish id="4" last_modification_id="0" status="A" provider_id="1" name="Potato pancakes" description = "Potato pancakes with sour cream" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "4.0"/>
-    <fo_dish id="5" last_modification_id="0" status="I" provider_id="1" name="Dummy dish" description = "Dummy inactive dish" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "3.0"/>
-	<fo_dish id="1000" last_modification_id="0" status="A" provider_id="1" name="Added dish" description = "Added dish desc" start_day = "2000-06-01 00:00:00" end_day = "2999-06-01 00:00:00" price = "1.0"/>
+    <fo_dish id="1" last_modification_id="0" status="ACTIVE" provider_id="1" name="Kebab" description = "Best kebab in town" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "0.0"/>
+    <fo_dish id="2" last_modification_id="0" status="ACTIVE" provider_id="1" name="Pizza super" description = "Really great pizza" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "0.0"/>
+    <fo_dish id="3" last_modification_id="0" status="ACTIVE" provider_id="1" name="Chicken sticks" description = "Fat chicken sticks" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "5.0"/>
+    <fo_dish id="4" last_modification_id="0" status="ACTIVE" provider_id="1" name="Potato pancakes" description = "Potato pancakes with sour cream" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "4.0"/>
+    <fo_dish id="5" last_modification_id="0" status="INACTIVE" provider_id="1" name="Dummy dish" description = "Dummy inactive dish" start_day = "2000-06-01 06:00:00" end_day = "2999-06-01 06:00:00" price = "3.0"/>
+	<fo_dish id="1000" last_modification_id="0" status="ACTIVE" provider_id="1" name="Added dish" description = "Added dish desc" start_day = "2000-06-01 00:00:00" end_day = "2999-06-01 00:00:00" price = "1.0"/>
 	
     <!-- Acme Corp, Kebab, components -->
-    <fo_dish_comp id="1" last_modification_id="0" status="A" dish_id="1" description="sauces" use_as_dish_price="N" elements_required="0" max_elements="1" price = "0.0"/>
-    <fo_dish_comp id="2" last_modification_id="0" status="A" dish_id="1" description="kind of meat" use_as_dish_price="Y" elements_required="1" max_elements="1" price = "0.0"/>
+    <fo_dish_comp id="1" last_modification_id="0" status="ACTIVE" dish_id="1" description="sauces" use_as_dish_price="N" elements_required="0" max_elements="1" price = "0.0"/>
+    <fo_dish_comp id="2" last_modification_id="0" status="ACTIVE" dish_id="1" description="kind of meat" use_as_dish_price="Y" elements_required="1" max_elements="1" price = "0.0"/>
     
     <!-- Acme Corp, Pizza super, components -->
-    <fo_dish_comp id="3" last_modification_id="0" status="A" dish_id="2" description="size 35cm" use_as_dish_price="Y" elements_required="0" max_elements="0" price = "20.0"/>
-    <fo_dish_comp id="4" last_modification_id="0" status="A" dish_id="2" description="size 45cm" use_as_dish_price="Y" elements_required="0" max_elements="0" price = "30.0"/>
-    <fo_dish_comp id="5" last_modification_id="0" status="A" dish_id="2" description="size 55cm" use_as_dish_price="Y" elements_required="0" max_elements="0" price = "40.0"/>
+    <fo_dish_comp id="3" last_modification_id="0" status="ACTIVE" dish_id="2" description="size 35cm" use_as_dish_price="Y" elements_required="0" max_elements="0" price = "20.0"/>
+    <fo_dish_comp id="4" last_modification_id="0" status="ACTIVE" dish_id="2" description="size 45cm" use_as_dish_price="Y" elements_required="0" max_elements="0" price = "30.0"/>
+    <fo_dish_comp id="5" last_modification_id="0" status="ACTIVE" dish_id="2" description="size 55cm" use_as_dish_price="Y" elements_required="0" max_elements="0" price = "40.0"/>
 
 	<!--  Added dish, components -->
- 	<fo_dish_comp id="1000" last_modification_id="0" status="A" dish_id="1000" description="Added dish component 1" use_as_dish_price="N" elements_required="1" max_elements="3" price = "2.0"/>
-	<fo_dish_comp id="1001" last_modification_id="0" status="A" dish_id="1000" description="Added dish component 2" use_as_dish_price="N" elements_required="0" max_elements="2" price = "3.0"/>
+ 	<fo_dish_comp id="1000" last_modification_id="0" status="ACTIVE" dish_id="1000" description="Added dish component 1" use_as_dish_price="N" elements_required="1" max_elements="3" price = "2.0"/>
+	<fo_dish_comp id="1001" last_modification_id="0" status="ACTIVE" dish_id="1000" description="Added dish component 2" use_as_dish_price="N" elements_required="0" max_elements="2" price = "3.0"/>
 	
     <!-- Acme Corp, Kebab, sauces, elements -->
-    <fo_dish_elem id="1" last_modification_id="0" status="A" dish_comp_id="1" name="spicy sauce" description="spicy souce (very spicy)" price = "0.0"/>
-    <fo_dish_elem id="2" last_modification_id="0" status="A" dish_comp_id="1" name="mild sauce" description=" " price = "0.0"/>
-    <fo_dish_elem id="3" last_modification_id="0" status="A" dish_comp_id="1" name="mixed sauce" description="not spicy, and not mild" price = "0.0"/>
+    <fo_dish_elem id="1" last_modification_id="0" status="ACTIVE" dish_comp_id="1" name="spicy sauce" description="spicy souce (very spicy)" price = "0.0"/>
+    <fo_dish_elem id="2" last_modification_id="0" status="ACTIVE" dish_comp_id="1" name="mild sauce" description=" " price = "0.0"/>
+    <fo_dish_elem id="3" last_modification_id="0" status="ACTIVE" dish_comp_id="1" name="mixed sauce" description="not spicy, and not mild" price = "0.0"/>
 
     <!-- Acme Corp, Kebab, sauces, elements -->
-    <fo_dish_elem id="4" last_modification_id="0" status="A" dish_comp_id="2" name="mutton" description=" " price = "9.0"/>
-    <fo_dish_elem id="5" last_modification_id="0" status="A" dish_comp_id="2" name="chicken" description="fresh chicken" price = "8.5"/>
+    <fo_dish_elem id="4" last_modification_id="0" status="ACTIVE" dish_comp_id="2" name="mutton" description=" " price = "9.0"/>
+    <fo_dish_elem id="5" last_modification_id="0" status="ACTIVE" dish_comp_id="2" name="chicken" description="fresh chicken" price = "8.5"/>
 
 	<!--  Added dish, components, elements -->
-	<fo_dish_elem id="1000" last_modification_id="0" status="A" dish_comp_id="1000" name="Added element 1" description="Added element 1 desc" price = "4.0"/>
-	<fo_dish_elem id="1001" last_modification_id="0" status="A" dish_comp_id="1000" name="Added element 2" description="Added element 2 desc" price = "5.0"/>
+	<fo_dish_elem id="1000" last_modification_id="0" status="ACTIVE" dish_comp_id="1000" name="Added element 1" description="Added element 1 desc" price = "4.0"/>
+	<fo_dish_elem id="1001" last_modification_id="0" status="ACTIVE" dish_comp_id="1000" name="Added element 2" description="Added element 2 desc" price = "5.0"/>
 
 </dataset>

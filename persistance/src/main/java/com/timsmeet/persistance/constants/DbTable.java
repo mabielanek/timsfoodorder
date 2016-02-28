@@ -261,6 +261,39 @@ public final class DbTable {
         public final static String LAST_MODIFICATION_ID = "last_modification_id";
         public final static String NAME = "name";
         public final static String ORGANIZATION_ID = "organization_id";
+
+        private Location() {};
+    }
+
+    public final static class Group {
+        public final static String TABLE = "fo_group";
+        public final static String ID = "id";
+        public final static String LAST_MODIFICATION_ID = "last_modification_id";
+        public final static String NAME = "name";
+        public final static String PERSON_OWNER = "person_owner";
+        public final static String ORGANIZATION_OWNER = "organization_owner";
+
+        private Group() {};
+    }
+
+    public final static class PersonGroup {
+        public final static String TABLE = "fo_person_group";
+        public final static String ID = "id";
+        public final static String LAST_MODIFICATION_ID = "last_modification_id";
+        public final static String PERSON = "person";
+        public final static String GROUP = "group";
+
+        private PersonGroup() {};
+    }
+
+    public final static class FoodOrderForGroup {
+        public final static String TABLE = "fo_food_order_group";
+        public final static String ID = "id";
+        public final static String LAST_MODIFICATION_ID = "last_modification_id";
+        public final static String FOOD_ORDER = "foodOrder";
+        public final static String GROUP = "group";
+
+        private FoodOrderForGroup() {};
     }
 
     private DbTable(){}

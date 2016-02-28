@@ -5,14 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import com.timsmeet.persistance.constants.DbTable;
 
 /**
  * Stores information about company vacation.
  */
 @Entity
-@DiscriminatorValue("P")
+@DiscriminatorValue("PROVIDER")
 public class ProviderVacationEntity extends VacationEntity {
 
     @ManyToOne

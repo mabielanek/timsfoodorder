@@ -1,7 +1,6 @@
 package com.timsmeet.persistance.model;
 
 import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -13,17 +12,15 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 
 @Entity
 @Table(name = DbTable.Vacation.TABLE,
         indexes = { @Index(columnList = DbTable.Vacation.PROVIDER_ID, name = "idx_vacation_provider_fk") })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING, length = 1)
+@DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING, length = 15)
 public class VacationEntity {
 
     @Id

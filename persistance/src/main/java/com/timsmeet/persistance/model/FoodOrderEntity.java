@@ -3,7 +3,6 @@ package com.timsmeet.persistance.model;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.constants.DbTable;
@@ -31,7 +28,7 @@ import com.timsmeet.persistance.enums.FoodOrderStatus;
                 @Index(columnList = DbTable.FoodOrder.PERSON_ID, name = "idx_food_order_person_fk"),
                 @Index(columnList = DbTable.FoodOrder.PROVIDER_ID, name = "idx_food_order_provider_fk"),
                 @Index(columnList = DbTable.FoodOrder.ORDER_TIME, name = "idx_order_time") })
-@org.hibernate.annotations.Check(constraints = "orderStatus IN('A','C','D','L')")
+@org.hibernate.annotations.Check(constraints = "orderStatus IN('ACTIVE','CANCELLED','DELIVERED','CLOSED')")
 public class FoodOrderEntity {
 
     @Id
@@ -54,7 +51,7 @@ public class FoodOrderEntity {
     @JoinColumn(name = DbTable.FoodOrder.PROVIDER_ID, foreignKey = @ForeignKey(name = "food_order_provider_fk"))
     private ProviderEntity provider;
 
-    @Column(name = DbTable.FoodOrder.ORDER_STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.FoodOrder.ORDER_STATUS, nullable = false, length = 15)
     private String orderStatus;
 
     @Column(name = DbTable.FoodOrder.ADD_TIME, nullable = false)

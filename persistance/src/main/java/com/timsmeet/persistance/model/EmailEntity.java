@@ -10,17 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 
 @Entity
 @Table(name = DbTable.Email.TABLE,
         indexes = @Index(columnList = DbTable.Email.CONTACT_ID, name = "idx_contact_email_fk"))
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED')")
 public class EmailEntity {
 
     @Id
@@ -35,7 +33,7 @@ public class EmailEntity {
     @Column(name = DbTable.Email.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.Email.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.Email.STATUS, nullable = false, length = 15)
     private String status;
 
     @Column(name = DbTable.Email.COMMENT_TEXT, length = 1024)

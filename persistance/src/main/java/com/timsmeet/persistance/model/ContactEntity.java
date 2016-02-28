@@ -2,7 +2,6 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,10 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.constants.DbTable;
@@ -26,7 +23,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
  */
 @Entity
 @Table(name = DbTable.Contact.TABLE)
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED')")
 public class ContactEntity {
 
     @Id
@@ -41,7 +38,7 @@ public class ContactEntity {
     @Column(name = DbTable.Contact.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.Contact.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.Contact.STATUS, nullable = false, length = 15)
     private String status;
 
     @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)

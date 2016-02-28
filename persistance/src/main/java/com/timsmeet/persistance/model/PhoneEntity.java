@@ -10,10 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.PhoneNumberType;
@@ -21,7 +19,7 @@ import com.timsmeet.persistance.enums.PhoneNumberType;
 @Entity
 @Table(name = DbTable.Phone.TABLE,
         indexes = @Index(columnList = DbTable.Phone.CONTACT_ID, name = "idx_contact_phone_fk"))
-@org.hibernate.annotations.Check(constraints = "number_type IN('M','F','L') and status IN('A','I','D')")
+@org.hibernate.annotations.Check(constraints = "number_type IN('MOBILE','FAX','LANDLINE') and status IN('ACTIVE','INACTIVE','DELETED')")
 
 public class PhoneEntity {
 
@@ -37,7 +35,7 @@ public class PhoneEntity {
     @Column(name = DbTable.Phone.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.Phone.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.Phone.STATUS, nullable = false, length = 15)
     private String status;
 
     @Column(name = DbTable.Phone.PHONE, length = 15)
@@ -46,7 +44,7 @@ public class PhoneEntity {
     @Column(name = DbTable.Phone.PHONE_EXT, length = 15)
     private String phoneExt;
 
-    @Column(name = DbTable.Phone.NUMBER_TYPE, length = 1, nullable = false)
+    @Column(name = DbTable.Phone.NUMBER_TYPE, length = 15, nullable = false)
     private String numberType;
 
     @Column(name = DbTable.Phone.COMMENT_TEXT, length = 1024)

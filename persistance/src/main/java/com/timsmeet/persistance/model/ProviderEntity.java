@@ -5,7 +5,6 @@ package com.timsmeet.persistance.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,10 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timsmeet.persistance.constants.DbTable;
@@ -36,7 +33,7 @@ import com.timsmeet.persistance.enums.ActivityStatus;
                 @Index(columnList = DbTable.Provider.NAME, name = "idx_provider_name"),
                 @Index(columnList = DbTable.Provider.ADDRESS_ID, name = "idx_provider_address_fk"),
                 @Index(columnList = DbTable.Provider.CONTACT_ID, name = "idx_provider_contact_fk") })
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED')")
 public class ProviderEntity {
 
     @Id
@@ -53,7 +50,7 @@ public class ProviderEntity {
     @Column(name = DbTable.Provider.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.Provider.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.Provider.STATUS, nullable = false, length = 15)
     private String status;
 
     @Column(name = DbTable.Provider.NAME, nullable = false, length = 255)

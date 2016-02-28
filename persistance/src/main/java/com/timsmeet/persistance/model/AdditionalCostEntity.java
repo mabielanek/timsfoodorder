@@ -1,7 +1,6 @@
 package com.timsmeet.persistance.model;
 
 import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -12,10 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
 import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.AdditionalCostKind;
@@ -23,7 +20,7 @@ import com.timsmeet.persistance.enums.AdditionalCostKind;
 @Entity
 @Table(name = DbTable.AdditionalCost.TABLE,
         indexes = @Index(columnList = DbTable.AdditionalCost.PROVIDER_ID, name = "idx_add_cost_provider_fk"))
-@org.hibernate.annotations.Check(constraints = "status IN('A','I','D') and kind IN('MINVAL','DELIVERY','PACK')")
+@org.hibernate.annotations.Check(constraints = "status IN('ACTIVE','INACTIVE','DELETED') and kind IN('MINVAL','DELIVERY','PACK')")
 public class AdditionalCostEntity {
 
     @Id
@@ -38,7 +35,7 @@ public class AdditionalCostEntity {
     @Column(name = DbTable.AdditionalCost.LAST_MODIFICATION_ID)
     private long lastModificationId;
 
-    @Column(name = DbTable.AdditionalCost.STATUS, nullable = false, length = 1)
+    @Column(name = DbTable.AdditionalCost.STATUS, nullable = false, length = 15)
     private String status;
 
     @Column(name = DbTable.AdditionalCost.KIND, nullable = false, length = 15)
