@@ -1,6 +1,7 @@
 package com.timsmeet.services.spring;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnitUtil;
 import org.modelmapper.Condition;
 import org.modelmapper.Conditions;
@@ -55,7 +56,7 @@ import com.timsmeet.services.mapper.provider.ProviderWorkingHoursConversionAcces
 @Configuration
 public class MapperConfig {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired

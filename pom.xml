@@ -91,6 +91,11 @@
         <artifactId>ojdbc6</artifactId>
         <version>${oracle.driver.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>${h2database.version}</version>
+      </dependency>      
       
       <!-- RUNTIME -->
       <dependency>
@@ -161,12 +166,6 @@
         <version>0.9.1</version>
         <scope>test</scope>
       </dependency>      
-      <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>${h2database.version}</version>
-        <scope>test</scope>
-      </dependency>
       
       <!-- PROVIDED -->
       <dependency>
