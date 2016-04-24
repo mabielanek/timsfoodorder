@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(basePackages = "com.timsmeet.persistance.repositories")
 @ComponentScan(basePackages = { "com.timsmeet.persistance.model" })
-@Import({ PersistenceDevConfig.class, PersistenceTestConfig.class })
+@Import({ PersistenceH2DatabaseConfig.class, PersistenceOracleDatabaseConfig.class, PersistenceMysqlDatabaseConfig.class, PersistencePostgresqlDatabaseConfig.class })
 @EnableTransactionManagement
 public class PersistenceJPAConfig {
 

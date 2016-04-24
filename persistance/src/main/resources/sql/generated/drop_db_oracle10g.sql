@@ -13,19 +13,27 @@
 
     drop table fo_dish_genere cascade constraints;
 
-    drop table fo_dish_price cascade constraints;
-
     drop table fo_email cascade constraints;
 
     drop table fo_food_order cascade constraints;
 
+    drop table fo_food_order_group cascade constraints;
+
     drop table fo_genere cascade constraints;
+
+    drop table fo_group cascade constraints;
+
+    drop table fo_location cascade constraints;
 
     drop table fo_order_item cascade constraints;
 
     drop table fo_order_sub_item cascade constraints;
 
+    drop table fo_organization cascade constraints;
+
     drop table fo_person cascade constraints;
+
+    drop table fo_person_group cascade constraints;
 
     drop table fo_phone cascade constraints;
 
@@ -51,15 +59,23 @@
 
     drop sequence seq_fo_dish_id;
 
-    drop sequence seq_fo_dish_price_id;
-
     drop sequence seq_fo_email_id;
+
+    drop sequence seq_fo_food_ord_grp_id;
 
     drop sequence seq_fo_food_ord_id;
 
     drop sequence seq_fo_genere_id;
 
+    drop sequence seq_fo_group_id;
+
+    drop sequence seq_fo_localization_id;
+
     drop sequence seq_fo_ord_item_id;
+
+    drop sequence seq_fo_organization_id;
+
+    drop sequence seq_fo_person_group_id;
 
     drop sequence seq_fo_person_id;
 

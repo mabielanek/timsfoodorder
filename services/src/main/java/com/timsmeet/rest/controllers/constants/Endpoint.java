@@ -1,6 +1,12 @@
 package com.timsmeet.rest.controllers.constants;
 
 public final class Endpoint {
+    
+    public static final String ORGANIZATION = "/organizations";
+    public static final String ORGANIZATION_ID_PARAM = "/{organizationId}";
+
+    public static final String LOCATION = "/locations";
+    public static final String LOCATION_ID_PARAM = "/{locationId}";
 
     public static final String PROVIDER = "/providers";
     public static final String PROVDER_ID_PARAM = "/{providerId}";

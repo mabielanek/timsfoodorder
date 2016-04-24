@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+import org.springframework.security.test.context.annotation.SecurityTestExecutionListeners;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -25,13 +26,14 @@ import com.timsmeet.spring.TestConfig;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {RestServicesConfig.class, TestConfig.class})
-@ActiveProfiles("test")
+@ActiveProfiles("h2db")
 @TestExecutionListeners({ 
   DependencyInjectionTestExecutionListener.class,
   DirtiesContextTestExecutionListener.class,
   TransactionalTestExecutionListener.class,
   ServletTestExecutionListener.class,
   ExpectTableOverwritenTestExecutionListener.class })
+@SecurityTestExecutionListeners
 @Ignore
 public class BaseControllerTest {
 
@@ -42,7 +44,10 @@ public class BaseControllerTest {
 
   @Before
   public void setUp() {
-      mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+      mockMvc = MockMvcBuilders
+              .webAppContextSetup(webApplicationContext)
+              //.apply(SecurityMockMvcConfigurers.springSecurity())
+              .build();
   }
 
 }

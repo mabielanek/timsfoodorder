@@ -13,19 +13,27 @@
 
     drop table fo_dish_genere cascade constraints;
 
-    drop table fo_dish_price cascade constraints;
-
     drop table fo_email cascade constraints;
 
     drop table fo_food_order cascade constraints;
 
+    drop table fo_food_order_group cascade constraints;
+
     drop table fo_genere cascade constraints;
+
+    drop table fo_group cascade constraints;
+
+    drop table fo_location cascade constraints;
 
     drop table fo_order_item cascade constraints;
 
     drop table fo_order_sub_item cascade constraints;
 
+    drop table fo_organization cascade constraints;
+
     drop table fo_person cascade constraints;
+
+    drop table fo_person_group cascade constraints;
 
     drop table fo_phone cascade constraints;
 
@@ -51,15 +59,23 @@
 
     drop sequence seq_fo_dish_id;
 
-    drop sequence seq_fo_dish_price_id;
-
     drop sequence seq_fo_email_id;
+
+    drop sequence seq_fo_food_ord_grp_id;
 
     drop sequence seq_fo_food_ord_id;
 
     drop sequence seq_fo_genere_id;
 
+    drop sequence seq_fo_group_id;
+
+    drop sequence seq_fo_localization_id;
+
     drop sequence seq_fo_ord_item_id;
+
+    drop sequence seq_fo_organization_id;
+
+    drop sequence seq_fo_person_group_id;
 
     drop sequence seq_fo_person_id;
 
@@ -80,10 +96,10 @@
         cost number(19,2),
         kind varchar2(15 char) not null,
         last_modification_id number(19,0),
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         provider_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D') and kind IN('MINVAL','DELIVERY','PACK'))
+        check (status IN('ACTIVE','INACTIVE','DELETED') and kind IN('MINVAL','DELIVERY','PACK'))
     );
 
     create table fo_address (
@@ -96,18 +112,18 @@
         display_index number(10,0) not null,
         last_modification_id number(19,0),
         state varchar2(40 char),
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         zip_code varchar2(15 char),
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_contact (
         id number(19,0) not null,
         last_modification_id number(19,0),
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_dish (
@@ -117,10 +133,11 @@
         description varchar2(255 char),
         last_modification_id number(19,0),
         name varchar2(255 char),
-        status varchar2(1 char) not null,
+        price number(19,2),
+        status varchar2(15 char) not null,
         provider_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_dish_comp (
@@ -129,11 +146,12 @@
         last_modification_id number(19,0),
         max_elements number(10,0) not null,
         elements_required number(10,0) not null,
-        status varchar2(1 char) not null,
+        price number(19,2),
+        status varchar2(15 char) not null,
         use_as_dish_price varchar2(1 char) not null,
         dish_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D') and use_as_dish_price IN('Y','N'))
+        check (status IN('ACTIVE','INACTIVE','DELETED') and use_as_dish_price IN('Y','N'))
     );
 
     create table fo_dish_elem (
@@ -141,10 +159,11 @@
         description varchar2(255 char),
         last_modification_id number(19,0),
         name varchar2(255 char),
-        status varchar2(1 char) not null,
+        price number(19,2),
+        status varchar2(15 char) not null,
         dish_comp_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_dish_genere (
@@ -155,39 +174,36 @@
         primary key (id)
     );
 
-    create table fo_dish_price (
-        id number(19,0) not null,
-        cost number(19,2),
-        last_modification_id number(19,0),
-        last_upd_time timestamp not null,
-        dish_id number(19,0),
-        dish_comp_id number(19,0),
-        dish_elem_id number(19,0),
-        primary key (id)
-    );
-
     create table fo_email (
         id number(19,0) not null,
         comment_text varchar2(1024 char),
         display_index number(10,0) not null,
         email_address varchar2(255 char) not null,
         last_modification_id number(19,0),
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         contact_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_food_order (
         id number(19,0) not null,
         last_modification_id number(19,0),
         add_time timestamp not null,
-        order_status varchar2(1 char) not null,
+        order_status varchar2(15 char) not null,
         order_time timestamp not null,
         person_id number(19,0),
         provider_id number(19,0),
         primary key (id),
-        check (orderStatus IN('A','C','D','L'))
+        check (orderStatus IN('ACTIVE','CANCELLED','DELIVERED','CLOSED'))
+    );
+
+    create table fo_food_order_group (
+        id number(19,0) not null,
+        last_modification_id number(19,0),
+        foodOrder number(19,0),
+        group number(19,0),
+        primary key (id)
     );
 
     create table fo_genere (
@@ -197,10 +213,28 @@
         primary key (id)
     );
 
+    create table fo_group (
+        id number(19,0) not null,
+        last_modification_id number(19,0),
+        name varchar2(255 char) not null,
+        organization_owner number(19,0),
+        person_owner number(19,0),
+        primary key (id)
+    );
+
+    create table fo_location (
+        id number(19,0) not null,
+        last_modification_id number(19,0),
+        name varchar2(255 char) not null,
+        organization_id number(19,0),
+        primary key (id)
+    );
+
     create table fo_order_item (
         id number(19,0) not null,
         count number(10,0) not null,
         last_modification_id number(19,0),
+        price number(19,2),
         dish_id number(19,0),
         food_order_id number(19,0),
         person_id number(19,0),
@@ -216,11 +250,30 @@
         primary key (id)
     );
 
+    create table fo_organization (
+        id number(19,0) not null,
+        last_modification_id number(19,0),
+        name varchar2(255 char) not null,
+        primary key (id)
+    );
+
     create table fo_person (
         id number(19,0) not null,
+        desk varchar2(15 char),
         last_modification_id number(19,0),
         login varchar2(255 char) not null,
         password varchar2(255 char) not null,
+        room varchar2(15 char),
+        contact_id number(19,0),
+        location_id number(19,0),
+        primary key (id)
+    );
+
+    create table fo_person_group (
+        id number(19,0) not null,
+        last_modification_id number(19,0),
+        group number(19,0),
+        person number(19,0),
         primary key (id)
     );
 
@@ -229,13 +282,13 @@
         comment_text varchar2(1024 char),
         display_index number(10,0) not null,
         last_modification_id number(19,0),
-        number_type varchar2(1 char) not null,
+        number_type varchar2(15 char) not null,
         phone varchar2(15 char),
         phone_ext varchar2(15 char),
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         contact_id number(19,0),
         primary key (id),
-        check (number_type IN('M','F','L') and status IN('A','I','D'))
+        check (number_type IN('MOBILE','FAX','LANDLINE') and status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_provider (
@@ -243,15 +296,15 @@
         comment varchar2(255 char) not null,
         last_modification_id number(19,0),
         name varchar2(255 char) not null,
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         address_id number(19,0),
         contact_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_vacation (
-        owner_type varchar2(1 char) not null,
+        owner_type varchar2(15 char) not null,
         id number(19,0) not null,
         end_day timestamp not null,
         last_modification_id number(19,0),
@@ -265,15 +318,15 @@
         comment_text varchar2(1024 char),
         display_index number(10,0) not null,
         last_modification_id number(19,0),
-        status varchar2(1 char) not null,
+        status varchar2(15 char) not null,
         web_url_address varchar2(255 char) not null,
         contact_id number(19,0),
         primary key (id),
-        check (status IN('A','I','D'))
+        check (status IN('ACTIVE','INACTIVE','DELETED'))
     );
 
     create table fo_working_hour (
-        owner_type varchar2(1 char) not null,
+        owner_type varchar2(15 char) not null,
         id number(19,0) not null,
         end_time timestamp not null,
         last_modification_id number(19,0),
@@ -294,12 +347,6 @@
     create index idx_dish_gene_dish_fk on fo_dish_genere (dish_id);
 
     create index idx_dish_gene_gene_fk on fo_dish_genere (genere_id);
-
-    create index idx_dish_price_dish_fk on fo_dish_price (dish_id);
-
-    create index idx_dish_price_dish_comp_fk on fo_dish_price (dish_comp_id);
-
-    create index idx_dish_price_dish_elem_fk on fo_dish_price (dish_elem_id);
 
     create index idx_contact_email_fk on fo_email (contact_id);
 
@@ -365,21 +412,6 @@
         foreign key (genere_id) 
         references fo_genere;
 
-    alter table fo_dish_price 
-        add constraint dish_price_dish_fk 
-        foreign key (dish_id) 
-        references fo_dish;
-
-    alter table fo_dish_price 
-        add constraint dish_price_dish_comp_fk 
-        foreign key (dish_comp_id) 
-        references fo_dish_comp;
-
-    alter table fo_dish_price 
-        add constraint dish_price_dish_elem_fk 
-        foreign key (dish_elem_id) 
-        references fo_dish_elem;
-
     alter table fo_email 
         add constraint email_contact_fk 
         foreign key (contact_id) 
@@ -394,6 +426,31 @@
         add constraint food_order_provider_fk 
         foreign key (provider_id) 
         references fo_provider;
+
+    alter table fo_food_order_group 
+        add constraint foodordgrp_foodord_fk 
+        foreign key (foodOrder) 
+        references fo_food_order;
+
+    alter table fo_food_order_group 
+        add constraint foodordgrp_group_fk 
+        foreign key (group) 
+        references fo_group;
+
+    alter table fo_group 
+        add constraint group_organization_fk 
+        foreign key (organization_owner) 
+        references fo_organization;
+
+    alter table fo_group 
+        add constraint group_person_fk 
+        foreign key (person_owner) 
+        references fo_person;
+
+    alter table fo_location 
+        add constraint location_organization_fk 
+        foreign key (organization_id) 
+        references fo_organization;
 
     alter table fo_order_item 
         add constraint order_item_dish_fk 
@@ -424,6 +481,26 @@
         add constraint ord_sub_item_ord_item_fk 
         foreign key (order_item_id) 
         references fo_order_item;
+
+    alter table fo_person 
+        add constraint person_contact_fk 
+        foreign key (contact_id) 
+        references fo_contact;
+
+    alter table fo_person 
+        add constraint person_location_fk 
+        foreign key (location_id) 
+        references fo_location;
+
+    alter table fo_person_group 
+        add constraint person_group_group_fk 
+        foreign key (group) 
+        references fo_group;
+
+    alter table fo_person_group 
+        add constraint person_group_person_fk 
+        foreign key (person) 
+        references fo_person;
 
     alter table fo_phone 
         add constraint phone_contact_fk 
@@ -469,15 +546,23 @@
 
     create sequence seq_fo_dish_id start with 1 increment by 1;
 
-    create sequence seq_fo_dish_price_id start with 1 increment by 1;
-
     create sequence seq_fo_email_id start with 1 increment by 1;
+
+    create sequence seq_fo_food_ord_grp_id start with 1 increment by 1;
 
     create sequence seq_fo_food_ord_id start with 1 increment by 1;
 
     create sequence seq_fo_genere_id start with 1 increment by 1;
 
+    create sequence seq_fo_group_id start with 1 increment by 1;
+
+    create sequence seq_fo_localization_id start with 1 increment by 1;
+
     create sequence seq_fo_ord_item_id start with 1 increment by 1;
+
+    create sequence seq_fo_organization_id start with 1 increment by 1;
+
+    create sequence seq_fo_person_group_id start with 1 increment by 1;
 
     create sequence seq_fo_person_id start with 1 increment by 1;
 

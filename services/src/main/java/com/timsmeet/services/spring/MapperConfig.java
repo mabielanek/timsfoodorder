@@ -3,6 +3,7 @@ package com.timsmeet.services.spring;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnitUtil;
+
 import org.modelmapper.Condition;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import com.timsmeet.dto.AdditionalCost;
 import com.timsmeet.dto.Address;
 import com.timsmeet.dto.Contact;

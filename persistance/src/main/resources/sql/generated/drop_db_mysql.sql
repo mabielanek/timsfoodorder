@@ -23,18 +23,6 @@
         drop 
         foreign key dish_gene_gene_fk;
 
-    alter table fo_dish_price 
-        drop 
-        foreign key dish_price_dish_fk;
-
-    alter table fo_dish_price 
-        drop 
-        foreign key dish_price_dish_comp_fk;
-
-    alter table fo_dish_price 
-        drop 
-        foreign key dish_price_dish_elem_fk;
-
     alter table fo_email 
         drop 
         foreign key email_contact_fk;
@@ -46,6 +34,26 @@
     alter table fo_food_order 
         drop 
         foreign key food_order_provider_fk;
+
+    alter table fo_food_order_group 
+        drop 
+        foreign key foodordgrp_foodord_fk;
+
+    alter table fo_food_order_group 
+        drop 
+        foreign key foodordgrp_group_fk;
+
+    alter table fo_group 
+        drop 
+        foreign key group_organization_fk;
+
+    alter table fo_group 
+        drop 
+        foreign key group_person_fk;
+
+    alter table fo_location 
+        drop 
+        foreign key location_organization_fk;
 
     alter table fo_order_item 
         drop 
@@ -70,6 +78,22 @@
     alter table fo_order_sub_item 
         drop 
         foreign key ord_sub_item_ord_item_fk;
+
+    alter table fo_person 
+        drop 
+        foreign key person_contact_fk;
+
+    alter table fo_person 
+        drop 
+        foreign key person_location_fk;
+
+    alter table fo_person_group 
+        drop 
+        foreign key person_group_group_fk;
+
+    alter table fo_person_group 
+        drop 
+        foreign key person_group_person_fk;
 
     alter table fo_phone 
         drop 
@@ -109,19 +133,27 @@
 
     drop table if exists fo_dish_genere;
 
-    drop table if exists fo_dish_price;
-
     drop table if exists fo_email;
 
     drop table if exists fo_food_order;
 
+    drop table if exists fo_food_order_group;
+
     drop table if exists fo_genere;
+
+    drop table if exists fo_group;
+
+    drop table if exists fo_location;
 
     drop table if exists fo_order_item;
 
     drop table if exists fo_order_sub_item;
 
+    drop table if exists fo_organization;
+
     drop table if exists fo_person;
+
+    drop table if exists fo_person_group;
 
     drop table if exists fo_phone;
 
@@ -147,15 +179,23 @@
 
     drop table if exists seq_fo_dish_id;
 
-    drop table if exists seq_fo_dish_price_id;
-
     drop table if exists seq_fo_email_id;
+
+    drop table if exists seq_fo_food_ord_grp_id;
 
     drop table if exists seq_fo_food_ord_id;
 
     drop table if exists seq_fo_genere_id;
 
+    drop table if exists seq_fo_group_id;
+
+    drop table if exists seq_fo_localization_id;
+
     drop table if exists seq_fo_ord_item_id;
+
+    drop table if exists seq_fo_organization_id;
+
+    drop table if exists seq_fo_person_group_id;
 
     drop table if exists seq_fo_person_id;
 

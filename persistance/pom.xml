@@ -14,11 +14,11 @@
 
   <name>Tims food ordering object model.</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <timsjpaddl.version>0.1.0</timsjpaddl.version>
-    </properties>
-    
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <timsjpaddl.version>0.1.0</timsjpaddl.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -44,12 +44,8 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
     </dependency>
-<!--    
-    <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc6</artifactId>
-    </dependency>      
--->    
+    <!-- <dependency> <groupId>com.oracle</groupId> <artifactId>ojdbc6</artifactId> 
+      </dependency> -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
@@ -74,98 +70,142 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    <dependency>
+    <!--  <dependency>
       <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-    </dependency>
+      <artifactId>h2</artifactId> 
+    </dependency> -->
   </dependencies>
 
-    <profiles>
-        <profile>
-            <id>ddl-generator</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.timsmeet</groupId>
-                    <artifactId>hibernate4ddl</artifactId>
-                    <version>${timsjpaddl.version}</version>
-                </dependency>
-            </dependencies> 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <id>generateOracleSql</id>
-            <phase>${sql.generation.phase}</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>com.timsmeet.persistance.model</argument>
-                <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
-                <argument>Oracle10g</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <!-- <execution> <id>generateFirebirdSql</id> <phase>${sql.generation.phase}</phase> <goals> <goal>java</goal> </goals> <configuration> 
-            <arguments> <argument>com.timsmeet.persistance.model</argument> <argument>${project.basedir}/src/main/resources/sql/generated/</argument> <argument>Firebird</argument> 
-            </arguments> </configuration> </execution> -->
-          <execution>
-            <id>generateMySQLSql</id>
-            <phase>${sql.generation.phase}</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>com.timsmeet.persistance.model</argument>
-                <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
-                <argument>MySQL</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>generatePostgreSQLSql</id>
-            <phase>${sql.generation.phase}</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>com.timsmeet.persistance.model</argument>
-                <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
-                <argument>PostgreSQL</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>generateHSQLSql</id>
-            <phase>${sql.generation.phase}</phase>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>com.timsmeet.persistance.model</argument>
-                <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
-                <argument>HSQL</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
+  <profiles>
+    <profile>
+      <id>h2db</id>
+      <activation>
+              <activeByDefault>true</activeByDefault>
+          </activation>
+      <dependencies>
+              <dependency>
+                  <groupId>com.h2database</groupId>
+                  <artifactId>h2</artifactId>
+              </dependency>
+          </dependencies>          
+    </profile>
 
-        <configuration>
-          <includeProjectDependencies>true</includeProjectDependencies>
-          <mainClass>com.timsmeet.hibernate4ddl.util.generator.SchemaGenerator</mainClass>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-          </profile>
-    </profiles>
- 
+    <profile>
+      <id>oracledb</id>
+      <dependencies>
+              <dependency>
+                  <groupId>com.oracle</groupId>
+                  <artifactId>ojdbc6</artifactId>
+              </dependency>
+          </dependencies>          
+    </profile>
+    
+    <profile>
+      <id>mysqldb</id>
+      <dependencies>
+              <dependency>
+                  <groupId>mysql</groupId>
+                  <artifactId>mysql-connector-java</artifactId>
+              </dependency>
+          </dependencies>      
+    </profile>
+    
+    <profile>
+      <id>postgresqldb</id>
+      <dependencies>
+        <dependency>
+          <groupId>postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>  
+  
+    <profile>
+      <id>ddl-generator</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.timsmeet</groupId>
+          <artifactId>hibernate4ddl</artifactId>
+          <version>${timsjpaddl.version}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>generateOracleSql</id>
+                <phase>${sql.generation.phase}</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <arguments>
+                    <argument>com.timsmeet.persistance.model</argument>
+                    <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
+                    <argument>Oracle10g</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <!-- <execution> <id>generateFirebirdSql</id> <phase>${sql.generation.phase}</phase> 
+                <goals> <goal>java</goal> </goals> <configuration> <arguments> <argument>com.timsmeet.persistance.model</argument> 
+                <argument>${project.basedir}/src/main/resources/sql/generated/</argument> 
+                <argument>Firebird</argument> </arguments> </configuration> </execution> -->
+              <execution>
+                <id>generateMySQLSql</id>
+                <phase>${sql.generation.phase}</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <arguments>
+                    <argument>com.timsmeet.persistance.model</argument>
+                    <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
+                    <argument>MySQL</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generatePostgreSQLSql</id>
+                <phase>${sql.generation.phase}</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <arguments>
+                    <argument>com.timsmeet.persistance.model</argument>
+                    <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
+                    <argument>PostgreSQL</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generateHSQLSql</id>
+                <phase>${sql.generation.phase}</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <arguments>
+                    <argument>com.timsmeet.persistance.model</argument>
+                    <argument>${project.basedir}/src/main/resources/sql/generated/</argument>
+                    <argument>HSQL</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+
+            <configuration>
+              <includeProjectDependencies>true</includeProjectDependencies>
+              <mainClass>com.timsmeet.hibernate4ddl.util.generator.SchemaGenerator</mainClass>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

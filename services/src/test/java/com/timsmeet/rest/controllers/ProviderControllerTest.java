@@ -12,9 +12,10 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -42,7 +43,6 @@ import com.timsmeet.persistance.constants.DbTable;
 import com.timsmeet.persistance.enums.ActivityStatus;
 import com.timsmeet.persistance.enums.PhoneNumberType;
 import com.timsmeet.persistance.enums.WeekDay;
-import com.timsmeet.persistance.repositories.ProviderRepository;
 import com.timsmeet.rest.RestTestUtil;
 import com.timsmeet.rest.controllers.constants.Endpoint;
 import com.timsmeet.services.ProviderService;
@@ -74,11 +74,7 @@ import com.timsmeet.spring.ColumnSensingReplacementDataSetLoader;
 @ExcludedColumns("last_modification_id")
 public class ProviderControllerTest extends BaseControllerTest {
 
-	@Autowired
-	private ProviderService providerService;
-
-	@Autowired
-	private ProviderRepository providerRepository;
+    private UserRequestPostProcessor timUser = SecurityMockMvcRequestPostProcessors.user("tim");
 
     @Before
     public void setUpProviderControler() throws SQLException {
@@ -253,7 +249,7 @@ public class ProviderControllerTest extends BaseControllerTest {
   @Test
   public void shouldFindByIdWithEmbededVacations() throws Exception {
 	  ResultActions resultActions =
-			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations"))
+			  mockMvc.perform(MockMvcRequestBuilders.get(Endpoint.PROVIDER + "/1").param("embeded", "vacations").with(timUser))
               .andDo(MockMvcResultHandlers.print())
               .andExpect(MockMvcResultMatchers.status().isOk())
               .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -336,6 +332,7 @@ public class ProviderControllerTest extends BaseControllerTest {
       Vacation vacationToModify = findVacationByStartDay(provider.getVacations(), vacationToModifyStart);
       vacationToModify.setStartDay(modifiedStart);
       vacationToModify.setEndDay(modifiedEnd);
+      //provider.setWorkingHours(Lists.<WorkingHour>newArrayList());
 
       mockMvc.perform(MockMvcRequestBuilders.post(Endpoint.PROVIDER)
               .contentType(RestTestUtil.APPLICATION_JSON_UTF8)

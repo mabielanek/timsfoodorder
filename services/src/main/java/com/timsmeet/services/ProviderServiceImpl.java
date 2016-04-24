@@ -34,10 +34,16 @@ public class ProviderServiceImpl implements ProviderService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Provider> readProviders(Pageable pageable) {
+    public List<Provider> readProviders(Pageable pageable, Boolean onlyFromUserLocation) {
+        List<ProviderEntity> dbProviders = null;
 
-        List<ProviderEntity> dbProviders = Lists.newArrayList(providerRepository.findAll(pageable));
+        if(Boolean.TRUE.equals(onlyFromUserLocation)) {
+            dbProviders = Collections.emptyList();
+        } else {
+            dbProviders = Lists.newArrayList(providerRepository.findAll(pageable));
+        }
         List<Provider> providers = Lists.newArrayListWithCapacity(dbProviders.size());
         for (ProviderEntity dbProvider : dbProviders) {
             Provider provider = new Provider();
@@ -47,8 +53,8 @@ public class ProviderServiceImpl implements ProviderService {
         return providers;
     }
 
-    @Override
     @Transactional
+    @Override
     public Provider save(Provider provider) {
         ProviderEntity dbProvider =
                 (provider.getId() == null) ? new ProviderEntity() : providerRepository.findOne(provider.getId());
@@ -67,8 +73,8 @@ public class ProviderServiceImpl implements ProviderService {
         return savedProvider;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    @Transactional
     public Provider readProvider(Long providerId, String[] embeded) {
         Set<String> embededSet = embeded != null ? Sets.newHashSet(embeded)
                 : Collections.<String> emptySet();
@@ -103,6 +109,7 @@ public class ProviderServiceImpl implements ProviderService {
         return provider;
     }
 
+    @Transactional
     @Override
     public void delete(Long providerId) {
 
@@ -113,8 +120,8 @@ public class ProviderServiceImpl implements ProviderService {
         }
 
         providerRepository.delete(dbProvider);
-        addressRepository.delete(dbProvider.getAddress());
-        contactRepository.delete(dbProvider.getContact());
+        //addressRepository.delete(dbProvider.getAddress());
+        //contactRepository.delete(dbProvider.getContact());
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import javax.transaction.Transactional;
+
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.collect.Sets;
 import com.timsmeet.dto.Dish;
 import com.timsmeet.errors.ErrorBuilder;
@@ -38,7 +40,7 @@ public class DishServiceImpl implements DishService {
     private ModelMapper modelMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Dish> readDishes(Long providerId, Boolean onlyActive, String[] embeded, Pageable pageable) {
         Set<String> embededSet = embeded != null ? Sets.newHashSet(embeded)
                 : Collections.<String> emptySet();

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.timsmeet.services.spring.ServicesConfig;
 
 @Configuration
-@Import({ ServicesConfig.class })
+@Import({ ServicesConfig.class/*, SecurityConfig.class */})
 @ComponentScan(basePackages = { "com.timsmeet.rest.controllers" })
 @EnableWebMvc
 public class RestServicesConfig extends WebMvcConfigurerAdapter {

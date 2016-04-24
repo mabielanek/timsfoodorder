@@ -18,7 +18,7 @@ public interface ProviderService {
     public static final String ALLOW_SORT_ID = "id";
     public static final String ALLOW_SORT_NAME = "name";
     
-    List<Provider> readProviders(Pageable pageable);
+    List<Provider> readProviders(Pageable pageable, Boolean onlyFromUserLocation);
 
     Provider save(Provider provider);
 

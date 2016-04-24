@@ -21,6 +21,12 @@ public enum ErrorDescribedEnum implements ErrorSpecification {
 	DISH_TO_SAVE_NOT_FOUND("0206", "Save Dish error: Dish with id: %s not found."),
 	PROVIDER_TO_DELETE_DISH_NOT_FOUND("0207", "Delete Dish error: Dish Provider with id %s not found."),
 	DISH_TO_DELETE_NOT_FOUND("0208", "Delete Dish error: Dish with id %s not found."),
+	ORGANIZATION_TO_DELETE_NOT_FOUND("0209", "Delete Organization error: Organization with id: %s not found."),
+	ORGANIZATION_TO_UPDATE_NOT_FOUND("0210", "Update Organization error: Organization with id: %s not found."),
+	ORGANIZATION_TO_SAVE_LOCATION_NOT_FOUND("0211", "Save location for organization error: Organization with id: %s not found."),
+	LOCATION_TO_SAVE_NOT_FOUND("0212", "Save Location error: Location with id: %s not found."),
+	ORGANIZATION_TO_DELETE_LOCATION_NOT_FOUND("0213", "Delete Location error: Organization with id: %s not found."),
+	LOCATION_TO_DELETE_NOT_FOUND("0214", "Delete Location error: Location with id: %s not found."),
 
 	FOOD_ORDER_TO_READ_NOT_FOUND("0301", "Read Food Order error: Food Order with id: %s not found."),
 	;

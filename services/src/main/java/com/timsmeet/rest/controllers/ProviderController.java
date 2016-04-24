@@ -29,14 +29,15 @@ public class ProviderController {
     public List<Provider> readProviders(
             @RequestParam(required = false) String sort, 
             @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer perPage) {
+            @RequestParam(required = false) Integer perPage,
+            @RequestParam(required = false) Boolean onlyFromUserLocation) {
         
         RestParamHelper paramHelper = new RestParamHelper()
             .specifyPaging(page, perPage)
             .withSorting(sort)
             .allowSortBy(ProviderService.ALLOW_SORT_ID, ProviderService.ALLOW_SORT_NAME);
         
-        return providerService.readProviders(paramHelper.buildPageable());
+        return providerService.readProviders(paramHelper.buildPageable(), onlyFromUserLocation);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = Endpoint.PROVDER_ID_PARAM)
