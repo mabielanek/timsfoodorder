@@ -3,12 +3,14 @@ package com.timsmeet.services;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.timsmeet.dto.Provider;
@@ -38,9 +40,9 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public List<Provider> readProviders(Pageable pageable, Boolean onlyFromUserLocation) {
         List<ProviderEntity> dbProviders = null;
-
+        
         if(Boolean.TRUE.equals(onlyFromUserLocation)) {
-            dbProviders = Collections.emptyList();
+            dbProviders = Collections.emptyList(); 
         } else {
             dbProviders = Lists.newArrayList(providerRepository.findAll(pageable));
         }
@@ -79,7 +81,7 @@ public class ProviderServiceImpl implements ProviderService {
         Set<String> embededSet = embeded != null ? Sets.newHashSet(embeded)
                 : Collections.<String> emptySet();
         ProviderEntity dbProvider = providerRepository.findOne(providerId);
-
+        
         if (dbProvider == null) {
             throw new NotFoundException(ErrorBuilder.build(ErrorDescribedEnum.PROVIDER_TO_READ_NOT_FOUND, providerId));
         }

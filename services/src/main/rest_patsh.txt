@@ -7,3 +7,10 @@ read providers
 
 /providers // first page 
 /providers?page=2&perPage=50 // second page of size 50, page numbering start from 1, consider returning links to next/prev/first/last in header as described in https://developer.github.com/v3/#pagination
+
+
+
+mapping elements with mapper
+only not null collections are moved to hibernate entity (and when collection is not on "embeded" parameter list,
+it is not returned, so should be send from client as null => this means collection should not be modifed)
+when empty collection is send (empty table) it will be cleared (all elements will be deleted) on server side

@@ -27,71 +27,71 @@ import com.timsmeet.services.find.entity.IdAccessors;
 public class ServicesConfig {
 
 	@Bean(name = "providerVacationFind")
-	public FindEntityWithIdAccessor<ProviderVacationEntity> getProviderVacationFind() {
-		FindEntityWithIdAccessor<ProviderVacationEntity> providerVacationFind = new FindEntityWithIdAccessor<ProviderVacationEntity>();
+	public FindEntityWithIdAccessor<ProviderVacationEntity, Long> getProviderVacationFind() {
+		FindEntityWithIdAccessor<ProviderVacationEntity, Long> providerVacationFind = new FindEntityWithIdAccessor<ProviderVacationEntity, Long>();
 		providerVacationFind.setIdAccessor(new IdAccessors.VacationEntityById<ProviderVacationEntity>());
 		return providerVacationFind;
 	}
 
 	@Bean(name = "providerWorkingHourFind")
-	public FindEntityWithIdAccessor<ProviderWorkingHourEntity> getProviderWorkingHourFind() {
-		FindEntityWithIdAccessor<ProviderWorkingHourEntity> providerWorkingHourFind = new FindEntityWithIdAccessor<ProviderWorkingHourEntity>();
+	public FindEntityWithIdAccessor<ProviderWorkingHourEntity, Long> getProviderWorkingHourFind() {
+		FindEntityWithIdAccessor<ProviderWorkingHourEntity, Long> providerWorkingHourFind = new FindEntityWithIdAccessor<ProviderWorkingHourEntity, Long>();
 		providerWorkingHourFind.setIdAccessor(new IdAccessors.WorkingHourEntityById<ProviderWorkingHourEntity>());
 		return providerWorkingHourFind;
 	}
 
 	@Bean(name = "emailFind")
-	public FindEntityWithIdAccessor<EmailEntity> getEmailFind() {
-		FindEntityWithIdAccessor<EmailEntity> emailFind = new FindEntityWithIdAccessor<EmailEntity>();
+	public FindEntityWithIdAccessor<EmailEntity, Long> getEmailFind() {
+		FindEntityWithIdAccessor<EmailEntity, Long> emailFind = new FindEntityWithIdAccessor<EmailEntity, Long>();
 		emailFind.setIdAccessor(new IdAccessors.EmailEntityById());
 		return emailFind;
 	}
 
 	@Bean(name = "phoneFind")
-	public FindEntityWithIdAccessor<PhoneEntity> getPhoneFind() {
-		FindEntityWithIdAccessor<PhoneEntity> phoneFind = new FindEntityWithIdAccessor<PhoneEntity>();
+	public FindEntityWithIdAccessor<PhoneEntity, Long> getPhoneFind() {
+		FindEntityWithIdAccessor<PhoneEntity, Long> phoneFind = new FindEntityWithIdAccessor<PhoneEntity, Long>();
 		phoneFind.setIdAccessor(new IdAccessors.PhoneEntityById());
 		return phoneFind;
 	}
 
 	@Bean(name = "webUrlFind")
-	public FindEntityWithIdAccessor<WebUrlEntity> getWebUrlFind() {
-		FindEntityWithIdAccessor<WebUrlEntity> webUrlFind = new FindEntityWithIdAccessor<WebUrlEntity>();
+	public FindEntityWithIdAccessor<WebUrlEntity, Long> getWebUrlFind() {
+		FindEntityWithIdAccessor<WebUrlEntity, Long> webUrlFind = new FindEntityWithIdAccessor<WebUrlEntity, Long>();
 		webUrlFind.setIdAccessor(new IdAccessors.WebUrlEntityById());
 		return webUrlFind;
 	}
 	
 	@Bean(name = "dishComponentFind")
-	public FindEntityWithIdAccessor<DishComponentEntity> getDishComponentFind() {
-	    FindEntityWithIdAccessor<DishComponentEntity> dishComponentFind = new FindEntityWithIdAccessor<DishComponentEntity>();
+	public FindEntityWithIdAccessor<DishComponentEntity, Long> getDishComponentFind() {
+	    FindEntityWithIdAccessor<DishComponentEntity, Long> dishComponentFind = new FindEntityWithIdAccessor<DishComponentEntity, Long>();
 	    dishComponentFind.setIdAccessor(new IdAccessors.DishComponentEntityById());
 	    return dishComponentFind;
 	}
 	
 	@Bean(name = "dishElementFind")
-	public FindEntityWithIdAccessor<DishElementEntity> getDishElementFind() {
-	    FindEntityWithIdAccessor<DishElementEntity> dishElementFind = new FindEntityWithIdAccessor<DishElementEntity>();
+	public FindEntityWithIdAccessor<DishElementEntity, Long> getDishElementFind() {
+	    FindEntityWithIdAccessor<DishElementEntity, Long> dishElementFind = new FindEntityWithIdAccessor<DishElementEntity, Long>();
 	    dishElementFind.setIdAccessor(new IdAccessors.DishElementEntityById());
 	    return dishElementFind;
 	}
 	
 	@Bean(name = "genereFind")
-	public FindEntityWithIdAccessor<GenereEntity> getGenereFind() {
-	    FindEntityWithIdAccessor<GenereEntity> genereFind = new FindEntityWithIdAccessor<GenereEntity>();
+	public FindEntityWithIdAccessor<GenereEntity, Long> getGenereFind() {
+	    FindEntityWithIdAccessor<GenereEntity, Long> genereFind = new FindEntityWithIdAccessor<GenereEntity, Long>();
 	    genereFind.setIdAccessor(new IdAccessors.GenereEntityById());
 	    return genereFind;
 	}
 	
 	@Bean(name = "dishGenereFind")
-	public FindEntityWithIdAccessor<DishGenereEntity> getDishGenereFind() {
-	    FindEntityWithIdAccessor<DishGenereEntity> dishGenereFind = new FindEntityWithIdAccessor<DishGenereEntity>();
+	public FindEntityWithIdAccessor<DishGenereEntity, Long> getDishGenereFind() {
+	    FindEntityWithIdAccessor<DishGenereEntity, Long> dishGenereFind = new FindEntityWithIdAccessor<DishGenereEntity, Long>();
 	    dishGenereFind.setIdAccessor(new IdAccessors.DishGenereEntityByGenereId());
 	    return dishGenereFind;
 	}
 	
 	@Bean(name = "dishFind")
-	public FindEntityWithIdAccessor<DishEntity> getDishFind() {
-	    FindEntityWithIdAccessor<DishEntity> dishFind = new FindEntityWithIdAccessor<DishEntity>();
+	public FindEntityWithIdAccessor<DishEntity, Long> getDishFind() {
+	    FindEntityWithIdAccessor<DishEntity, Long> dishFind = new FindEntityWithIdAccessor<DishEntity, Long>();
 	    dishFind.setIdAccessor(new IdAccessors.DishEntityById());
 	    return dishFind;
 	}

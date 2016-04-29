@@ -1,25 +1,18 @@
 package com.timsmeet.services.mapper.dish;
 
 import java.util.Collection;
-import com.timsmeet.dto.Dish;
-import com.timsmeet.dto.Genere;
 import com.timsmeet.persistance.model.DishEntity;
 import com.timsmeet.persistance.model.DishGenereEntity;
 import com.timsmeet.persistance.model.GenereEntity;
 import com.timsmeet.persistance.repositories.GenereRepository;
-import com.timsmeet.services.mapper.OneToManyJoinConversionAccess;
+import com.timsmeet.services.mapper.DestinationJoinCollectionAccess;
 
-public class DishGeneresConversionAccess implements OneToManyJoinConversionAccess<Dish, DishEntity, Genere, GenereEntity, DishGenereEntity>
-{
+public class DishGeneresJoinEntityAccess implements DestinationJoinCollectionAccess<Long, DishEntity, GenereEntity, DishGenereEntity> {
+
     private GenereRepository genereRepository;
 
-    public DishGeneresConversionAccess(GenereRepository genereRepository) {
+    public DishGeneresJoinEntityAccess(GenereRepository genereRepository) {
         this.genereRepository = genereRepository;
-    }
-
-    @Override
-    public Collection<Genere> getSourceChilds(Dish source) {
-        return source.getGeneres();
     }
 
     @Override
@@ -28,22 +21,17 @@ public class DishGeneresConversionAccess implements OneToManyJoinConversionAcces
     }
 
     @Override
-    public Long getSouceChildId(Genere child) {
-        return child.getId();
-    }
-
-    @Override
-    public Long getDestinationChildIdFromJoin(DishGenereEntity join) {
+    public Long getChildIdFromJoin(DishGenereEntity join) {
         return join.getGenere().getId();
     }
 
     @Override
-    public void removeJoinChild(DishEntity parent, DishGenereEntity joinChild) {
+    public void removeJoin(DishEntity parent, DishGenereEntity joinChild) {
         parent.removeDishGenere(joinChild);
     }
 
     @Override
-    public void createAndAddJoinChild(DishEntity parent, GenereEntity destinationChild) {
+    public void createAndAddJoin(DishEntity parent, GenereEntity destinationChild) {
         DishGenereEntity added = new DishGenereEntity();
         added.setDish(parent);
         added.setGenere(destinationChild);
@@ -51,8 +39,7 @@ public class DishGeneresConversionAccess implements OneToManyJoinConversionAcces
     }
 
     @Override
-    public GenereEntity findDbDestinationChild(Long childId) {
+    public GenereEntity findDbChild(Long childId) {
         return genereRepository.findOne(childId);
     }
-
 }

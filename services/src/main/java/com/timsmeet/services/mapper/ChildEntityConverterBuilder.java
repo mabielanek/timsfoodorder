@@ -30,18 +30,29 @@ public class ChildEntityConverterBuilder<S, D> {
         return chainedConverter;
     }
 
-    public <SC, DC> ChildEntityConverterBuilder<S, D> addCollectionConverterFrom(OneToManyConversionAccess<S, D, SC, DC> oneToManyConversionAccess) {
-        chainedConverter.addConverter(new OneToManyCollectionConverter<S, D, SC, DC>(oneToManyConversionAccess));
+//    public <SC, DC> ChildEntityConverterBuilder<S, D> addCollectionConverterFrom(OneToManyConversionAccess<S, D, SC, DC> oneToManyConversionAccess) {
+//        chainedConverter.addConverter(new OneToManyCollectionConverter<S, D, SC, DC>(oneToManyConversionAccess));
+//        return this;
+//    }
+
+    public <ID, SC, DC> ChildEntityConverterBuilder<S, D> addCollectionConverterFrom(SourceCollectionAccess<ID, S, SC> sourceCollectionAccess, DestinationCollectionAccess<ID, D, DC> destinationCollectionAccess) {
+        chainedConverter.addConverter(new OneToManyConverter<ID, S, D, SC, DC>(sourceCollectionAccess, destinationCollectionAccess));
         return this;
     }
 
-    public <SC, DC, JC> ChildEntityConverterBuilder<S, D> addJoinCollectionConverterFrom(OneToManyJoinConversionAccess<S, D, SC, DC, JC> oneToManyJoinConversionAccess) {
-        chainedConverter.addConverter(new OneToManyJoinEntityConverter<S, D, SC, DC, JC>(oneToManyJoinConversionAccess));
+    public <ID, SC, DC, JC> ChildEntityConverterBuilder<S, D> addCollectionConverterFrom(SourceCollectionAccess<ID, S, SC> sourceCollectionAccess, DestinationJoinCollectionAccess<ID, D, DC, JC> destinationCollectionAccess) {
+        chainedConverter.addConverter(new OneToManyJoinConverter<ID, S, D, SC, DC, JC>(sourceCollectionAccess, destinationCollectionAccess));
         return this;
     }
 
-    public <SC, DC> ChildEntityConverterBuilder<S, D> addEntityConverterFrom(OneToOneConversionAccess<S, D, SC, DC> oneToOneConversionAccess) {
-        chainedConverter.addConverter(new OneToOneEntityConverter<S, D, SC, DC>(oneToOneConversionAccess));
+
+//    public <SC, DC, JC> ChildEntityConverterBuilder<S, D> addJoinCollectionConverterFrom(OneToManyJoinConversionAccess<S, D, SC, DC, JC> oneToManyJoinConversionAccess) {
+//        chainedConverter.addConverter(new OneToManyJoinEntityConverter<S, D, SC, DC, JC>(oneToManyJoinConversionAccess));
+//        return this;
+//    }
+
+    public <SC, DC> ChildEntityConverterBuilder<S, D> addChildConverterFrom(SourceChildAccess<S, SC> sourceChildAccess, DestinationChildAccess<D, DC> destinationChildAccess) {
+        chainedConverter.addConverter(new OneToOneConverter<S, D, SC, DC>(sourceChildAccess, destinationChildAccess));
         return this;
     }
 

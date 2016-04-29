@@ -10,19 +10,19 @@ import com.google.common.collect.Collections2;
 import com.timsmeet.services.find.entity.IdAccessor;
 
 @Service
-public class FindEntityWithIdAccessor<T> {
+public class FindEntityWithIdAccessor<T, ID> {
 
-	private IdAccessor<T, Long> idAccessor;
+	private IdAccessor<T, ID> idAccessor;
 	
-	public IdAccessor<T, Long> getIdAccessor() {
+	public IdAccessor<T, ID> getIdAccessor() {
 		return idAccessor;
 	}
 
-	public void setIdAccessor(IdAccessor<T, Long> idAccessor) {
+	public void setIdAccessor(IdAccessor<T, ID> idAccessor) {
 		this.idAccessor = idAccessor;
 	}
 
-	public T findById(Collection<T> collection, final Long entityId) {
+	public T findById(Collection<T> collection, final ID entityId) {
 		Verify.verifyNotNull(entityId, "entityId can't be null when findById");
 		Verify.verify(idAccessor != null, "IdAccessor can't be null when findById, for id=%s", entityId);
 		

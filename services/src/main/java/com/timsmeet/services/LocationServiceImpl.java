@@ -2,7 +2,6 @@ package com.timsmeet.services;
 
 import java.lang.reflect.Type;
 import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
 import com.timsmeet.dto.Location;
 import com.timsmeet.errors.ErrorBuilder;
@@ -25,7 +23,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Autowired
     private OrganizationRepository organizationRepository;
-    
+
     @Autowired
     private LocationRepository locationRepository;
 
@@ -39,10 +37,8 @@ public class LocationServiceImpl implements LocationService {
 
         dbLocations = locationRepository.findByOrganizationId(organizationId, pageable);
 
-        boolean hasLocations = (dbLocations != null && dbLocations.hasContent());
-
         List<Location> result = Lists.<Location> newArrayList();
-        if (hasLocations) {
+        if (dbLocations != null && dbLocations.hasContent()) {
             Type listType = new TypeToken<List<Location>>() {}.getType();
             result = modelMapper.map(dbLocations.getContent(), listType);
         }
@@ -85,7 +81,7 @@ public class LocationServiceImpl implements LocationService {
         }
 
         locationRepository.delete(dbLocation);
-        
+
     }
 
 }
